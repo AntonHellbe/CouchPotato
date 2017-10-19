@@ -40,12 +40,11 @@ public class Controller {
 
     private void initializeCommunication() {
         Intent intent = new Intent(mainActivity,CommunicationService.class);
-        /*
+
         if (!dataFragment.getServiceExist()){
             mainActivity.startService(intent);
             dataFragment.setServiceExist(true);
-        }*/
-        mainActivity.startService(intent);
+        }
         serviceConnection = new ServiceConnection();
         boolean status = mainActivity.bindService(intent, serviceConnection,0);
         Log.d("Controller","initializeCommunication, connected: " + status);
@@ -70,8 +69,12 @@ public class Controller {
 
     }
 
-    public void sendTest() {
+    public void setServiceController(){
         communicationService.setController(this);
+    }
+
+    public void sendTest() {
+        //communicationService.setController(this);
         communicationService.sendToURL("test");
     }
 
@@ -84,6 +87,7 @@ public class Controller {
         public void onServiceConnected(ComponentName name, IBinder service) {
             CommunicationService.LocalService ls = (CommunicationService.LocalService) service;
             communicationService = ls.getService();
+            setServiceController();
             Log.d("Controller","In onServiceConnected");
             bound = true;
         }
