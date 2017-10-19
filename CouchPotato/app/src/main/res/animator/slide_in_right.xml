@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:propertyName="x"
         android:valueType="floatType"
-        android:valueFrom="100"
+        android:valueFrom="@integer/width"
         android:valueTo="0"
         android:duration="@integer/animationTime"
         />

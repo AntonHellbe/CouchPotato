@@ -3,9 +3,8 @@
 
     <translate
         android:duration="@integer/animationTime"
-        android:fromXDelta="100%"
-        android:toXDelta="0%"
+        android:fromXDelta="0%"
+        android:toXDelta="100%"
         />
-
 
 </set>

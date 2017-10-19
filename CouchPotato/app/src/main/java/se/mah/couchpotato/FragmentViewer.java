@@ -67,9 +67,13 @@ public class FragmentViewer {
                 if (currentTag.equals(ContainerFragment.TAG_FEED)) {
                     data[0] = R.animator.slide_in_right;
                     data[1] = R.animator.slide_out_left;
+                    //data[0] = R.anim.anim_slide_in_right;
+                    //data[1] = R.anim.anim_slide_out_left;
                 } else {
                     data[0] = R.animator.slide_in_left;
                     data[1] = R.animator.slide_out_right;
+                    //data[0] = R.anim.anim_slide_in_right;
+                    //data[1] = R.anim.anim_slide_out_left;
                 }
                 return data;
             case ContainerFragment.TAG_FEED:
