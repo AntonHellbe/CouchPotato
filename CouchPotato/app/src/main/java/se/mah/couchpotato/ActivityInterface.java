@@ -8,5 +8,5 @@ import android.app.Fragment;
 
 public interface ActivityInterface {
 
-    public Fragment getFragmentByTag(String TAG);
+    //Controller getController();
 }
