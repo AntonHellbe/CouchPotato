@@ -28,8 +28,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".activitytvshow.ActivityTvShow"
-            android:theme="@style/AppThemeActionBar"></activity>
+            android:name=".activitytvshow.ActivityTvShow"></activity>
     </application>
 
 </manifest>
