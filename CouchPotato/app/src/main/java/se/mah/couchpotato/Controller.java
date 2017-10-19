@@ -10,6 +10,10 @@ public class Controller {
      * Temporary for testing
      * */
     private CommunicationService cs = new CommunicationService();
+
+    public Controller(MainActivity mainActivity) {
+    }
+
     public void sendTest() {
         cs.sendToURL("test");
     }

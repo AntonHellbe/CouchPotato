@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        controller = new Controller();
+        controller = new Controller(this);
         //TODO flytta detta till controller
 
         if(savedInstanceState==null) {
