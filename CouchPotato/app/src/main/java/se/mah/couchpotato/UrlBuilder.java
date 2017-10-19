@@ -12,6 +12,11 @@ public class UrlBuilder {
     public static final String TODAYS_SCHEDULE = BASE_URL + "schedule?country=SE";
     public static final String FULL_SCHEDULE = BASE_URL + "schedule/full";
     public static final String SHOW_BY_ID = BASE_URL + "shows/";
+    public static final String SHOW_BY_IMDB = BASE_URL + "lookup/shows?imdb=";
+    public static final String SEASONS = "/seasons";
+    public static final String EPISODES = "/episodes";
+    public static final String EPISODE_BY_SEASON = "/episodebynumber?season=";
+    public static final String EPISODE_BY_NUMBER = "&number=";
 
 
     public UrlBuilder(){
@@ -30,7 +35,21 @@ public class UrlBuilder {
         return SHOW_BY_ID + id;
     }
 
+    public String getShowByImdb(int imdb){
+        return SHOW_BY_IMDB + imdb;
+    }
 
+    public String getEpisodeList(int id){
+        return SHOW_BY_ID + id + EPISODES;
+    }
+
+    public String getEpisodeByNumber(int id, int season, int episode){
+        return SHOW_BY_ID + id + EPISODE_BY_SEASON + season + EPISODE_BY_NUMBER + episode;
+    }
+
+    public String getSeasons(int id){
+        return SHOW_BY_ID + id + SEASONS;
+    }
 
 
 
