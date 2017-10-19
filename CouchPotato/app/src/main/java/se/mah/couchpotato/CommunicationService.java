@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,11 +22,13 @@ public class CommunicationService extends Service {
 
     private RunOnThread thread;
     private Buffer<String> buffer;
+    private BackgroundTask task;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         thread = new RunOnThread();
         buffer = new Buffer();
+        task = new BackgroundTask();
         return Service.START_STICKY;
     }
 
@@ -47,7 +50,7 @@ public class CommunicationService extends Service {
     }
 
     public void sendToURL(String url){
-
+        task.execute(url);
     }
 
     private class BackgroundTask extends AsyncTask<String,String,String>{
@@ -72,6 +75,7 @@ public class CommunicationService extends Service {
 
         @Override
         protected void onPostExecute(String result) {
+            Log.d("TESTING","In service, backgroundTask, response from GET-request is: " + result);
             super.onPostExecute(result);
         }
     }
