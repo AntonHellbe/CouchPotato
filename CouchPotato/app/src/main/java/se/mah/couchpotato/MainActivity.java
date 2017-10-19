@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
     private Controller controller;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         controller = new Controller(this);
         //TODO flytta detta till controller
         fragmentHandling(savedInstanceState);
-
     }
 
     //@TODO borde vara i kontrollern
@@ -72,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_FAVORITES),ContainerFragment.TAG_FAVORITES);
             containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_SEARCH),ContainerFragment.TAG_SEARCH);
         }
+    }
+
+    public FragmentInterface getFragmentByTag(String tag) {
+        FragmentManager fm = containerFragment.getChildFragmentManager();
+        return (FragmentInterface) fm.findFragmentByTag(tag);
     }
 
     @Override

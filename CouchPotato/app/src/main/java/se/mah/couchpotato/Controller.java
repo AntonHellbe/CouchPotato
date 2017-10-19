@@ -83,22 +83,35 @@ public class Controller {
         //optional: update favorites
     }
 
-    public void scheduleRecieved(Schedule schedule) {
-        //add schedule to datafragment
-        //update data in feed
+    public void scheduleRecieved(ArrayList<TvShow> shows) {
+        dataFragment.setSchedule(shows);
+        FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
+        feed.updateFragmentData(dataFragment.getSchedule());
     }
 
     public void favoritesReceived(ArrayList<TvShow> shows) {
-        //add favorites to datafragment
-        //update data in favorites
+        shows = new ArrayList<>();
+        shows.add(new TvShow());
+        shows.add(new TvShow());
+        shows.add(new TvShow());
+        shows.add(new TvShow());
+        shows.add(new TvShow());
+        dataFragment.setFavorites(shows);
+        FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+        favorites.updateFragmentData(shows);
     }
 
     public void searchReceived(ArrayList<TvShow> shows) {
-        //update data in search
+        FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+        search.updateFragmentData(shows);
     }
 
     public void recievedData(TvShow tvShow) {
         Log.d("Controller","In recivedData, the jsonObject contains: " + tvShow.toString());
+    }
+
+    public void search(String searchString) {
+        //TODO send search request
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{

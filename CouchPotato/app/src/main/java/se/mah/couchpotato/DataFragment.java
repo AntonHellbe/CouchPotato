@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class DataFragment extends Fragment {
     private boolean serviceExist;
     private String currentTag;
-    private Schedule schedule;
+    private ArrayList<TvShow> schedule;
     private ArrayList<TvShow> favorites;
 
     @Override
@@ -42,11 +42,11 @@ public class DataFragment extends Fragment {
         this.currentTag = currentTag;
     }
 
-    public Schedule getSchedule() {
+    public ArrayList<TvShow> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(ArrayList<TvShow> schedule) {
         this.schedule = schedule;
     }
 
