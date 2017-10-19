@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set>
-    <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false">
+
+    <translate
+        android:FromXDelta=""
+        />
+
+    <objectAnimator
         android:propertyName="x"
         android:valueType="floatType"
-        android:valueFrom="@integer/nWidth"
+        android:valueFrom="100%p"
         android:valueTo="0"
         android:duration="@integer/animationTime"
         />

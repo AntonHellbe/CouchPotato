@@ -4,6 +4,6 @@
         android:propertyName="x"
         android:valueType="floatType"
         android:valueFrom="0"
-        android:valueTo="@integer/nWidth"
+        android:valueTo="100"
         android:duration="@integer/animationTime"/>
 </set>

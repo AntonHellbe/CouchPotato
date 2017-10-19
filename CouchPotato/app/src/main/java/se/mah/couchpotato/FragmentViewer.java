@@ -15,29 +15,30 @@ public class FragmentViewer {
     private FragmentManager fragmentManager;
     private String currentTag;
 
-    public FragmentViewer(FragmentManager fragmentManager,int container) {
+    public FragmentViewer(FragmentManager fragmentManager, int container) {
         this.fragmentManager = fragmentManager;
         this.container = container;
     }
 
-    public void add(Fragment fragment,String tag){
+    public void add(Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if(!fragment.isAdded()){
-            fragmentTransaction.add(container,fragment,tag);
+        if (!fragment.isAdded()) {
+            fragmentTransaction.add(container, fragment, tag);
         }
         fragmentTransaction.hide(fragment);
         fragmentTransaction.commit();
     }
 
-    public String show(String tag){
+    public String show(String tag) {
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         Fragment currentFragment = fragmentManager.findFragmentByTag(currentTag);
-        if (fragment != null){
+        if (fragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if(!tag.equals(currentTag)){
-                fragmentTransaction.setCustomAnimations(R.animator.slide_in_left,R.animator.slide_out_left);
+            if (!tag.equals(currentTag)) {
+                int[] data = getAnimator(tag);
+                fragmentTransaction.setCustomAnimations(data[0],data[1]);
             }
-            if (currentFragment != null){
+            if (currentFragment != null) {
                 fragmentTransaction.hide(currentFragment);
             }
             fragmentTransaction.show(fragment);
@@ -59,5 +60,29 @@ public class FragmentViewer {
         this.currentTag = currentTag;
     }
 
-    private
+    private int[] getAnimator(String tag) {
+        int[] data = new int[2];
+        switch (tag) {
+            case ContainerFragment.TAG_FAVORITES:
+                if (currentTag.equals(ContainerFragment.TAG_FEED)) {
+                    data[0] = R.animator.slide_in_right;
+                    data[1] = R.animator.slide_out_left;
+                } else {
+                    data[0] = R.animator.slide_in_left;
+                    data[1] = R.animator.slide_out_right;
+                }
+                return data;
+            case ContainerFragment.TAG_FEED:
+                data[0] = R.animator.slide_in_left;
+                data[1] = R.animator.slide_out_left;
+                return data;
+            case ContainerFragment.TAG_SEARCH:
+                data[0] = R.animator.slide_in_right;
+                data[1] = R.animator.slide_out_right;
+                return data;
+            default:
+                break;
+        }
+        return null;
+    }
 }
