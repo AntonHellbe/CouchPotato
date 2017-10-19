@@ -26,6 +26,7 @@ public class Controller {
 
     public Controller(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+        
         initializeCommunication();
 
     }
@@ -35,6 +36,7 @@ public class Controller {
 
         // TODO: 19/10/2017 check DataFragment if a connection is active
 
+        mainActivity.startService(intent);
         serviceConnection = new ServiceConnection();
         boolean status = mainActivity.bindService(intent, serviceConnection,0);
         Log.d("Controller","initializeCommunication, connected: " + status);
