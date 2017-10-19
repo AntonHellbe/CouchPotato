@@ -33,25 +33,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
-
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-
+        TvShow tvShow = tvShowArrayList.get(position);
+        holder.tvTitle.setText(tvShow.getName());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        RecyclerView rw;
-        ImageView imPicture;
+        ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
+            ivPoster = itemView.findViewById(R.id.iv_poster);
+            tvTitle = itemView.findViewById(R.id.tv_title);
         }
     }
 }

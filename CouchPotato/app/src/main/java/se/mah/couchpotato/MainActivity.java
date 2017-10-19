@@ -63,14 +63,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             ft.show(feed);
             ft.commit();
         }
-
-        /*Button testknapp = (Button) findViewById(R.id.testknapp);
-        testknapp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO testa service här
-            }
-        });*/
     }
 
     public void showFragment(String TAG) {

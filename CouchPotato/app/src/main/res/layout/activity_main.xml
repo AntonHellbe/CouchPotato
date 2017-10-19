@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="se.mah.couchpotato.MainActivity">
+    tools:context="se.mah.couchpotato.MainActivity"
+    android:background="@color/colorBackground">
 
     <FrameLayout
         android:id="@+id/content"
@@ -21,7 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/colorPrimary"
+        app:itemTextColor="@drawable/bnv_tab_item_foreground_text_color"
+        app:itemIconTint="@color/colorBackground"
         app:menu="@menu/navigation" />
 
 </LinearLayout>
