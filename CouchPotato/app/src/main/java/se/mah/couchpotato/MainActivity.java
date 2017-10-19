@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
     private String currentTag;  //TODO flytta till datafragment
     private Controller controller;
+    private ContainerFragment containerFragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -24,13 +25,16 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_feed:
-                    showFragment("FEED");
+                    //showFragment("FEED");
+                    containerFragment.show(ContainerFragment.TAG_FEED);
                     return true;
                 case R.id.navigation_favorites:
-                    showFragment("FAVORITES");
+                    //showFragment("FAVORITES");
+                    containerFragment.show(ContainerFragment.TAG_FAVORITES);
                     return true;
                 case R.id.navigation_search:
-                    showFragment("SEARCH");
+                    //showFragment("SEARCH");
+                    containerFragment.show(ContainerFragment.TAG_SEARCH);
                     return true;
             }
             return false;
@@ -47,22 +51,25 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
         controller = new Controller(this);
         //TODO flytta detta till controller
+        fragmentHandling(savedInstanceState);
 
-        if(savedInstanceState==null) {
-            FragmentFeed feed = new FragmentFeed();
-            FragmentFavorites favorites = new FragmentFavorites();
-            FragmentSearch search = new FragmentSearch();
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.add(R.id.content, feed, "FEED");
-            ft.add(R.id.content, favorites, "FAVORITES");
-            ft.add(R.id.content, search, "SEARCH");
+    }
 
-            ft.hide(feed);
-            ft.hide(favorites);
-            ft.hide(search);
-            ft.show(feed);
-            ft.commit();
+    //@TODO borde vara i kontrollern
+    public void fragmentHandling(Bundle bundle){
+
+        //Should be child fragment manager in controller
+        FragmentManager fml = getFragmentManager();
+        containerFragment = (ContainerFragment) fml.findFragmentById(R.id.container_fragment);
+        if (bundle == null) {
+            containerFragment.add(new FragmentFavorites(), ContainerFragment.TAG_FAVORITES);
+            containerFragment.add(new FragmentFeed(), ContainerFragment.TAG_FEED);
+            containerFragment.add(new FragmentSearch(), ContainerFragment.TAG_SEARCH);
+            containerFragment.setCurrentTag(ContainerFragment.TAG_FEED);
+        } else {
+            containerFragment.add(fml.findFragmentByTag(ContainerFragment.TAG_FEED),ContainerFragment.TAG_FEED);
+            containerFragment.add(fml.findFragmentByTag(ContainerFragment.TAG_FAVORITES),ContainerFragment.TAG_FAVORITES);
+            containerFragment.add(fml.findFragmentByTag(ContainerFragment.TAG_SEARCH),ContainerFragment.TAG_SEARCH);
         }
     }
 
@@ -78,20 +85,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         super.onDestroy();
     }
 
-    public void showFragment(String TAG) {
-        FragmentManager manager = getFragmentManager();
-        Fragment fragment = manager.findFragmentByTag(TAG);
-        Fragment currentFragment = manager.findFragmentByTag(currentTag);
-        if(fragment!=null) {
-            FragmentTransaction ft = manager.beginTransaction();
-            if(currentFragment!=null) {
-                ft.hide(currentFragment);
-            }
-            ft.show(fragment);
-            ft.commit();
-            currentTag = TAG;
-        }
-    }
 
     @Override
     public Controller getController() {

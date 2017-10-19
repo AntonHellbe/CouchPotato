@@ -18,10 +18,7 @@ public class Controller {
     private CommunicationService communicationService;
     private ServiceConnection serviceConnection;
     private DataFragment dataFragment;
-
-
-    private boolean bound;
-
+    private boolean bound, connected;
 
     public Controller(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
