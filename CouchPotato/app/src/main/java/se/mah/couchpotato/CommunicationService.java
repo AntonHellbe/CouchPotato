@@ -25,30 +25,25 @@ import java.net.URL;
 
 public class CommunicationService extends Service {
 
-    private RunOnThread thread;
-    private Buffer<JSONObject> buffer;
+    private Controller controller;
     private BackgroundTask task;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        thread = new RunOnThread();
-        buffer = new Buffer();
         task = new BackgroundTask();
         return Service.START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d("CommunicationService","In onBind");
         return new LocalService();
-    }
-
-    public void run() {
-        thread.start();
     }
 
     public class LocalService extends Binder {
 
         public CommunicationService getService() {
+            Log.d("CommunicationService","In getService");
             return CommunicationService.this;
         }
 
@@ -113,7 +108,7 @@ public class CommunicationService extends Service {
         protected void onPostExecute(JSONObject jsonObject) {
             Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + jsonObject.toString());
             //@TODO fixa så att det inte kan komma ett null json objekt?
-            buffer.put(jsonObject);
+            controller.recievedData(jsonObject);
             super.onPostExecute(jsonObject);
         }
     }
