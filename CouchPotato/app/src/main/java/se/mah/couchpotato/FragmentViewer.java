@@ -34,6 +34,9 @@ public class FragmentViewer {
         Fragment currentFragment = fragmentManager.findFragmentByTag(currentTag);
         if (fragment != null){
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if(!tag.equals(currentTag)){
+                fragmentTransaction.setCustomAnimations(R.animator.slide_in_left,R.animator.slide_out_left);
+            }
             if (currentFragment != null){
                 fragmentTransaction.hide(currentFragment);
             }
@@ -56,4 +59,5 @@ public class FragmentViewer {
         this.currentTag = currentTag;
     }
 
+    private
 }
