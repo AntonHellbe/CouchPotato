@@ -43,20 +43,7 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         adapter = new RecyclerViewAdapter();
         recyclerViewShows.setAdapter(adapter);
-
-        
-
-        AnimationSet set = new AnimationSet(true);
-        TranslateAnimation animation = new TranslateAnimation(0, 0, 100, 0);
-        animation.setDuration(100);
-        set.addAnimation(animation);
-
-        LayoutAnimationController animationController = new LayoutAnimationController(set, R.integer.animationTime);
-
-        recyclerViewShows.setLayoutAnimation(animationController);
-
-
-
+        recyclerViewShows.setItemAnimator(new RecyclerViewSlideUpItemAnimator());
     }
 
     @Override
