@@ -1,0 +1,4 @@
+git add -A
+git commit -m "helllooo"
+git pull --rebase
+git push
