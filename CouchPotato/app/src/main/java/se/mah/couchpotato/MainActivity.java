@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
-    private TextView mTextMessage;
     private String currentTag;  //TODO flytta till datafragment
+    private Controller controller;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -78,5 +78,10 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             ft.commit();
             currentTag = TAG;
         }
+    }
+
+    @Override
+    public Controller getController() {
+        return controller;
     }
 }
