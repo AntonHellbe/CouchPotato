@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        controller.onDestroy();
+        super.onDestroy();
+    }
+
     public void showFragment(String TAG) {
         FragmentManager manager = getFragmentManager();
         Fragment fragment = manager.findFragmentByTag(TAG);

@@ -29,15 +29,15 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
      * Just for testing if the communicationService is working.
      * */
     private void temporaryForTesting(View rootView) {
-        final Controller controller = new Controller();
+        //final Controller controller = new Controller();
         testButton = (Button) rootView.findViewById(R.id.testknapp);
 
-        testButton.setOnClickListener(new View.OnClickListener() {
+        /*testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 controller.sendTest();
             }
-        });
+        });*/
     }
 
     @Override
