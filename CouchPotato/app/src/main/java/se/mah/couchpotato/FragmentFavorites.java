@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -43,7 +44,14 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         adapter = new RecyclerViewAdapter();
         recyclerViewShows.setAdapter(adapter);
-        recyclerViewShows.setItemAnimator(new RecyclerViewSlideUpItemAnimator());
+        AnimationSet set = new AnimationSet(true);
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(200);
+        set.addAnimation(animation);
+        LayoutAnimationController AnimationController = new LayoutAnimationController(set, 0.5f);
+        recyclerViewShows.setLayoutAnimation(AnimationController);
+
+
     }
 
     @Override
