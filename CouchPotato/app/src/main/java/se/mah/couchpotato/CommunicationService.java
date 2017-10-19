@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,17 +68,18 @@ public class CommunicationService extends Service {
             String response = "";
             URL url;
             JSONObject jsonObject = null;
+            JSONArray jsonArray = null;
             HttpURLConnection connection = null;
             BufferedReader br = null;
             InputStream inStream = null;
             try {
-                url = new URL("http://api.tvmaze.com/shows/1");
+                url = new URL("http://api.tvmaze.com/search/shows?q=girls");
                 Log.d("CommunicationService", "in doInBackground, message to send: " + url);
                 connection = (HttpURLConnection) url.openConnection();
                 inStream = new BufferedInputStream(connection.getInputStream());
                 br = new BufferedReader((new InputStreamReader(inStream)));
                 response = br.readLine();
-                jsonObject = new JSONObject(response);
+                jsonArray = new JSONArray(response);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -107,13 +109,19 @@ public class CommunicationService extends Service {
                     }
                 }
             }
+
             TvShow newShow = null;
-            try {
-                newShow = new ObjectMapper().readValue(response, TvShow.class);
-                Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
-            }catch(IOException e){
-                Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    jsonObject = jsonArray.getJSONObject(i);
+                    newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
+                    Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
+                }catch(Exception e){
+                    Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
+                }
+
             }
+
 
             return newShow;
         }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -37,32 +38,44 @@ public class CustomTvShowDeserializer extends StdDeserializer<TvShow> {
     public TvShow deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectCodec codec = p.getCodec();
         JsonNode rootNode = codec.readTree(p);
-        Log.d("CUSTOMTVSHOWDESERIALIZ", rootNode.toString());
 
+        Log.d("CUSTOMTVSHOWDESERIALIZ", rootNode.toString());
         if(rootNode.get(SHOW) != null){
             rootNode = rootNode.get(SHOW);
         }
-
+        int id;
+        String language, officalString, name, genres;
+        String[] pictureUrls, allgenres;
         TvShow newShow = new TvShow();
         try{
-            int id = (int) rootNode.get(ID).numberValue();
-            Log.d("ID", "" + id);
-            String language = rootNode.get(LANGUAGE).toString();
-            String officalString = rootNode.get(OFFICIAL_SITE).toString();
-            String name = rootNode.get(NAME).toString();
-            String[] pictureUrls = new String[2];
-            pictureUrls[0] = rootNode.get(IMAGE).get(ORIGINAL).toString();
-            pictureUrls[1] = rootNode.get(IMAGE).get(MEDIUM).toString();
-            String genres = rootNode.get(GENRES).toString().replace("[", "").replace("]", "");
-            String[] allgenres = genres.split(",");
+
+            id = (int) rootNode.get(ID).numberValue();
+            name = rootNode.get(NAME).toString();
+
+            if(rootNode.has(LANGUAGE)) {
+                language = rootNode.get(LANGUAGE).toString();
+                newShow.setLanguage(language);
+            }
+            if(rootNode.has(OFFICIAL_SITE)) {
+                officalString = rootNode.get(OFFICIAL_SITE).toString();
+                newShow.setOfficalSite(officalString);
+            }
+
+            if (rootNode.get(IMAGE).size() != 0) {
+                pictureUrls = new String[2];
+                rootNode.get(IMAGE).get(ORIGINAL).toString();
+                rootNode.get(IMAGE).get(MEDIUM).toString();
+                newShow.setPictureUrl(pictureUrls);
+            }
+
+            if(rootNode.get(GENRES).size() != 0) {
+                genres = rootNode.get(GENRES).toString().replace("[", "").replace("]", "");
+                allgenres = genres.split(",");
+                newShow.setGenres(allgenres);
+            }
 
             newShow.setName(name);
-            newShow.setGenres(allgenres);
-            newShow.setLanguage(language);
             newShow.setId(id);
-            newShow.setOfficalSite(officalString);
-            newShow.setPictureUrl(pictureUrls);
-
 
 
         }catch(Exception e){
