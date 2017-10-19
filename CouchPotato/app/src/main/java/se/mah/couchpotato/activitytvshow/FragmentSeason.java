@@ -1,0 +1,59 @@
+package se.mah.couchpotato.activitytvshow;
+
+import android.support.v4.app.Fragment;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import se.mah.couchpotato.Episode;
+import se.mah.couchpotato.R;
+
+/**
+ * Created by Gustaf Bohlin on 19/10/2017.
+ */
+
+public class FragmentSeason extends Fragment {
+
+    private int season = 0;
+
+    static FragmentSeason newInstance(int season) {
+        FragmentSeason fragment = new FragmentSeason();
+        Bundle args = new Bundle();
+        args.putInt("season", season);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        season = getArguments() != null ? getArguments().getInt("num") : 0;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_season, container, false);
+        initializeComponent(rootView);
+        return rootView;
+    }
+
+    private void initializeComponent(View rootView) {
+        RecyclerView rvSeason = (RecyclerView) rootView;
+        ArrayList<Episode> episodes = new ArrayList<>();
+        for (int i = 0; i < season; i++) {
+            episodes.add(new Episode());
+        }
+        RecyclerViewSeasonAdapter adapter = new RecyclerViewSeasonAdapter(episodes);
+
+        rvSeason.setLayoutManager(new LinearLayoutManager(getActivity()));  //this might fail
+        rvSeason.setAdapter(adapter);
+    }
+}
