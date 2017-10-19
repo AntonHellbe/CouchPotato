@@ -32,12 +32,13 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         //final Controller controller = new Controller();
         testButton = (Button) rootView.findViewById(R.id.testknapp);
 
-        /*testButton.setOnClickListener(new View.OnClickListener() {
+        testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.sendTest();
+                ((MainActivity) getActivity()).getController().sendTest();
             }
-        });*/
+        });
+
     }
 
     @Override

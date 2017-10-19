@@ -7,6 +7,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -101,6 +103,15 @@ public class CommunicationService extends Service {
                     }
                 }
             }
+            TvShow newShow = null;
+            try {
+                newShow = new ObjectMapper().readValue(response, TvShow.class);
+                Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
+            }catch(IOException e){
+                Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
+            }
+
+//            return newShow;
             return jsonObject;
         }
 

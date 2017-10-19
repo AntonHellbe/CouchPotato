@@ -30,6 +30,11 @@ public class TvShow  {
 
     }
 
+    @Override
+    public String toString() {
+        return this.id + " " + this.name + " " + this.language + " " + this.officalSite;
+    }
+
 
     public String[] getGenres() {
         return genres;
