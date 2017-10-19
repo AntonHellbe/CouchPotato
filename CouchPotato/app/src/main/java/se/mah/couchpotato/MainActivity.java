@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
-    private String currentTag;  //TODO flytta till datafragment
     private Controller controller;
     private ContainerFragment containerFragment;
 
@@ -25,15 +24,12 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_feed:
-                    //showFragment("FEED");
                     containerFragment.show(ContainerFragment.TAG_FEED);
                     return true;
                 case R.id.navigation_favorites:
-                    //showFragment("FAVORITES");
                     containerFragment.show(ContainerFragment.TAG_FAVORITES);
                     return true;
                 case R.id.navigation_search:
-                    //showFragment("SEARCH");
                     containerFragment.show(ContainerFragment.TAG_SEARCH);
                     return true;
             }
@@ -64,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
         //This schould be in The Main Controller!
         FragmentManager fm = containerFragment.getChildFragmentManager();
+
+        //@TODO Should not be in bundle, move to dataFragment
         if (bundle == null) {
             containerFragment.add(new FragmentFavorites(), ContainerFragment.TAG_FAVORITES);
             containerFragment.add(new FragmentFeed(), ContainerFragment.TAG_FEED);
