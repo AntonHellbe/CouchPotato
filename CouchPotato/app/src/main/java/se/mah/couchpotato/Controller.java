@@ -77,6 +77,12 @@ public class Controller {
         communicationService.sendToURL("test");
     }
 
+    //TODO kan också vara en string id, vilket som är smidigast
+    public void favoriteAdded(TvShow show) {
+        //add tvshow to favorites or retrieve all favorites again (solves the update situation)
+        //optional: update favorites
+    }
+
     public void scheduleRecieved(Schedule schedule) {
         //add schedule to datafragment
         //update data in feed
