@@ -3,6 +3,6 @@
     <integer name="width">980</integer>
     <integer name="nWidth">-980</integer>
     <integer name="height">1920</integer>
-    <integer name="animationTime">300</integer>
+    <integer name="animationTime">200</integer>
 
 </resources>
