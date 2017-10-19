@@ -42,6 +42,10 @@ public class CommunicationService extends Service {
         return new LocalService();
     }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
     public class LocalService extends Binder {
 
         public CommunicationService getService() {

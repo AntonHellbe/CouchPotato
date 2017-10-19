@@ -1,5 +1,6 @@
 package se.mah.couchpotato;
 
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.IBinder;
@@ -16,30 +17,40 @@ public class Controller {
     private MainActivity mainActivity;
     private CommunicationService communicationService;
     private ServiceConnection serviceConnection;
+    private DataFragment dataFragment;
 
 
-    private boolean bound, connected;
-    /**
-     * Temporary for testing
-     * */
+    private boolean bound;
 
 
     public Controller(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        
+        initializeDataFragment();
         initializeCommunication();
+    }
 
+    private void initializeDataFragment() {
+        FragmentManager fm = mainActivity.getFragmentManager();
+        dataFragment = (DataFragment) fm.findFragmentByTag("data");
+        if(dataFragment == null){
+            dataFragment = new DataFragment();
+            fm.beginTransaction().add(dataFragment, "data").commit();
+        }
     }
 
     private void initializeCommunication() {
         Intent intent = new Intent(mainActivity,CommunicationService.class);
-
-        // TODO: 19/10/2017 check DataFragment if a connection is active
-
+        /*
+        if (!dataFragment.getServiceExist()){
+            mainActivity.startService(intent);
+            dataFragment.setServiceExist(true);
+        }*/
         mainActivity.startService(intent);
         serviceConnection = new ServiceConnection();
         boolean status = mainActivity.bindService(intent, serviceConnection,0);
         Log.d("Controller","initializeCommunication, connected: " + status);
+        if (communicationService != null){communicationService.setController(this);}
+        else Log.d("Controller","CS is NULL!!!!!!!");
     }
 
     public void onDestroy(){
@@ -54,6 +65,7 @@ public class Controller {
     }
 
     public void sendTest() {
+        communicationService.setController(this);
         communicationService.sendToURL("test");
     }
 
