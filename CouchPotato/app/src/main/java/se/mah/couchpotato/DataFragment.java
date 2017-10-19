@@ -9,22 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DataFragment extends Fragment {
     private boolean serviceExist;
+    private String currentTag;
+    private Schedule schedule;
+    private ArrayList<TvShow> favorites;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        setRetainInstance(true);
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     public void setServiceExist(boolean serviceExist) {
@@ -33,5 +32,29 @@ public class DataFragment extends Fragment {
 
     public boolean getServiceExist() {
         return serviceExist;
+    }
+
+    public String getCurrentTag() {
+        return currentTag;
+    }
+
+    public void setCurrentTag(String currentTag) {
+        this.currentTag = currentTag;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public ArrayList<TvShow> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(ArrayList<TvShow> favorites) {
+        this.favorites = favorites;
     }
 }
