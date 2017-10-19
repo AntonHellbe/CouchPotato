@@ -1,12 +1,15 @@
 package se.mah.couchpotato;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import se.mah.couchpotato.activitytvshow.ActivityTvShow;
 
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
@@ -38,7 +41,15 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
                 ((MainActivity) getActivity()).getController().sendTest();
             }
         });
+        Button testButton2 = (Button) rootView.findViewById(R.id.testknapp2);
 
+        testButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), ActivityTvShow.class);
+                ((MainActivity) getActivity()).startActivity(i);
+            }
+        });
     }
 
     @Override

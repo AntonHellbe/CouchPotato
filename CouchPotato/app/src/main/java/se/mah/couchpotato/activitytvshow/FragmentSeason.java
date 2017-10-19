@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import se.mah.couchpotato.R;
 
 public class FragmentSeason extends Fragment {
 
-    private int season = 0;
+    private int season;
 
     static FragmentSeason newInstance(int season) {
         FragmentSeason fragment = new FragmentSeason();
@@ -34,7 +35,7 @@ public class FragmentSeason extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        season = getArguments() != null ? getArguments().getInt("num") : 0;
+        season = getArguments() != null ? getArguments().getInt("season") : 0;
     }
 
     @Nullable
@@ -42,6 +43,7 @@ public class FragmentSeason extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_season, container, false);
         initializeComponent(rootView);
+        Log.v("FRAGMENTSEASON", "Opened season " + String.valueOf(season));
         return rootView;
     }
 
@@ -52,7 +54,7 @@ public class FragmentSeason extends Fragment {
             episodes.add(new Episode());
         }
         RecyclerViewSeasonAdapter adapter = new RecyclerViewSeasonAdapter(episodes);
-
+        rvSeason.addItemDecoration(new RecyclerViewSpacing(10));
         rvSeason.setLayoutManager(new LinearLayoutManager(getActivity()));  //this might fail
         rvSeason.setAdapter(adapter);
     }

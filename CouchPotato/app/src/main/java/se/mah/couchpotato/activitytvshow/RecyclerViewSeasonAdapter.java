@@ -36,7 +36,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public RecyclerViewSeasonAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_season_item, parent, false);
         RecyclerViewSeasonAdapter.ViewHolder vh = new RecyclerViewSeasonAdapter.ViewHolder(v);
         return vh;
     }

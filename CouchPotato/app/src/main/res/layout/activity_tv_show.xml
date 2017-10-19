@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="top"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="se.mah.couchpotato.activitytvshow.ActivityTvShow">
+    tools:context="se.mah.couchpotato.activitytvshow.ActivityTvShow" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/black">
 
@@ -18,8 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@android:drawable/sym_def_app_icon" />
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/sym_def_app_icon"
+            android:maxHeight="100dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,14 +70,17 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tl_seasons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-        </android.support.design.widget.TabLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:tabMode="fixed"
+            app:tabTextColor="@drawable/bnv_tab_item_foreground_text_color" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

@@ -26,4 +26,9 @@ public class SeasonViewPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return seasons;
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return "Season " + String.valueOf(position + 1);
+    }
 }
