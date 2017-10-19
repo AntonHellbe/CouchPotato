@@ -7,9 +7,14 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,46 +42,78 @@ public class CommunicationService extends Service {
         return new LocalService();
     }
 
-    public void run(){
+    public void run() {
         thread.start();
     }
 
     public class LocalService extends Binder {
 
-        public CommunicationService getService(){
+        public CommunicationService getService() {
             return CommunicationService.this;
         }
 
     }
 
-    public void sendToURL(String url){
+    public void sendToURL(String url) {
+        task = new BackgroundTask();
         task.execute(url);
     }
 
-    private class BackgroundTask extends AsyncTask<String,String,String>{
+    private class BackgroundTask extends AsyncTask<String, String, JSONObject> {
 
         @Override
-        protected String doInBackground(String... params) {
+        protected JSONObject doInBackground(String... params) {
             String response = "";
             URL url;
+            JSONObject jsonObject = null;
+            HttpURLConnection connection = null;
+            BufferedReader br = null;
+            InputStream inStream = null;
             try {
-                url = new URL("http://api.tvmaze.com/singlesearch/shows?q=girls");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                InputStream inStream = new BufferedInputStream(connection.getInputStream());
-                response = inStream.toString();
+                url = new URL("http://api.tvmaze.com/shows/1");
+                Log.d("CommunicationService", "in doInBackground, message to send: " + url);
+                connection = (HttpURLConnection) url.openConnection();
+                inStream = new BufferedInputStream(connection.getInputStream());
+                br = new BufferedReader((new InputStreamReader(inStream)));
+                response = br.readLine();
+                jsonObject = new JSONObject(response);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                if (br != null) {
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (inStream != null) {
+                    try {
+                        inStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.disconnect();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-
-            return response;
+            return jsonObject;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            Log.d("TESTING","In service, backgroundTask, response from GET-request is: " + result);
-            super.onPostExecute(result);
+        protected void onPostExecute(JSONObject jsonObject) {
+            Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + jsonObject.toString());
+            //@TODO fixa så att det inte kan komma ett null json objekt?
+            super.onPostExecute(jsonObject);
         }
     }
 
