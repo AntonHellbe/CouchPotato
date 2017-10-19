@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -28,7 +29,6 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
 
     private RecyclerView recyclerViewShows;
     private RecyclerViewAdapter adapter;
-    private EditText etSearch;
 
     @Nullable
     @Override
@@ -42,16 +42,8 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
         recyclerViewShows = (RecyclerView) rootView.findViewById(R.id.rv_favorites);
         recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10));
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new RecyclerViewAdapter();
+        adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
-        AnimationSet set = new AnimationSet(true);
-        Animation animation = new AlphaAnimation(0.0f, 1.0f);
-        animation.setDuration(200);
-        set.addAnimation(animation);
-        LayoutAnimationController AnimationController = new LayoutAnimationController(set, 0.5f);
-        recyclerViewShows.setLayoutAnimation(AnimationController);
-
-
     }
 
     @Override

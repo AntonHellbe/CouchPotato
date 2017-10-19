@@ -3,6 +3,7 @@ package se.mah.couchpotato;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
@@ -38,7 +39,7 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
         recyclerViewShows = (RecyclerView) rootView.findViewById(R.id.rv_search);
         recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10));
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new RecyclerViewAdapter();
+        adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
 
         etSearch = (EditText) rootView.findViewById(R.id.et_search);

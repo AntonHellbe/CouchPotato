@@ -1,9 +1,12 @@
 package se.mah.couchpotato;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,13 +19,15 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<TvShow> tvShowArrayList;
+    private AppCompatActivity activity;
 
-    public void setTvShowArrayList(ArrayList<TvShow> tvShowList){
+    public void setTvShowArrayList(ArrayList<TvShow> tvShowList) {
         this.tvShowArrayList = tvShowList;
         notifyDataSetChanged();
     }
 
-    public RecyclerViewAdapter(){
+    public RecyclerViewAdapter(AppCompatActivity activity) {
+        this.activity = activity;
         tvShowArrayList = new ArrayList<>(); // To avoid crash (List not null)
     }
 
@@ -42,9 +47,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
         TvShow tvShow = tvShowArrayList.get(position);
         holder.tvTitle.setText(tvShow.getName());
+        if (!holder.animated) {
+            setAnimation(holder.itemView, position);
+            holder.animated = true;
+        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    private void setAnimation(View viewToAnimate, int position) {
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_up);
+        animation.setStartOffset(position * 10);
+        viewToAnimate.startAnimation(animation);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        boolean animated = false;
         ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
 

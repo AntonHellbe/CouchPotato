@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         recyclerViewShows = (RecyclerView) rootView.findViewById(R.id.rv_feed);
         recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10));
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new RecyclerViewAdapter();
+        adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
     }
 
