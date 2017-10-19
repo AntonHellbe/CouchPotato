@@ -8,6 +8,8 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by robin on 19/10/2017.
  */
@@ -73,6 +75,20 @@ public class Controller {
     public void sendTest() {
         //communicationService.setController(this);
         communicationService.sendToURL("test");
+    }
+
+    public void scheduleRecieved(Schedule schedule) {
+        //add schedule to datafragment
+        //update data in feed
+    }
+
+    public void favoritesReceived(ArrayList<TvShow> shows) {
+        //add favorites to datafragment
+        //update data in favorites
+    }
+
+    public void searchReceived(ArrayList<TvShow> shows) {
+        //update data in search
     }
 
     public void recievedData(TvShow tvShow) {
