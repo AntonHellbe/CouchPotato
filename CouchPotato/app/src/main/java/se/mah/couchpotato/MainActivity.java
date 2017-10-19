@@ -67,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     }
 
     @Override
+    protected void onPause() {
+        controller.onPause();
+        super.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         controller.onDestroy();
         super.onDestroy();

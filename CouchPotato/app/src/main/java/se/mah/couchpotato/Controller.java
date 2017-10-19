@@ -53,6 +53,12 @@ public class Controller {
         else Log.d("Controller","CS is NULL!!!!!!!");
     }
 
+    public void onPause() {
+        if(mainActivity.isFinishing()){
+            mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
+        }
+    }
+
     public void onDestroy(){
         if(bound){
             if(mainActivity.isFinishing()){
