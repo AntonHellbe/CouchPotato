@@ -58,18 +58,21 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     //@TODO borde vara i kontrollern
     public void fragmentHandling(Bundle bundle){
 
-        //Should be child fragment manager in controller
+        //This schould be in Main activity!
         FragmentManager fml = getFragmentManager();
         containerFragment = (ContainerFragment) fml.findFragmentById(R.id.container_fragment);
+
+        //This schould be in The Main Controller!
+        FragmentManager fm = containerFragment.getChildFragmentManager();
         if (bundle == null) {
             containerFragment.add(new FragmentFavorites(), ContainerFragment.TAG_FAVORITES);
             containerFragment.add(new FragmentFeed(), ContainerFragment.TAG_FEED);
             containerFragment.add(new FragmentSearch(), ContainerFragment.TAG_SEARCH);
             containerFragment.setCurrentTag(ContainerFragment.TAG_FEED);
         } else {
-            containerFragment.add(fml.findFragmentByTag(ContainerFragment.TAG_FEED),ContainerFragment.TAG_FEED);
-            containerFragment.add(fml.findFragmentByTag(ContainerFragment.TAG_FAVORITES),ContainerFragment.TAG_FAVORITES);
-            containerFragment.add(fml.findFragmentByTag(ContainerFragment.TAG_SEARCH),ContainerFragment.TAG_SEARCH);
+            containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_FEED),ContainerFragment.TAG_FEED);
+            containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_FAVORITES),ContainerFragment.TAG_FAVORITES);
+            containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_SEARCH),ContainerFragment.TAG_SEARCH);
         }
     }
 
