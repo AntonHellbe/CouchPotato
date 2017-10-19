@@ -78,8 +78,8 @@ public class Controller {
         communicationService.sendToURL("test");
     }
 
-    public void recievedData(JSONObject jsonObject) {
-        Log.d("Controller","In recivedData, the jsonObject contains: " + jsonObject.toString());
+    public void recievedData(TvShow tvShow) {
+        Log.d("Controller","In recivedData, the jsonObject contains: " + tvShow.toString());
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{

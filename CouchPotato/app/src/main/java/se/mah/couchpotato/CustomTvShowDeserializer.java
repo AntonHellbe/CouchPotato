@@ -8,8 +8,6 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -21,6 +19,16 @@ import java.util.Iterator;
 
 public class CustomTvShowDeserializer extends StdDeserializer<TvShow> {
 
+    public static final String NAME = "name";
+    public static final String LANGUAGE = "language";
+    public static final String OFFICIAL_SITE = "officialSite";
+    public static final String IMAGE = "image";
+    public static final String ORIGINAL = "original";
+    public static final String MEDIUM = "medium";
+    public static final String GENRES = "genres";
+    public static final String ID = "id";
+    public static final String SHOW = "show";
+
     public CustomTvShowDeserializer(){
         this(null);
     }
@@ -29,45 +37,31 @@ public class CustomTvShowDeserializer extends StdDeserializer<TvShow> {
     public TvShow deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ObjectCodec codec = p.getCodec();
         JsonNode rootNode = codec.readTree(p);
+        Log.d("CUSTOMTVSHOWDESERIALIZ", rootNode.toString());
+
+        if(rootNode.get(SHOW) != null){
+            rootNode = rootNode.get(SHOW);
+        }
 
         TvShow newShow = new TvShow();
         try{
-            JsonNode node = rootNode.get("show");
-            String title = (String) node.get("title").toString();
-            int id = (int) node.get("id").numberValue();
-            String language = (String) node.get("language").toString();
-            String officalString = (String) node.get("officalSite").toString();
-            String name = (String) node.get("name").toString();
-            ArrayNode arr = (ArrayNode) node.get("images");
-            String[] pictureUrl = new String[2];
-            Iterator<JsonNode> imageIterator = arr.elements();
-            int i = 0;
-            while(imageIterator.hasNext()){
-                JsonNode imageNode = imageIterator.next();
-                if(i % 2 == 0)
-                    pictureUrl[i] =  imageNode.get("medium").toString();
-                else
-                    pictureUrl[i] = imageNode.get("original").toString();
-
-                i++;
-            }
-            i = 0;
-
-            ArrayNode temp = (ArrayNode) node.get("genres");
-            String[] genres = new String[temp.size()];
-            Iterator<JsonNode> genresIterator = arr.elements();
-            while(genresIterator.hasNext()){
-                JsonNode genre = genresIterator.next();
-                genres[i] = genre.toString();
-                i++;
-            }
+            int id = (int) rootNode.get(ID).numberValue();
+            Log.d("ID", "" + id);
+            String language = rootNode.get(LANGUAGE).toString();
+            String officalString = rootNode.get(OFFICIAL_SITE).toString();
+            String name = rootNode.get(NAME).toString();
+            String[] pictureUrls = new String[2];
+            pictureUrls[0] = rootNode.get(IMAGE).get(ORIGINAL).toString();
+            pictureUrls[1] = rootNode.get(IMAGE).get(MEDIUM).toString();
+            String genres = rootNode.get(GENRES).toString().replace("[", "").replace("]", "");
+            String[] allgenres = genres.split(",");
 
             newShow.setName(name);
-            newShow.setGenres(genres);
+            newShow.setGenres(allgenres);
             newShow.setLanguage(language);
             newShow.setId(id);
             newShow.setOfficalSite(officalString);
-            newShow.setPictureUrl(pictureUrl);
+            newShow.setPictureUrl(pictureUrls);
 
 
 

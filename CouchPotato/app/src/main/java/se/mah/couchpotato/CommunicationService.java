@@ -60,10 +60,10 @@ public class CommunicationService extends Service {
         task.execute(url);
     }
 
-    private class BackgroundTask extends AsyncTask<String, String, JSONObject> {
+    private class BackgroundTask extends AsyncTask<String, String, TvShow> {
 
         @Override
-        protected JSONObject doInBackground(String... params) {
+        protected TvShow doInBackground(String... params) {
             String response = "";
             URL url;
             JSONObject jsonObject = null;
@@ -115,16 +115,15 @@ public class CommunicationService extends Service {
                 Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
             }
 
-//            return newShow;
-            return jsonObject;
+            return newShow;
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + jsonObject.toString());
+        protected void onPostExecute(TvShow tvShow) {
+            Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + tvShow.toString());
             //@TODO fixa så att det inte kan komma ett null json objekt?
-            controller.recievedData(jsonObject);
-            super.onPostExecute(jsonObject);
+            controller.recievedData(tvShow);
+            super.onPostExecute(tvShow);
         }
     }
 
