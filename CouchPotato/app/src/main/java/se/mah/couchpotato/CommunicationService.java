@@ -26,7 +26,7 @@ import java.net.URL;
 public class CommunicationService extends Service {
 
     private RunOnThread thread;
-    private Buffer<String> buffer;
+    private Buffer<JSONObject> buffer;
     private BackgroundTask task;
 
     @Override
@@ -113,6 +113,7 @@ public class CommunicationService extends Service {
         protected void onPostExecute(JSONObject jsonObject) {
             Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + jsonObject.toString());
             //@TODO fixa så att det inte kan komma ett null json objekt?
+            buffer.put(jsonObject);
             super.onPostExecute(jsonObject);
         }
     }
