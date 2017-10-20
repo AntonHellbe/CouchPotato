@@ -223,6 +223,16 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute (ArrayList < TvShow > tvShows) {
                 activity.getController().searchReceived(tvShows);
+                for (int i = 0; i < tvShows.size(); i++) {
+                    try {
+                        TvShow t = tvShows.get(i);
+                        ImageLoader imLoader = new ImageLoader(i == tvShows.size() - 1);
+//                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));  //Full size image
+                        imLoader.execute(t.getShow().getImage().getMedium(), String.valueOf(t.getShow().getId()));  //small size image
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 super.onPostExecute(tvShows);
             }
 

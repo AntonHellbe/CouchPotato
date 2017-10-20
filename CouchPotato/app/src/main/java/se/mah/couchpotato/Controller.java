@@ -145,6 +145,7 @@ public class Controller {
             Log.d("CONTROLLERSEARCH", t.getShow().getName() + " " + t.getShow().getRuntime() + " " + t.getShow().getUrl() + " " + t.getShow().getId());
         }
         FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+        dataFragment.setSearchResult(shows);
         search.updateFragmentData(shows, false);
     }
 
@@ -154,6 +155,8 @@ public class Controller {
         FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
         feed.updateFragmentData(dataFragment.getSchedule(), true);
 //        favorites.updateFragmentData(new ArrayList<>(dataFragment.getFavorites().values()));  //null
+        if (dataFragment.getSearchResult() != null)
+            search.updateFragmentData(dataFragment.getSearchResult(), true);
     }
 
     public void search(String searchString) {
@@ -172,6 +175,16 @@ public class Controller {
         }
 //        if (dataFragment.getFavorites() == null)
 //            communicationService.sendAddFavorite("");
+    }
+
+    public void onSearchTextChanged(String searchString) {
+        dataFragment.setSearchResult(null);
+        if (searchString.length() > 3) {
+            search(searchString);
+        } else {
+            FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+            search.updateFragmentData(new ArrayList<TvShow>(), false);
+        }
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{

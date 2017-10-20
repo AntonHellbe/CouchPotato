@@ -69,10 +69,7 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String searchString = charSequence.toString();
-            if (searchString.length() > 3) {
-                getController().search(searchString);
-            }
+            getController().onSearchTextChanged(charSequence.toString());
         }
 
         @Override

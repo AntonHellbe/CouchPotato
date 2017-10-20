@@ -21,6 +21,7 @@ public class DataFragment extends Fragment {
     private boolean serviceExist;
     private String currentTag;
     private ArrayList<TvShow> schedule;
+    private ArrayList<TvShow> searchResult;
     private HashMap<String, TvShow> favorites;
     private boolean allowNavigation = true;
     private ArrayDeque<String> searhQueue = new ArrayDeque<>();
@@ -86,5 +87,13 @@ public class DataFragment extends Fragment {
 
     public Bitmap getPicture(String id){
         return pictureMap.get(id);
+    }
+
+    public ArrayList<TvShow> getSearchResult() {
+        return searchResult;
+    }
+
+    public void setSearchResult(ArrayList<TvShow> searchResult) {
+        this.searchResult = searchResult;
     }
 }
