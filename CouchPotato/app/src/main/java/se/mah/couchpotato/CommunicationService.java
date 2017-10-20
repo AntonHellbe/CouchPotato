@@ -7,9 +7,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
@@ -25,9 +22,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Robin Johnsson & Jonatan Fridsten
@@ -190,11 +184,11 @@ public class CommunicationService extends Service {
             ObjectMapper mapper = new ObjectMapper();
             try{
                 jsonArray = new JSONArray(response);
-                Example[] arr = new Example[jsonArray.length()];
+                TvShow2[] arr = new TvShow2[jsonArray.length()];
                 JSONObject t;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     t = (JSONObject) jsonArray.get(i);
-                    arr[i] = mapper.readValue(t.toString(), Example.class);
+                    arr[i] = mapper.readValue(t.toString(), TvShow2.class);
                     Log.v("GOT FOLLOWING" , arr[i].getEmbedded().getShow().toString());
                 }
 //                Collection<TvShow2> readValues =  mapper.readValue(response, new TypeReference<Collection<TvShow2>>() {});

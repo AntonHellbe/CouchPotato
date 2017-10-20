@@ -36,9 +36,9 @@ import java.util.Map;
         "_embedded"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Example {
+public class TvShow2 {
 
-    public Example() {}
+    public TvShow2() {}
 
     @JsonProperty("id")
     private Integer id;
