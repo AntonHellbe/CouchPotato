@@ -219,7 +219,7 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute (ArrayList < TvShow > tvShows) {
-                controller.searchReceived(tvShows);
+                activity.getController().searchReceived(tvShows);
                 super.onPostExecute(tvShows);
             }
 
@@ -298,7 +298,7 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(ArrayList<TvShow> tvShows) {
-                controller.scheduleRecieved(tvShows);
+                activity.getController().scheduleRecieved(tvShows);
                 super.onPostExecute(tvShows);
             }
 
