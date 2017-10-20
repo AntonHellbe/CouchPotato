@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -323,7 +324,7 @@ public class CommunicationService extends Service {
                 URL url;
                 String urlString = strings[0].trim();
                 id = strings[1];
-                Log.d("IMAGELOADER", urlString + " " +id);
+                Log.d("IMAGELOADER", urlString + " " + id);
                 HttpURLConnection httpURLConnection = null;
                 InputStream inputStream = null;
                 BufferedInputStream br = null;
@@ -348,12 +349,10 @@ public class CommunicationService extends Service {
 
                         }
                     }
-
                     if(httpURLConnection != null){
                         httpURLConnection.disconnect();
                     }
                 }
-
                 return bitmap;
             }
 
