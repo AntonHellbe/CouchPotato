@@ -2,6 +2,8 @@ package se.mah.couchpotato;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
@@ -300,6 +302,48 @@ public class CommunicationService extends Service {
             protected void onPostExecute(ArrayList<TvShow> tvShows) {
                 activity.getController().scheduleRecieved(tvShows);
                 super.onPostExecute(tvShows);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+        }
+
+        public class ImageLoader extends AsyncTask<String, String, Bitmap>{
+
+            private String id;
+
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+                URL url;
+                String urlString = strings[0];
+                id = strings[1];
+                HttpURLConnection httpURLConnection = null;
+                httpURLConnection.setDoInput(true);
+                InputStream inputStream;
+                Bitmap bitmap = null;
+                try{
+                    url = new URL(urlString);
+                    httpURLConnection = (HttpURLConnection) url.openConnection();
+                    inputStream = httpURLConnection.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+                return bitmap;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                activity.getController().getDataFragment().putPictureMap(id, bitmap);
+                super.onPostExecute(bitmap);
             }
 
             @Override
