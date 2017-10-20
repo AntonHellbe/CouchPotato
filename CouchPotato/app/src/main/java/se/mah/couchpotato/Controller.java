@@ -151,6 +151,10 @@ public class Controller {
         search.updateFragmentData(shows);
     }
 
+    public void imageReceived() {
+
+    }
+
     public void search(String searchString) {
         if (communicationService != null)
             communicationService.sendSearchTask(searchString);

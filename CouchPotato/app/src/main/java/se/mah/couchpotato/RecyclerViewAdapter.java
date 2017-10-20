@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -62,7 +63,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.animated = true;
         }
         if (imagesLoaded) {
-            holder.ivPoster.setImageBitmap(((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString()));
+            holder.pbLoading.setVisibility(View.INVISIBLE);
+            holder.ivPoster.setVisibility(View.VISIBLE);
+//            holder.ivPoster.setImageBitmap(((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString()));
         }
     }
 
@@ -76,11 +79,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         boolean animated = false;
         ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
+        ProgressBar pbLoading;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ivPoster = itemView.findViewById(R.id.iv_poster);
             tvTitle = itemView.findViewById(R.id.tv_title);
+            pbLoading = itemView.findViewById(R.id.pb_loading_poster);
         }
     }
 }
