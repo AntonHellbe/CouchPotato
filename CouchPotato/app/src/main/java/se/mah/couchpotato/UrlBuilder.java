@@ -9,8 +9,8 @@ public class UrlBuilder {
     public static final String BASE_URL = "http://api.tvmaze.com/";
     public static final String SHOW_SEARCH = BASE_URL + "search/shows?q=";
     public static final String SINGLE_SHOW_SEARCH = BASE_URL + "singlesearch/shows?q=";
-    public static final String TODAYS_SCHEDULE = BASE_URL + "schedule?country=SE";
-    public static final String FULL_SCHEDULE = BASE_URL + "schedule/full";
+    public static final String TODAYS_SCHEDULE = BASE_URL + "schedule?country=US";  //TODO settings
+    public static final String FULL_SCHEDULE = BASE_URL + "schedule/full";  //DANGER ZONE
     public static final String SHOW_BY_ID = BASE_URL + "shows/";
     public static final String SHOW_BY_IMDB = BASE_URL + "lookup/shows?imdb=";
     public static final String SEASONS = "/seasons";

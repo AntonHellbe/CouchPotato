@@ -31,11 +31,11 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        initializeComponents(rootView);
+        initializeComponents(rootView, savedInstanceState);
         return rootView;
     }
 
-    private void initializeComponents(View rootView) {
+    private void initializeComponents(View rootView, Bundle savedInstanceState) {
         recyclerViewShows = (RecyclerView) rootView.findViewById(R.id.rv_search);
         recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10));
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -43,7 +43,15 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
         recyclerViewShows.setAdapter(adapter);
 
         etSearch = (EditText) rootView.findViewById(R.id.et_search);
+        if (savedInstanceState != null)
+            etSearch.setText(savedInstanceState.getString("searchString"));
         etSearch.addTextChangedListener(new Listener());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("searchString", etSearch.getText().toString());
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,6 +22,7 @@ public class DataFragment extends Fragment {
     private ArrayList<TvShow> schedule;
     private HashMap<String, TvShow> favorites;
     private boolean allowNavigation = true;
+    private ArrayDeque<String> searhQueue = new ArrayDeque<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,5 +68,13 @@ public class DataFragment extends Fragment {
 
     public void setAllowNavigation(boolean allowNavigation) {
         this.allowNavigation = allowNavigation;
+    }
+
+    public ArrayDeque<String> getSearhQueue() {
+        return searhQueue;
+    }
+
+    public void setSearhQueue(ArrayDeque<String> searhQueue) {
+        this.searhQueue = searhQueue;
     }
 }

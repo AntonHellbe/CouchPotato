@@ -46,7 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
         TvShow tvShow = tvShowArrayList.get(position);
-        holder.tvTitle.setText(tvShow.getName());
+        holder.tvTitle.setText(tvShow.getShow().getName());
         if (!holder.animated) {
             setAnimation(holder.itemView, position);
             holder.animated = true;

@@ -3,6 +3,7 @@ package se.mah.couchpotato;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Log.v("MAINACTIVITY", "NAVIGATION IS ALLOWED: " + String.valueOf(getController().getDataFragment().isAllowNavigation()));
             if (controller.getDataFragment().isAllowNavigation()) {
+                hideKeyBoard();
                 switch (item.getItemId()) {
                     case R.id.navigation_feed:
                         containerFragment.show(ContainerFragment.TAG_FEED);
@@ -41,6 +44,14 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             return false;
         }
     };
+
+    private void hideKeyBoard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

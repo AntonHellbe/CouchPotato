@@ -4,18 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/testknapp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TESTBUTTON"/>
-
-    <Button
-        android:id="@+id/testknapp2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="START TVSHOWACTIVITY"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_feed"
         android:layout_width="match_parent"

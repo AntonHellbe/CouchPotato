@@ -152,19 +152,21 @@ public class Controller {
     }
 
     public void search(String searchString) {
-        //TODO send search request
+        if (communicationService != null)
+            communicationService.sendSearchTask(searchString);
+        else
+            dataFragment.getSearhQueue().add(searchString);
     }
 
-    public void retrieveFavorites() {
-        if (dataFragment.getFavorites() == null) {
-            //TODO communicationservice get favorites
+    private void sendInitialRequests() {
+        if (dataFragment.getSchedule() == null)
+            communicationService.sendSchedule();
+        if (!dataFragment.getSearhQueue().isEmpty()) {
+            String searchString = dataFragment.getSearhQueue().pop();
+            communicationService.sendSearchTask(searchString);
         }
-    }
-
-    public void retrieveFeed() {
-        if (dataFragment.getSchedule() == null) {
-            //TODO communicationservice get feed
-        }
+//        if (dataFragment.getFavorites() == null)
+//            communicationService.sendAddFavorite("");
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{
@@ -174,6 +176,7 @@ public class Controller {
             communicationService = ls.getService(mainActivity);
             Log.d("Controller","In onServiceConnected");
             bound = true;
+            sendInitialRequests();
         }
 
         @Override

@@ -29,7 +29,6 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
-        temporaryForTesting(rootView);
         initializeComponents(rootView);
         return rootView;
     }
@@ -42,30 +41,6 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         recyclerViewShows.setAdapter(adapter);
     }
 
-    /**
-     * Just for testing if the communicationService is working.
-     * */
-    private void temporaryForTesting(View rootView) {
-        //final Controller controller = new Controller();
-        testButton = (Button) rootView.findViewById(R.id.testknapp);
-
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) getActivity()).getController().sendTest();
-            }
-        });
-        Button testButton2 = (Button) rootView.findViewById(R.id.testknapp2);
-
-        testButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), ActivityTvShow.class);
-                ((MainActivity) getActivity()).startActivity(i);
-            }
-        });
-    }
-
     @Override
     public Controller getController() {
         return ((ActivityInterface) getActivity()).getController();
@@ -74,11 +49,5 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
     @Override
     public void updateFragmentData(ArrayList<TvShow> shows) {
         adapter.setTvShowArrayList(shows);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getController().retrieveFeed();
     }
 }
