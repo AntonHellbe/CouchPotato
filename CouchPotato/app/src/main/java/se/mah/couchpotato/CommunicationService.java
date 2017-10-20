@@ -303,7 +303,7 @@ public class CommunicationService extends Service {
                 activity.getController().scheduleRecieved(tvShows);
                 for(TvShow t: tvShows){
                     ImageLoader imLoader = new ImageLoader();
-                    imLoader.execute(String.valueOf(t.getShow().getId()), t.getShow().getImage().getOriginal());
+                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));
                 }
                 super.onPostExecute(tvShows);
             }
@@ -330,6 +330,7 @@ public class CommunicationService extends Service {
                 Bitmap bitmap = null;
                 try{
                     url = new URL(urlString);
+                    Log.d("COMMSERVICE", url.toString());
                     httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoInput(true);
                     httpURLConnection.connect();
@@ -363,8 +364,8 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-                Log.d("COMMSERVICE -BITMAP", bitmap.toString());
-                activity.getController().getDataFragment().putPictureMap(id, bitmap);
+//                Log.d("COMMSERVICE -BITMAP", bitmap.toString());
+                //activity.getController().getDataFragment().putPictureMap(id, bitmap);
                 super.onPostExecute(bitmap);
             }
 
