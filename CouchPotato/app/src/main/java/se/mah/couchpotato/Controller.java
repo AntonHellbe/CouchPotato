@@ -11,6 +11,9 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by robin on 19/10/2017.
@@ -23,6 +26,7 @@ public class Controller {
     private ServiceConnection serviceConnection;
     private DataFragment dataFragment;
     private SharedPreferences sP;
+    private SharedPreferences.Editor editor;
 
     private boolean bound;
     private int showId;
@@ -32,6 +36,8 @@ public class Controller {
         this.mainActivity = mainActivity;
         initializeDataFragment();
         initializeCommunication();
+        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
+        editor = sP.edit();
     }
 
     private void initializeDataFragment() {
@@ -60,10 +66,6 @@ public class Controller {
     }
 
     public void onPause() {
-        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sP.edit();
-        editor.putInt("showId",0);
-        editor.apply();
         if(mainActivity.isFinishing()){
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
         }
@@ -80,8 +82,14 @@ public class Controller {
     }
 
     public void onResume() {
-        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
-        showId = sP.getInt("showId",0);
+        if (dataFragment.getFavorites() == null){
+            HashMap<String, Integer> restoredFavourites = new HashMap<>();
+            Map<String, ?> map = sP.getAll();
+            for(Map.Entry<String, ?> entry: map.entrySet()){
+                restoredFavourites.put(entry.getKey(), (Integer) entry.getValue());
+            }
+            //TODO call add favorite for every id
+        }
     }
 
 
@@ -94,6 +102,26 @@ public class Controller {
     public void addFavourite(TvShow show) {
         //add tvshow to favorites or retrieve all favorites again (solves the update situation)
         //optional: update favorites
+
+        //Retrieve all current favourites
+        HashMap<String,TvShow> favourites = dataFragment.getFavorites();
+        //put the new favourite in the hashmap
+        favourites.put(""+show.getId(),show);
+        //Put it in the SharedPreference
+        editor.putInt("" + show.getId(),show.getId());
+        //Update the favourite list
+        dataFragment.setFavorites(favourites);
+    }
+
+    public void removeFacourite(TvShow show){
+        //Retrieve all favourites
+        HashMap<String, TvShow> favourties = dataFragment.getFavorites();
+        //Remove the show from the hashmap
+        favourties.remove("" + show.getId());
+        //Remove it from the SharedPreference
+        editor.remove(""+show.getId());
+        //Update the favourite list
+        dataFragment.setFavorites(favourties);
     }
 
     public void scheduleRecieved(ArrayList<TvShow> shows) {
