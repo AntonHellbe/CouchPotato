@@ -14,8 +14,11 @@ public class FragmentViewer {
     private int container;
     private FragmentManager fragmentManager;
     private String currentTag;
+    private MainActivity activity;
+    public static final int ANIMATIONTIME = 200;    //TODO remember me?
 
-    public FragmentViewer(FragmentManager fragmentManager, int container) {
+    public FragmentViewer(MainActivity activity, FragmentManager fragmentManager, int container) {
+        this.activity = activity;
         this.fragmentManager = fragmentManager;
         this.container = container;
     }
@@ -43,6 +46,7 @@ public class FragmentViewer {
             }
             fragmentTransaction.show(fragment);
             fragmentTransaction.commit();
+            new TimingThread(ANIMATIONTIME).start();
             currentTag = tag;
         }
         return currentTag;
@@ -67,26 +71,56 @@ public class FragmentViewer {
                 if (currentTag.equals(ContainerFragment.TAG_FEED)) {
                     data[0] = R.animator.slide_in_right;
                     data[1] = R.animator.slide_out_left;
-                    //data[0] = R.anim.anim_slide_in_right;
-                    //data[1] = R.anim.anim_slide_out_left;
                 } else {
                     data[0] = R.animator.slide_in_left;
                     data[1] = R.animator.slide_out_right;
-                    //data[0] = R.anim.anim_slide_in_right;
-                    //data[1] = R.anim.anim_slide_out_left;
                 }
                 return data;
             case ContainerFragment.TAG_FEED:
                 data[0] = R.animator.slide_in_left;
-                data[1] = R.animator.slide_out_left;
+                data[1] = R.animator.slide_out_right;
                 return data;
             case ContainerFragment.TAG_SEARCH:
                 data[0] = R.animator.slide_in_right;
-                data[1] = R.animator.slide_out_right;
+                data[1] = R.animator.slide_out_left;
                 return data;
             default:
                 break;
         }
         return null;
+    }
+
+    private class ChangeAllowNavigation implements Runnable {
+
+        private boolean navigation;
+
+        public ChangeAllowNavigation(boolean navigation) {
+            this.navigation = navigation;
+        }
+
+        @Override
+        public void run() {
+            activity.getController().getDataFragment().setAllowNavigation(navigation);
+        }
+    }
+
+    private class TimingThread extends Thread {
+
+        private long animationtime;
+        public TimingThread(int animationtimeInt) {
+            animationtime = (long) animationtimeInt;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            try {
+                activity.runOnUiThread(new ChangeAllowNavigation(false));
+                Thread.sleep(animationtime);
+                activity.runOnUiThread(new ChangeAllowNavigation(true));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -1,5 +1,8 @@
 package se.mah.couchpotato;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

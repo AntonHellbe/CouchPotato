@@ -20,6 +20,7 @@ public class DataFragment extends Fragment {
     private String currentTag;
     private ArrayList<TvShow> schedule;
     private HashMap<String, TvShow> favorites;
+    private boolean allowNavigation = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,5 +58,13 @@ public class DataFragment extends Fragment {
 
     public void setFavorites(HashMap<String, TvShow> favorites) {
         this.favorites = favorites;
+    }
+
+    public boolean isAllowNavigation() {
+        return allowNavigation;
+    }
+
+    public void setAllowNavigation(boolean allowNavigation) {
+        this.allowNavigation = allowNavigation;
     }
 }

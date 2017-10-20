@@ -31,7 +31,7 @@ public class ContainerFragment extends Fragment{
         Log.v("ContainerFragment","Hello ? ");
         View view = inflater.inflate(R.layout.fragment_container,container,false);
         FragmentManager fm = getChildFragmentManager();
-        viewer = new FragmentViewer(fm,R.id.fragment_container);
+        viewer = new FragmentViewer((MainActivity) getActivity(), fm, R.id.fragment_container);
         if(savedInstanceState != null){
             viewer.setCurrentTag(savedInstanceState.getString("currentTag"));
         }

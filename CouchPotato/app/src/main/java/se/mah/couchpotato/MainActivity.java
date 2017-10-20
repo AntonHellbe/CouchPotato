@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,25 +20,26 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private Controller controller;
     private ContainerFragment containerFragment;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_feed:
-                    containerFragment.show(ContainerFragment.TAG_FEED);
-                    return true;
-                case R.id.navigation_favorites:
-                    containerFragment.show(ContainerFragment.TAG_FAVORITES);
-                    return true;
-                case R.id.navigation_search:
-                    containerFragment.show(ContainerFragment.TAG_SEARCH);
-                    return true;
+            Log.v("MAINACTIVITY", "NAVIGATION IS ALLOWED: " + String.valueOf(getController().getDataFragment().isAllowNavigation()));
+            if (controller.getDataFragment().isAllowNavigation()) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_feed:
+                        containerFragment.show(ContainerFragment.TAG_FEED);
+                        return true;
+                    case R.id.navigation_favorites:
+                        containerFragment.show(ContainerFragment.TAG_FAVORITES);
+                        return true;
+                    case R.id.navigation_search:
+                        containerFragment.show(ContainerFragment.TAG_SEARCH);
+                        return true;
+                }
             }
             return false;
         }
-
     };
 
     @Override

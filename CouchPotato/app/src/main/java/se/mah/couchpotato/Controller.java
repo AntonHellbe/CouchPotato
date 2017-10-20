@@ -55,6 +55,10 @@ public class Controller {
         Log.d("Controller","initializeCommunication, connected: " + status);
     }
 
+    public DataFragment getDataFragment() {
+        return dataFragment;
+    }
+
     public void onPause() {
         sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sP.edit();
