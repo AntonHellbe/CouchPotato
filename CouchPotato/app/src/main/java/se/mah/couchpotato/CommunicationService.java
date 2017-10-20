@@ -32,6 +32,7 @@ public class CommunicationService extends Service {
     private Controller controller;
     private SearchTask task;
     private HttpURLConnection urlConnection;
+    private MainActivity activity;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -45,13 +46,14 @@ public class CommunicationService extends Service {
         return new LocalService();
     }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
+    public void setActivity(MainActivity activity){
+        this.activity = activity;
     }
 
-    public class LocalService extends Binder {
 
-        public CommunicationService getService() {
+    public class LocalService extends Binder {
+        public CommunicationService getService(MainActivity activity) {
+            setActivity(activity);
             Log.d("CommunicationService", "In getService");
             return CommunicationService.this;
         }
@@ -126,7 +128,7 @@ public class CommunicationService extends Service {
         protected void onPostExecute(TvShow tvShow) {
             Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + tvShow.toString());
             //@TODO fixa så att det inte kan komma ett null json objekt?
-            controller.recievedData(tvShow);
+            activity.getController().recievedData(tvShow);
             super.onPostExecute(tvShow);
         }
     }

@@ -82,9 +82,6 @@ public class Controller {
         showId = sP.getInt("showId",0);
     }
 
-    public void setServiceController(){
-        communicationService.setController(this);
-    }
 
     public void sendTest() {
         //communicationService.setController(this);
@@ -147,8 +144,7 @@ public class Controller {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             CommunicationService.LocalService ls = (CommunicationService.LocalService) service;
-            communicationService = ls.getService();
-            setServiceController();
+            communicationService = ls.getService(mainActivity);
             Log.d("Controller","In onServiceConnected");
             bound = true;
         }
