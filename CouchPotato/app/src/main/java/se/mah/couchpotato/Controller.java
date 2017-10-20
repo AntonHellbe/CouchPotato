@@ -95,11 +95,14 @@ public class Controller {
 
     public void sendTest() {
         //communicationService.setController(this);
-        communicationService.sendToURL("test");
+        communicationService.sendSearchTask("girls");
+        communicationService.sendAddFavorite("1");
+        communicationService.sendSchedule();
     }
 
     //TODO kan också vara en string id, vilket som är smidigast
     public void addFavourite(TvShow show) {
+        Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
         //add tvshow to favorites or retrieve all favorites again (solves the update situation)
         //optional: update favorites
 
@@ -125,23 +128,27 @@ public class Controller {
     }
 
     public void scheduleRecieved(ArrayList<TvShow> shows) {
+        for (int i = 0; i < shows.size(); i++) {
+            Log.d("CONTROLLERSCHEDULE", shows.get(i).getShow().getName() + " " + shows.get(i).getShow().getUrl() + shows.get(i).getShow().getStatus());
+        }
         dataFragment.setSchedule(shows);
         FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
         feed.updateFragmentData(dataFragment.getSchedule());
     }
 
-    public void favoritesReceived(ArrayList<TvShow> shows) {    //TODO should this be ArrayList?
+    public void favoritesReceived(TvShow show) {
+        dataFragment.getFavorites().put(show.getId().toString(), show);
         FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-        favorites.updateFragmentData(shows);
+        ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites().values());
+        favorites.updateFragmentData(tvshows);
     }
 
     public void searchReceived(ArrayList<TvShow> shows) {
+        for(TvShow t: shows){
+            Log.d("CONTROLLERSEARCH", t.getShow().getName() + " " + t.getShow().getRuntime() + " " + t.getShow().getUrl() + " " + t.getShow().getId());
+        }
         FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
         search.updateFragmentData(shows);
-    }
-
-    public void recievedData(TvShow tvShow) {
-        Log.d("Controller","In recivedData, the jsonObject contains: " + tvShow.toString());
     }
 
     public void search(String searchString) {

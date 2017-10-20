@@ -22,17 +22,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- * @author Robin Johnsson & Jonatan Fridsten
+ * @author Robin Johnsson & Jonatan Fridsten <---- Look at these 2 gays
  */
 
 public class CommunicationService extends Service {
 
     private Controller controller;
-    private SearchTask task;
+    private SearchTask searchTask;
+    private FavoriteTask favoriteTask;
+    private ScheduleTask scheduleTask;
     private HttpURLConnection urlConnection;
     private MainActivity activity;
+    private ObjectMapper mapper;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -43,6 +47,7 @@ public class CommunicationService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d("CommunicationService", "In onBind");
+        mapper = new ObjectMapper();
         return new LocalService();
     }
 
@@ -61,22 +66,32 @@ public class CommunicationService extends Service {
 
     }
 
-    public void sendToURL(String url) {
-        task = new SearchTask();
-        task.execute(url);
+    public void sendSearchTask(String searchParam) {
+        searchTask = new SearchTask();
+        searchTask.execute(searchParam);
     }
 
-    private class BackgroundTask extends AsyncTask<String, String, TvShow> {
+    public void sendAddFavorite(String id){
+        favoriteTask = new FavoriteTask();
+        favoriteTask.execute(id);
+    }
+
+    public void sendSchedule(){
+        scheduleTask = new ScheduleTask();
+        scheduleTask.execute();
+    }
+
+    private class FavoriteTask extends AsyncTask<String, String, TvShow> {
 
         @Override
         protected TvShow doInBackground(String... params) {
-            String response = "";
+            String response = "", id = params[0];
             URL url;
             JSONObject jsonObject = null;
             BufferedReader br = null;
             InputStream inStream = null;
             try {
-                url = new URL("http://api.tvmaze.com/search/shows?q=girls");
+                url = new URL(UrlBuilder.SHOW_BY_ID + id);
                 Log.d("CommunicationService", "in doInBackground, message to send: " + url);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 inStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -121,7 +136,6 @@ public class CommunicationService extends Service {
                 Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
             }
 
-
             return newShow;
         }
 
@@ -129,7 +143,7 @@ public class CommunicationService extends Service {
         protected void onPostExecute(TvShow tvShow) {
             Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + tvShow.toString());
             //@TODO fixa så att det inte kan komma ett null json objekt?
-            activity.getController().recievedData(tvShow);
+            activity.getController().favoritesReceived(tvShow);
             super.onPostExecute(tvShow);
         }
     }
@@ -141,20 +155,17 @@ public class CommunicationService extends Service {
         protected ArrayList<TvShow> doInBackground(String... strings) {
             URL url;
             String response = "";
-            ArrayList<TvShow> resultList = new ArrayList<>();
-            TvShow resultShow;
-            String searchParam = "game of thrones";
-            JSONArray jsonArray = new JSONArray();
-            JSONObject temp;
+            String searchParam = strings[0];
+            ArrayList<TvShow> resultList;
+            JSONArray jsonArray = null;
             BufferedReader br = null;
             InputStream instream = null;
             try {
-                url = new URL(UrlBuilder.FULL_SCHEDULE);
+                url = new URL(UrlBuilder.SHOW_SEARCH + searchParam);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 instream = new BufferedInputStream(urlConnection.getInputStream());
                 br = new BufferedReader(new InputStreamReader(instream));
                 response = br.readLine();
-                jsonArray = new JSONArray(response);
 
             }catch (Exception e) {
                 e.printStackTrace();
@@ -181,44 +192,22 @@ public class CommunicationService extends Service {
 
                     }
                 }
-
-
             }
-            ObjectMapper mapper = new ObjectMapper();
+            TvShow[] arr = null;
             try{
                 jsonArray = new JSONArray(response);
-                TvShow2[] arr = new TvShow2[jsonArray.length()];
+                arr = new TvShow[jsonArray.length()];
                 JSONObject t;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     t = (JSONObject) jsonArray.get(i);
-                    arr[i] = mapper.readValue(t.toString(), TvShow2.class);
-                    Log.v("GOT FOLLOWING" , arr[i].getEmbedded().getShow().toString());
+                    arr[i] = mapper.readValue(t.toString(), TvShow.class);
                 }
-//                Collection<TvShow2> readValues =  mapper.readValue(response, new TypeReference<Collection<TvShow2>>() {});
-//                Log.v("COMMSERVICE", showList.get(1).toString());
             }catch(Exception e){
                 e.printStackTrace();
                 Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
             }
-//            for (int i = 0; i < showList.size(); i++) {
-//                Log.v("COMMSERVICE", showList.get(i).toString());
-//            }
+            resultList = new ArrayList<>(Arrays.asList(arr));
 
-
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                try {
-//                    temp = (JSONObject) jsonArray.get(i);
-//                    resultShow = new ObjectMapper().readValue(temp.toString(), TvShow.class);
-//                    resultList.add(resultShow);
-//                }catch(Exception e){
-//                    e.printStackTrace();
-//
-//                }
-//            }
-
-            for (int i = 0; i < resultList.size(); i++) {
-                Log.v("COMMUNICATIONSERVICE", resultList.get(i).toString());
-            }
             return resultList;
 
         }
@@ -230,11 +219,91 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute (ArrayList < TvShow > tvShows) {
+                controller.searchReceived(tvShows);
                 super.onPostExecute(tvShows);
             }
 
             @Override
             protected void onProgressUpdate (String...values){
+                super.onProgressUpdate(values);
+            }
+        }
+
+
+        public class ScheduleTask extends AsyncTask<String, String, ArrayList<TvShow>> {
+
+            protected ArrayList<TvShow> doInBackground(String... strings) {
+                URL url;
+                String response = "";
+                ArrayList<TvShow> resultList;
+                JSONArray jsonArray = null;
+                BufferedReader br = null;
+                InputStream instream = null;
+                try {
+                    url = new URL(UrlBuilder.TODAYS_SCHEDULE);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    instream = new BufferedInputStream(urlConnection.getInputStream());
+                    br = new BufferedReader(new InputStreamReader(instream));
+                    response = br.readLine();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (br != null) {
+                        try {
+                            br.close();
+
+                        } catch (IOException e) {
+
+                        }
+                    }
+                    if (instream != null) {
+                        try {
+                            instream.close();
+                        } catch (IOException e) {
+
+                        }
+                    }
+                    if (urlConnection != null) {
+                        try {
+                            urlConnection.disconnect();
+                        } catch (NullPointerException e) {
+
+                        }
+                    }
+                }
+                TvShow[] arr = null;
+                try {
+                    jsonArray = new JSONArray(response);
+                    arr = new TvShow[jsonArray.length()];
+                    JSONObject t;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        t = (JSONObject) jsonArray.get(i);
+                        arr[i] = mapper.readValue(t.toString(), TvShow.class);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
+                }
+
+                resultList = new ArrayList<>(Arrays.asList(arr));
+
+                return resultList;
+
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<TvShow> tvShows) {
+                controller.scheduleRecieved(tvShows);
+                super.onPostExecute(tvShows);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
                 super.onProgressUpdate(values);
             }
         }

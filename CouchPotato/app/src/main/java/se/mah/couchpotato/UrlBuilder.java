@@ -19,9 +19,7 @@ public class UrlBuilder {
     public static final String EPISODE_BY_NUMBER = "&number=";
 
 
-    public UrlBuilder(){
-
-    }
+    public UrlBuilder(){}
 
     public String showSearch(String searchParam){
         return SHOW_SEARCH + searchParam;
