@@ -30,7 +30,8 @@
         <activity android:name=".activitytvshow.ActivityTvShow" />
         <activity
             android:name=".activtysettings.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".activtysettings.ActivitySettings"></activity>
     </application>
 
 </manifest>

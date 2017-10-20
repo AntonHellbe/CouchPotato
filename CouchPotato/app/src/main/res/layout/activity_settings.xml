@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context="se.mah.couchpotato.activtysettings.ActivitySettings">
+
+
+    <TextView
+        android:id="@+id/text_settings_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/settings_language"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ToggleButton
+        android:id="@+id/toggle_settings_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="ToggleButton"
+        android:layout_marginEnd="27dp"
+        android:layout_alignTop="@+id/text_settings_language"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/text_settings_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/toggle_settings_theme"
+        android:layout_alignBottom="@+id/toggle_settings_theme"
+        android:layout_alignStart="@+id/text_settings_language"
+        android:text="@string/settings_theme"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ToggleButton
+        android:id="@+id/toggle_settings_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:layout_below="@+id/toggle_settings_language"
+        android:layout_alignStart="@+id/toggle_settings_language"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:id="@+id/text_settings_nsfw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/text_settings_theme"
+        android:layout_alignTop="@+id/toggle_settings_nsfw"
+        android:text="@string/settings_nsfw"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp" />
+
+    <ToggleButton
+        android:id="@+id/toggle_settings_nsfw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:layout_below="@+id/toggle_settings_theme"
+        android:layout_alignStart="@+id/toggle_settings_theme"
+        android:layout_marginTop="37dp" />
+
+    <TextView
+        android:id="@+id/text_settings_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_country"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/text_settings_nsfw" />
+
+    <Spinner
+        android:id="@+id/spinner_settings_countries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/toggle_settings_nsfw"
+        android:layout_toEndOf="@+id/text_settings_language" />
+
+</RelativeLayout>
