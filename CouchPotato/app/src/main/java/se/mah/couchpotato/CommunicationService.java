@@ -47,6 +47,7 @@ public class CommunicationService extends Service {
     }
 
     public void setActivity(MainActivity activity){
+        Log.d("CommunicationService","adding reference");
         this.activity = activity;
     }
 

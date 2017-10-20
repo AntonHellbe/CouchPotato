@@ -53,8 +53,6 @@ public class Controller {
         serviceConnection = new ServiceConnection();
         boolean status = mainActivity.bindService(intent, serviceConnection,0);
         Log.d("Controller","initializeCommunication, connected: " + status);
-        if (communicationService != null){communicationService.setController(this);}
-        else Log.d("Controller","CS is NULL!!!!!!!");
     }
 
     public void onPause() {
