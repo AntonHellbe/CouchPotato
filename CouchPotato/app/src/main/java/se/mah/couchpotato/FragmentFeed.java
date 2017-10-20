@@ -14,8 +14,6 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-import se.mah.couchpotato.activitytvshow.ActivityTvShow;
-
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
  */
@@ -39,6 +37,18 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
+
+
+        //TODO remove test stuff
+
+        Button test = (Button) rootView.findViewById(R.id.btn_test_settings);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent i = new Intent(((MainActivity) getActivity()), SettingsActivity.class);
+//                getActivity().startActivity(i);
+            }
+        });
     }
 
     @Override

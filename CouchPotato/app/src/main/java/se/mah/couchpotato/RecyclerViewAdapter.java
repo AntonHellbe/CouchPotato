@@ -1,5 +1,6 @@
 package se.mah.couchpotato;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Anton on 2017-10-19.
@@ -20,9 +22,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<TvShow> tvShowArrayList;
     private AppCompatActivity activity;
+    private boolean imagesLoaded = false;
 
     public void setTvShowArrayList(ArrayList<TvShow> tvShowList) {
         this.tvShowArrayList = tvShowList;
+        for (TvShow show: tvShowList) {
+            if (((MainActivity) activity).getController().getDataFragment().getPicture(show.getShow().getId().toString()) == null) {
+                imagesLoaded = false;
+                break;
+            }
+            imagesLoaded = true;
+        }
         notifyDataSetChanged();
     }
 
@@ -50,6 +60,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         if (!holder.animated) {
             setAnimation(holder.itemView, position);
             holder.animated = true;
+        }
+        if (imagesLoaded) {
+            holder.ivPoster.setImageBitmap(((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString()));
         }
     }
 
