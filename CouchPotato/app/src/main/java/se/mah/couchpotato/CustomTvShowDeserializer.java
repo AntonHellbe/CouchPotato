@@ -29,6 +29,8 @@ public class CustomTvShowDeserializer extends StdDeserializer<TvShow> {
     public static final String GENRES = "genres";
     public static final String ID = "id";
     public static final String SHOW = "show";
+    public static final String STATUS = "status";
+    private static final String NETWORK = "network";
 
     public CustomTvShowDeserializer(){
         this(null);
@@ -44,7 +46,7 @@ public class CustomTvShowDeserializer extends StdDeserializer<TvShow> {
             rootNode = rootNode.get(SHOW);
         }
         int id;
-        String language, officalString, name, genres;
+        String language, officalString, name, genres, status, network;
         String[] pictureUrls, allgenres;
         TvShow newShow = new TvShow();
         try{
@@ -72,6 +74,16 @@ public class CustomTvShowDeserializer extends StdDeserializer<TvShow> {
                 genres = rootNode.get(GENRES).toString().replace("[", "").replace("]", "");
                 allgenres = genres.split(",");
                 newShow.setGenres(allgenres);
+            }
+
+            if(rootNode.has(STATUS)){
+                status = rootNode.get(STATUS).toString();
+                newShow.setStatus(status);
+            }
+
+            if(rootNode.has(NETWORK)){
+                network = rootNode.get(NETWORK).get(NAME).toString();
+                newShow.setStatus(network);
             }
 
             newShow.setName(name);

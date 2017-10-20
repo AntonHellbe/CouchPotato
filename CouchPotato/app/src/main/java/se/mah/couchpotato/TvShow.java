@@ -14,6 +14,8 @@ public class TvShow  {
     private String officalSite;
     private String[] pictureUrls;
     private String[] genres;
+    private String status;
+    private String network;
 
 
     public TvShow(int id, String name, String language, String officalSite, String[] pictureUrl,
@@ -32,7 +34,7 @@ public class TvShow  {
 
     @Override
     public String toString() {
-        return this.id + " " + this.name + " " + this.language + " " + this.officalSite;
+        return this.id + " " + this.name + " " + this.language + " " + this.officalSite + " " + this.status + " " + this.network;
     }
 
 
@@ -82,5 +84,21 @@ public class TvShow  {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(String network) {
+        this.network = network;
     }
 }
