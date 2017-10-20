@@ -87,7 +87,7 @@ public class Controller {
     }
 
     //TODO kan också vara en string id, vilket som är smidigast
-    public void favoriteAdded(TvShow show) {
+    public void addFavourite(TvShow show) {
         //add tvshow to favorites or retrieve all favorites again (solves the update situation)
         //optional: update favorites
     }
