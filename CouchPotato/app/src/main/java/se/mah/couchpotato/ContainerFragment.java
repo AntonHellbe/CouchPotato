@@ -32,17 +32,7 @@ public class ContainerFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_container,container,false);
         FragmentManager fm = getChildFragmentManager();
         viewer = new FragmentViewer((MainActivity) getActivity(), fm, R.id.fragment_container);
-        if(savedInstanceState != null){
-            viewer.setCurrentTag(savedInstanceState.getString("currentTag"));
-        }
         return view;
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putString("currentTag",viewer.getCurrentTag());
-        super.onSaveInstanceState(outState);
     }
 
     @Override

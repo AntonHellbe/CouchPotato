@@ -13,7 +13,6 @@ public class FragmentViewer {
 
     private int container;
     private FragmentManager fragmentManager;
-    private String currentTag;
     private MainActivity activity;
     public static final int ANIMATIONTIME = 200;    //TODO remember me?
 
@@ -34,10 +33,10 @@ public class FragmentViewer {
 
     public String show(String tag) {
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
-        Fragment currentFragment = fragmentManager.findFragmentByTag(currentTag);
+        Fragment currentFragment = fragmentManager.findFragmentByTag(getCurrentTag());
         if (fragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if (!tag.equals(currentTag)) {
+            if (!tag.equals(getCurrentTag())) {
                 int[] data = getAnimator(tag);
                 fragmentTransaction.setCustomAnimations(data[0],data[1]);
             }
@@ -47,28 +46,20 @@ public class FragmentViewer {
             fragmentTransaction.show(fragment);
             fragmentTransaction.commit();
             new TimingThread(ANIMATIONTIME).start();
-            currentTag = tag;
+            setCurrentTag(tag);
         }
-        return currentTag;
+        return getCurrentTag();
     }
 
     public String show() {
-        return show(currentTag);
-    }
-
-    public String getCurrentTag() {
-        return currentTag;
-    }
-
-    public void setCurrentTag(String currentTag) {
-        this.currentTag = currentTag;
+        return show(getCurrentTag());
     }
 
     private int[] getAnimator(String tag) {
         int[] data = new int[2];
         switch (tag) {
             case ContainerFragment.TAG_FAVORITES:
-                if (currentTag.equals(ContainerFragment.TAG_FEED)) {
+                if (getCurrentTag().equals(ContainerFragment.TAG_FEED)) {
                     data[0] = R.animator.slide_in_right;
                     data[1] = R.animator.slide_out_left;
                 } else {
@@ -88,6 +79,14 @@ public class FragmentViewer {
                 break;
         }
         return null;
+    }
+
+    public String getCurrentTag(){
+        return activity.getController().getDataFragment().getCurrentTag();
+    }
+
+    public void setCurrentTag(String currentTag){
+        activity.getController().getDataFragment().setCurrentTag(currentTag);
     }
 
     private class ChangeAllowNavigation implements Runnable {
