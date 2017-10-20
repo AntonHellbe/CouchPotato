@@ -302,10 +302,17 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute(ArrayList<TvShow> tvShows) {
                 activity.getController().scheduleRecieved(tvShows);
-                for(TvShow t: tvShows){
-                    ImageLoader imLoader = new ImageLoader();
-                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));
+                for (int i = 0; i < tvShows.size(); i++) {
+                    TvShow t = tvShows.get(i);
+                    ImageLoader imLoader = new ImageLoader(i == tvShows.size() - 1);
+//                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));  //Full size image
+                    imLoader.execute(t.getShow().getImage().getMedium(), String.valueOf(t.getShow().getId()));  //small size image
                 }
+//                for(TvShow t: tvShows){
+//                    ImageLoader imLoader = new ImageLoader();
+//                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));  //Full size image
+//                    imLoader.execute(t.getShow().getImage().getMedium(), String.valueOf(t.getShow().getId()));  //small size image
+//                }
                 super.onPostExecute(tvShows);
             }
 
@@ -318,6 +325,11 @@ public class CommunicationService extends Service {
         public class ImageLoader extends AsyncTask<String, String, Bitmap>{
 
             private String id;
+            private boolean lastOne;
+
+            public ImageLoader(boolean lastOne) {
+                this.lastOne = lastOne;
+            }
 
             @Override
             protected Bitmap doInBackground(String... strings) {
@@ -332,6 +344,7 @@ public class CommunicationService extends Service {
                 try{
                     url = new URL(urlString);
                     Log.d("COMMSERVICE", url.toString());
+//                    bitmap = BitmapFactory.decodeStream((InputStream)new URL(urlString).getContent());
                     httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoInput(true);
                     httpURLConnection.connect();
@@ -364,7 +377,9 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
 //                Log.d("COMMSERVICE -BITMAP", bitmap.toString());
-                //activity.getController().getDataFragment().putPictureMap(id, bitmap);
+                activity.getController().getDataFragment().putPictureMap(id, bitmap);
+                if (lastOne)
+                    activity.getController().imageReceived();
                 super.onPostExecute(bitmap);
             }
 

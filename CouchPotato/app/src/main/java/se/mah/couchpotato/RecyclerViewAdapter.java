@@ -25,15 +25,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private AppCompatActivity activity;
     private boolean imagesLoaded = false;
 
-    public void setTvShowArrayList(ArrayList<TvShow> tvShowList) {
+    public void setTvShowArrayList(ArrayList<TvShow> tvShowList, boolean imagesLoaded) {
         this.tvShowArrayList = tvShowList;
-        for (TvShow show: tvShowList) {
-            if (((MainActivity) activity).getController().getDataFragment().getPicture(show.getShow().getId().toString()) == null) {
-                imagesLoaded = false;
-                break;
-            }
-            imagesLoaded = true;
-        }
+        this.imagesLoaded = imagesLoaded;
         notifyDataSetChanged();
     }
 
@@ -65,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         if (imagesLoaded) {
             holder.pbLoading.setVisibility(View.INVISIBLE);
             holder.ivPoster.setVisibility(View.VISIBLE);
-//            holder.ivPoster.setImageBitmap(((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString()));
+            holder.ivPoster.setImageBitmap(((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString()));
         }
     }
 

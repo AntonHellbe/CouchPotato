@@ -15,8 +15,6 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
-import se.mah.couchpotato.activitytvshow.RecyclerViewSpacing;
-
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
  */
@@ -60,8 +58,8 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
     }
 
     @Override
-    public void updateFragmentData(ArrayList<TvShow> shows) {
-        adapter.setTvShowArrayList(shows);
+    public void updateFragmentData(ArrayList<TvShow> shows, boolean imagesLoaded) {
+        adapter.setTvShowArrayList(shows, imagesLoaded);
     }
 
     private class Listener implements TextWatcher {

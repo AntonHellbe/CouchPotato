@@ -8,12 +8,9 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by robin on 19/10/2017.
@@ -133,14 +130,14 @@ public class Controller {
         }
         dataFragment.setSchedule(shows);
         FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
-        feed.updateFragmentData(dataFragment.getSchedule());
+        feed.updateFragmentData(dataFragment.getSchedule(), false);
     }
 
     public void favoritesReceived(TvShow show) {
         dataFragment.getFavorites().put(show.getId().toString(), show);
         FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites().values());
-        favorites.updateFragmentData(tvshows);
+        favorites.updateFragmentData(tvshows, false);
     }
 
     public void searchReceived(ArrayList<TvShow> shows) {
@@ -148,11 +145,15 @@ public class Controller {
             Log.d("CONTROLLERSEARCH", t.getShow().getName() + " " + t.getShow().getRuntime() + " " + t.getShow().getUrl() + " " + t.getShow().getId());
         }
         FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
-        search.updateFragmentData(shows);
+        search.updateFragmentData(shows, false);
     }
 
     public void imageReceived() {
-
+        FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
+        FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+        FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+        feed.updateFragmentData(dataFragment.getSchedule(), true);
+//        favorites.updateFragmentData(new ArrayList<>(dataFragment.getFavorites().values()));  //null
     }
 
     public void search(String searchString) {
