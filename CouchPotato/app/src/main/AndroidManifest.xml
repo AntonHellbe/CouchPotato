@@ -27,8 +27,10 @@
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name=".activitytvshow.ActivityTvShow" />
         <activity
-            android:name=".activitytvshow.ActivityTvShow"></activity>
+            android:name=".activtysettings.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>
