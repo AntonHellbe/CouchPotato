@@ -59,6 +59,6 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
     @Override
     public void onResume() {
         super.onResume();
-        getController().favoritesReceived(new ArrayList<TvShow>());  //TODO remove this test
+        getController().retrieveFavorites();
     }
 }

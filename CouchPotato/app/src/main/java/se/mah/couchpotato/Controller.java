@@ -98,29 +98,7 @@ public class Controller {
         feed.updateFragmentData(dataFragment.getSchedule());
     }
 
-    public void favoritesReceived(ArrayList<TvShow> shows) {
-        shows = new ArrayList<>();
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        shows.add(new TvShow());
-        dataFragment.setFavorites(shows);
+    public void favoritesReceived(ArrayList<TvShow> shows) {    //TODO should this be ArrayList?
         FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         favorites.updateFragmentData(shows);
     }
@@ -136,6 +114,18 @@ public class Controller {
 
     public void search(String searchString) {
         //TODO send search request
+    }
+
+    public void retrieveFavorites() {
+        if (dataFragment.getFavorites() == null) {
+            //TODO communicationservice get favorites
+        }
+    }
+
+    public void retrieveFeed() {
+        if (dataFragment.getSchedule() == null) {
+            //TODO communicationservice get feed
+        }
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{

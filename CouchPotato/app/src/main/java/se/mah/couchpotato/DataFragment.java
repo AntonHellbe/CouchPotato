@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +19,7 @@ public class DataFragment extends Fragment {
     private boolean serviceExist;
     private String currentTag;
     private ArrayList<TvShow> schedule;
-    private ArrayList<TvShow> favorites;
+    private HashMap<String, TvShow> favorites;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +51,11 @@ public class DataFragment extends Fragment {
         this.schedule = schedule;
     }
 
-    public ArrayList<TvShow> getFavorites() {
+    public HashMap<String, TvShow> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(ArrayList<TvShow> favorites) {
+    public void setFavorites(HashMap<String, TvShow> favorites) {
         this.favorites = favorites;
     }
 }
