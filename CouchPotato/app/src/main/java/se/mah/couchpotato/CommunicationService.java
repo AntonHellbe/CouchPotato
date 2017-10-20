@@ -301,6 +301,10 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute(ArrayList<TvShow> tvShows) {
                 activity.getController().scheduleRecieved(tvShows);
+                for(TvShow t: tvShows){
+                    ImageLoader imLoader = new ImageLoader();
+                    imLoader.execute(String.valueOf(t.getShow().getId()), t.getShow().getImage().getOriginal());
+                }
                 super.onPostExecute(tvShows);
             }
 
@@ -317,19 +321,36 @@ public class CommunicationService extends Service {
             @Override
             protected Bitmap doInBackground(String... strings) {
                 URL url;
-                String urlString = strings[0];
+                String urlString = strings[0].trim();
                 id = strings[1];
+                Log.d("IMAGELOADER", urlString + " " +id);
                 HttpURLConnection httpURLConnection = null;
-                httpURLConnection.setDoInput(true);
-                InputStream inputStream;
+                InputStream inputStream = null;
+                BufferedInputStream br = null;
                 Bitmap bitmap = null;
                 try{
                     url = new URL(urlString);
                     httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setDoInput(true);
+                    httpURLConnection.connect();
                     inputStream = httpURLConnection.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    br = new BufferedInputStream(httpURLConnection.getInputStream());
+
+                    bitmap = BitmapFactory.decodeStream(br);
                 }catch(Exception e){
                     e.printStackTrace();
+                }finally {
+                    if(inputStream != null){
+                        try{
+                            inputStream.close();
+                        }catch(IOException e){
+
+                        }
+                    }
+
+                    if(httpURLConnection != null){
+                        httpURLConnection.disconnect();
+                    }
                 }
 
                 return bitmap;
@@ -342,6 +363,7 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
+                Log.d("COMMSERVICE -BITMAP", bitmap.toString());
                 activity.getController().getDataFragment().putPictureMap(id, bitmap);
                 super.onPostExecute(bitmap);
             }
