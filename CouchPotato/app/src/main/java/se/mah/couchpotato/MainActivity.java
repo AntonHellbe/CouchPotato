@@ -92,6 +92,11 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         super.onDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        controller.onResume();
+        super.onResume();
+    }
 
     @Override
     public Controller getController() {

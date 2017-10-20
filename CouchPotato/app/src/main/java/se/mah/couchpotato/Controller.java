@@ -1,8 +1,10 @@
 package se.mah.couchpotato;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -20,7 +22,11 @@ public class Controller {
     private CommunicationService communicationService;
     private ServiceConnection serviceConnection;
     private DataFragment dataFragment;
-    private boolean bound, connected;
+    private SharedPreferences sP;
+
+    private boolean bound;
+    private int showId;
+
 
     public Controller(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -52,6 +58,10 @@ public class Controller {
     }
 
     public void onPause() {
+        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sP.edit();
+        editor.putInt("showId",0);
+        editor.apply();
         if(mainActivity.isFinishing()){
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
         }
@@ -65,7 +75,11 @@ public class Controller {
             mainActivity.unbindService(serviceConnection);
             bound = false;
         }
+    }
 
+    public void onResume() {
+        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
+        showId = sP.getInt("showId",0);
     }
 
     public void setServiceController(){

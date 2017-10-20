@@ -35,7 +35,7 @@ public class UrlBuilder {
         return SHOW_BY_ID + id;
     }
 
-    public String getShowByImdb(int imdb){
+    public String getShowByImdb(String imdb){
         return SHOW_BY_IMDB + imdb;
     }
 
