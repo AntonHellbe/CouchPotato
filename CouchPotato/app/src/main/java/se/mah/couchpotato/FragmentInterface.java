@@ -10,5 +10,5 @@ public interface FragmentInterface {
 
     Controller getController();
 
-    void updateFragmentData(ArrayList<TvShow> shows, boolean imagesLoaded);
+    void updateFragmentData(ArrayList<TvShow> shows);
 }

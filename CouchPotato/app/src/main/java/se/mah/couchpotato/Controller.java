@@ -130,14 +130,14 @@ public class Controller {
         }
         dataFragment.setSchedule(shows);
         FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
-        feed.updateFragmentData(dataFragment.getSchedule(), false);
+        feed.updateFragmentData(dataFragment.getSchedule());
     }
 
     public void favoritesReceived(TvShow show) {
         dataFragment.getFavorites().put(show.getId().toString(), show);
         FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites().values());
-        favorites.updateFragmentData(tvshows, false);
+        favorites.updateFragmentData(tvshows);
     }
 
     public void searchReceived(ArrayList<TvShow> shows) {
@@ -146,17 +146,17 @@ public class Controller {
         }
         FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
         dataFragment.setSearchResult(shows);
-        search.updateFragmentData(shows, false);
+        search.updateFragmentData(shows);
     }
 
     public void imageReceived() {
-        FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
-        FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-        FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
-        feed.updateFragmentData(dataFragment.getSchedule(), true);
+//        FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
+//        FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+//        FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+//        feed.updateFragmentData(dataFragment.getSchedule(), true);
 //        favorites.updateFragmentData(new ArrayList<>(dataFragment.getFavorites().values()));  //null
-        if (dataFragment.getSearchResult() != null)
-            search.updateFragmentData(dataFragment.getSearchResult(), true);
+//        if (dataFragment.getSearchResult() != null)
+//            search.updateFragmentData(dataFragment.getSearchResult(), true);
     }
 
     public void search(String searchString) {
@@ -183,7 +183,7 @@ public class Controller {
             search(searchString);
         } else {
             FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
-            search.updateFragmentData(new ArrayList<TvShow>(), false);
+            search.updateFragmentData(new ArrayList<TvShow>());
         }
     }
 

@@ -56,7 +56,7 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
     }
 
     @Override
-    public void updateFragmentData(ArrayList<TvShow> shows, boolean imagesLoaded) {
-        adapter.setTvShowArrayList(shows, imagesLoaded);
+    public void updateFragmentData(ArrayList<TvShow> shows) {
+        adapter.setTvShowArrayList(shows);
     }
 }

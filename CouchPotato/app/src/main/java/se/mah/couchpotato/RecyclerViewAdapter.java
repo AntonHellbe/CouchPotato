@@ -25,9 +25,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private AppCompatActivity activity;
     private boolean imagesLoaded = false;
 
-    public void setTvShowArrayList(ArrayList<TvShow> tvShowList, boolean imagesLoaded) {
+    public void setTvShowArrayList(ArrayList<TvShow> tvShowList) {
         this.tvShowArrayList = tvShowList;
-        this.imagesLoaded = imagesLoaded;
+        imagesLoaded = false;
         notifyDataSetChanged();
     }
 
