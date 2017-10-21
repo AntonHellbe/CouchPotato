@@ -292,6 +292,7 @@ public class CommunicationService extends Service {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         t = (JSONObject) jsonArray.get(i);
                         arr[i] = mapper.readValue(t.toString(), TvShow.class);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
