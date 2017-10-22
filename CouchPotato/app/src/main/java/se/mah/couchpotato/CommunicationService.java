@@ -27,6 +27,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import se.mah.couchpotato.activitytvshow.ActivityTvShow;
+
 /**
  * @author Robin Johnsson & Jonatan Fridsten <---- Look at these 2 gays
  */
@@ -39,6 +41,7 @@ public class CommunicationService extends Service {
     private AllEpisodesTask allEpisodesTask;
     private HttpURLConnection urlConnection;
     private MainActivity activity;
+    private ActivityTvShow tvActivity;
     private ObjectMapper mapper;
     private UrlBuilder urlBuilder;
 
@@ -55,9 +58,13 @@ public class CommunicationService extends Service {
         return new LocalService();
     }
 
-    public void setActivity(MainActivity activity){
+    public void setActivity(MainActivity activity) {
         Log.d("CommunicationService","adding reference");
         this.activity = activity;
+    }
+
+    public void setTvActivity(ActivityTvShow activity) {
+        tvActivity = activity;
     }
 
 
@@ -68,10 +75,15 @@ public class CommunicationService extends Service {
             return CommunicationService.this;
         }
 
+        public CommunicationService getService(ActivityTvShow activity) {
+            setTvActivity(activity);
+            Log.d("CommunicationService", "In getService TV");
+            return CommunicationService.this;
+        }
     }
 
-    public void getAllEpisodes(String id){
-        allEpisodesTask = new AllEpisodesTask(id);
+    public void getAllEpisodes(String id, AllEpisodesListener listener){
+        allEpisodesTask = new AllEpisodesTask(id, listener);
         allEpisodesTask.execute();
     }
 
@@ -380,8 +392,8 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-                posterListener.onPosterDownloaded(bitmap);
-                activity.getController().getDataFragment().putPictureMap(id, bitmap);
+                posterListener.onPosterDownloaded(id, bitmap);
+                //activity.getController().getDataFragment().putPictureMap(id, bitmap);
                 super.onPostExecute(bitmap);
             }
 
@@ -485,9 +497,11 @@ public class CommunicationService extends Service {
         public class AllEpisodesTask extends AsyncTask<String, String, ArrayList<TvShow>>{
 
             private String id;
+            private AllEpisodesListener listener;
 
-            public AllEpisodesTask(String id){
+            public AllEpisodesTask(String id, AllEpisodesListener listener){
                 this.id = id;
+                this.listener = listener;
             }
 
             @Override
@@ -495,7 +509,7 @@ public class CommunicationService extends Service {
                 URL url;
                 String response = "";
                 String fullUrl = urlBuilder.getEpisodeList(id);
-                ArrayList<TvShow> allEpisodes = null;
+                ArrayList<TvShow> allEpisodes = new ArrayList<>();
                 HttpURLConnection httpUrlConnection = null;
                 JSONArray episodeArray = null;
                 BufferedReader br = null;
@@ -555,7 +569,7 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(ArrayList<TvShow> tvShows) {
-                activity.getController().episodesRecieved(tvShows);
+                listener.onEpisodesRetrieved(tvShows);
                 super.onPostExecute(tvShows);
             }
 

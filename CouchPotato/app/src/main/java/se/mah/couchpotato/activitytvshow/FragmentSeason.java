@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import se.mah.couchpotato.Episode;
 import se.mah.couchpotato.R;
+import se.mah.couchpotato.TvShow;
 
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
@@ -49,11 +50,8 @@ public class FragmentSeason extends Fragment {
 
     private void initializeComponent(View rootView) {
         RecyclerView rvSeason = (RecyclerView) rootView;
-        ArrayList<Episode> episodes = new ArrayList<>();
-        for (int i = 0; i < season; i++) {
-            episodes.add(new Episode());
-        }
-        RecyclerViewSeasonAdapter adapter = new RecyclerViewSeasonAdapter(episodes);
+        ArrayList<TvShow> episodes = ((ActivityTvShow) getActivity()).getController().getEpisodesForSeason(season);
+        RecyclerViewSeasonAdapter adapter = new RecyclerViewSeasonAdapter(episodes, (ActivityTvShow) getActivity());
         rvSeason.addItemDecoration(new RecyclerViewSpacing(10));
         rvSeason.setLayoutManager(new LinearLayoutManager(getActivity()));  //this might fail
         rvSeason.setAdapter(adapter);

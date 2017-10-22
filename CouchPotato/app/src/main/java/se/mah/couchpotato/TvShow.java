@@ -389,7 +389,7 @@ public class TvShow {
             "medium",
             "original"
     })
-    static class Image {
+    public static class Image {
 
         public Image(){}
 

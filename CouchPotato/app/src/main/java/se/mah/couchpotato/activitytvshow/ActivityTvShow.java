@@ -8,9 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import se.mah.couchpotato.AllEpisodesListener;
+import se.mah.couchpotato.EpisodeListener;
 import se.mah.couchpotato.R;
+import se.mah.couchpotato.TvShow;
 
 public class ActivityTvShow extends AppCompatActivity {
 
@@ -18,6 +24,8 @@ public class ActivityTvShow extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayoutSeasons;
     private ImageView ivPoster;
+    private TextView tvTitle, tvRating, tvPlot, tvAir;
+    private TvShowController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +33,10 @@ public class ActivityTvShow extends AppCompatActivity {
         setContentView(R.layout.activity_tv_show);
         initializeComponents();
         handlePosterAnimation();
-        adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), 5);   //TODO seasons from bundle
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setAdapter(adapter);
-        tabLayoutSeasons = (TabLayout) findViewById(R.id.tl_seasons);
-        tabLayoutSeasons.setupWithViewPager(viewPager);
+        controller = new TvShowController(this, getIntent().getStringExtra("id"));
     }
 
     private void initializeComponents() {
-//        ScrollView sv = (ScrollView) findViewById(R.id.sv_parent);
-//        sv.setFillViewport(true);
         ivPoster = (ImageView) findViewById(R.id.iv_id_poster);
     }
 
@@ -42,5 +44,17 @@ public class ActivityTvShow extends AppCompatActivity {
         Intent intent = getIntent();
         Bitmap poster = intent.getParcelableExtra("POSTER");
         ivPoster.setImageBitmap(poster);
+    }
+
+    public TvShowController getController() {
+        return controller;
+    }
+
+    public void updateData(int seasons) {
+        adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), seasons);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(adapter);
+        tabLayoutSeasons = (TabLayout) findViewById(R.id.tl_seasons);
+        tabLayoutSeasons.setupWithViewPager(viewPager);
     }
 }

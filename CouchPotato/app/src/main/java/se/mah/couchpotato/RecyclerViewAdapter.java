@@ -66,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             setAnimation(holder.itemView, position);
             holder.animated = true;
         }
-        if (tvShow.getShow().getImage() == null) {
+        if (tvShow.getShow().getImage().getMedium() == null) {
             holder.pbLoading.setVisibility(View.INVISIBLE);
             holder.ivPoster.setVisibility(View.VISIBLE);
             holder.ivPoster.setImageResource(android.R.drawable.sym_def_app_icon);
@@ -106,10 +106,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         @Override
-        public void onPosterDownloaded(Bitmap bitmap) {
+        public void onPosterDownloaded(String id, Bitmap bitmap) {
             ivPoster.setImageBitmap(bitmap);
             ivPoster.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.INVISIBLE);
+            ((MainActivity)activity).getController().getDataFragment().putPictureMap(id, bitmap);
             Palette.generateAsync(bitmap,this);
         }
 
@@ -123,6 +124,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     );
             Intent intent = new Intent(activity, ActivityTvShow.class);
             intent.putExtra("POSTER", ((BitmapDrawable) ivPoster.getDrawable()).getBitmap());
+            intent.putExtra("id", id);
             Bundle bundle = options.toBundle();
 //            bundle.putParcelable("POSTER", ((BitmapDrawable) ivPoster.getDrawable()).getBitmap());
 
