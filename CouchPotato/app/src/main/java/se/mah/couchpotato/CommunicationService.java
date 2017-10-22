@@ -43,7 +43,6 @@ public class CommunicationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        task = new BackgroundTask();
         return Service.START_STICKY;
     }
 
@@ -151,6 +150,11 @@ public class CommunicationService extends Service {
         }
     }
 
+    public void downloadPicture(String id, PosterListener posterListener, String url){
+        ImageLoader imLoader = new ImageLoader(id, posterListener);
+        imLoader.execute(url);
+    }
+
 
     private class SearchTask extends AsyncTask<String, String, ArrayList<TvShow>> {
 
@@ -223,16 +227,6 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute (ArrayList < TvShow > tvShows) {
                 activity.getController().searchReceived(tvShows);
-//                for (int i = 0; i < tvShows.size(); i++) {
-//                    try {
-//                        TvShow t = tvShows.get(i);
-//                        ImageLoader imLoader = new ImageLoader(i == tvShows.size() - 1);
-//                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));  //Full size image
-//                        imLoader.execute(t.getShow().getImage().getMedium(), String.valueOf(t.getShow().getId()));  //small size image
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
                 super.onPostExecute(tvShows);
             }
 
@@ -313,11 +307,6 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute(ArrayList<TvShow> tvShows) {
                 activity.getController().scheduleRecieved(tvShows);
-                for(TvShow t: tvShows){
-                    ImageLoader imLoader = new ImageLoader();
-//                    imLoader.execute(t.getShow().getImage().getOriginal(), String.valueOf(t.getShow().getId()));  //Full size image
-//                    imLoader.execute(t.getShow().getImage().getMedium(), String.valueOf(t.getShow().getId()));  //small size image, TODO can be null
-                }
                 super.onPostExecute(tvShows);
             }
 
@@ -330,13 +319,17 @@ public class CommunicationService extends Service {
         public class ImageLoader extends AsyncTask<String, String, Bitmap>{
 
             private String id;
+            private PosterListener posterListener;
+
+            public ImageLoader(String id, PosterListener posterListener){
+                this.id = id;
+                this.posterListener = posterListener;
+            }
 
             @Override
             protected Bitmap doInBackground(String... strings) {
                 URL url;
                 String urlString = strings[0].trim();
-                id = strings[1];
-                Log.d("IMAGELOADER", urlString + " " + id);
                 HttpURLConnection httpURLConnection = null;
                 InputStream inputStream = null;
                 BufferedInputStream br = null;
@@ -344,7 +337,6 @@ public class CommunicationService extends Service {
                 try{
                     url = new URL(urlString);
                     Log.d("COMMSERVICE", url.toString());
-//                    bitmap = BitmapFactory.decodeStream((InputStream)new URL(urlString).getContent());
                     httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoInput(true);
                     httpURLConnection.connect();
@@ -376,7 +368,7 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-//                Log.d("COMMSERVICE -BITMAP", bitmap.toString());
+                posterListener.onPosterDownloaded(bitmap);
                 activity.getController().getDataFragment().putPictureMap(id, bitmap);
                 super.onPostExecute(bitmap);
             }

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -157,6 +158,11 @@ public class Controller {
 //        favorites.updateFragmentData(new ArrayList<>(dataFragment.getFavorites().values()));  //null
 //        if (dataFragment.getSearchResult() != null)
 //            search.updateFragmentData(dataFragment.getSearchResult(), true);
+    }
+
+    public void downloadPoster(String url, String id, PosterListener posterListener){
+        communicationService.downloadPicture(id, posterListener, url);
+
     }
 
     public void search(String searchString) {
