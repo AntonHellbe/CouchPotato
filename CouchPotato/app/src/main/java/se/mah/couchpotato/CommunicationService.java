@@ -32,8 +32,7 @@ import java.util.Arrays;
  */
 
 public class CommunicationService extends Service {
-
-    private Controller controller;
+    
     private SearchTask searchTask;
     private FavoriteTask favoriteTask;
     private ScheduleTask scheduleTask;
@@ -438,6 +437,7 @@ public class CommunicationService extends Service {
                         }
                     }
                 }
+
                 TvShow episodeObject = null;
                 try {
                     fetchedObject = new JSONObject(response);
