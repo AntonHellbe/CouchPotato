@@ -86,7 +86,8 @@ public class CommunicationService extends Service {
     }
 
     public void sendEpisodeTask(String id, String season, String episode) {
-        
+        EpisodeLoader epLoader = new EpisodeLoader(id, episode, season);
+        epLoader.execute();
     }
 
     private class FavoriteTask extends AsyncTask<String, String, TvShow> {

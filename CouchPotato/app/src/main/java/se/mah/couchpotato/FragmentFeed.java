@@ -47,7 +47,7 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            getController().getEpisode();
             }
         });
     }

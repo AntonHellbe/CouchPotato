@@ -168,7 +168,7 @@ public class Controller {
     }
 
     public void getEpisode() {
-
+        communicationService.sendEpisodeTask("1", "1", "1");
     }
 
     private void sendInitialRequests() {
