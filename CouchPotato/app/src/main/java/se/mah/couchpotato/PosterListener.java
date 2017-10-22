@@ -7,5 +7,5 @@ import android.graphics.Bitmap;
  */
 
 public interface PosterListener {
-    void onPosterDownloaded(Bitmap bitmap);
+    void onPosterDownloaded(Bitmap bitmap, String id);
 }
