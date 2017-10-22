@@ -89,11 +89,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         @Override
-        public void onPosterDownloaded(Bitmap bitmap, String id) {
+        public void onPosterDownloaded(Bitmap bitmap) {
             ivPoster.setImageBitmap(bitmap);
             ivPoster.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.INVISIBLE);
-            ((MainActivity) activity).getController().getDataFragment().putPictureMap(id, bitmap);
         }
     }
 }
