@@ -22,14 +22,20 @@ public class TvShowController implements AllEpisodesListener {
 
     private ActivityTvShow activity;
     private CommunicationService communicationService;
-    private boolean bound = false;
     private TvShowDataFragment dataFragment;
+    private ServiceConnection serviceConnection;
 
     public TvShowController(ActivityTvShow activity, String tvShowId) {
         this.activity = activity;
         initializeDataFragment();
         dataFragment.setTvShowId(tvShowId);
         initializeCommunication();
+        populateViewPager();
+    }
+
+    private void populateViewPager() {
+        if (dataFragment.getEpisodes() != null)
+            activity.updateData(dataFragment.getSeasons());
     }
 
     private void initializeDataFragment() {
@@ -43,7 +49,7 @@ public class TvShowController implements AllEpisodesListener {
 
     private void initializeCommunication() {
         Intent intent = new Intent(activity, CommunicationService.class);
-        ServiceConnection serviceConnection = new ServiceConnection();
+        serviceConnection = new ServiceConnection();
         activity.bindService(intent, serviceConnection,0);
     }
 
@@ -79,6 +85,19 @@ public class TvShowController implements AllEpisodesListener {
         return dataFragment;
     }
 
+    public void onPause() {
+        if(activity.isFinishing())
+            activity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
+    }
+
+    public void onDestroy() {
+        if (dataFragment.isBound()) {
+            activity.unbindService(serviceConnection);
+            if (dataFragment != null)
+                dataFragment.setBound(false);
+        }
+    }
+
 
     private class ServiceConnection implements android.content.ServiceConnection{
         @Override
@@ -86,13 +105,13 @@ public class TvShowController implements AllEpisodesListener {
             CommunicationService.LocalService ls = (CommunicationService.LocalService) service;
             communicationService = ls.getService(activity);
             Log.d("Controller","In onServiceConnected");
-            bound = true;
+            dataFragment.setBound(true);
             getEpisodes();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            bound = false;
+            dataFragment.setBound(false);
         }
     }
 

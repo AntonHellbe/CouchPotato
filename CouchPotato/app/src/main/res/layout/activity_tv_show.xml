@@ -82,17 +82,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ProgressBar
+                android:id="@+id/pb_loading_episodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:indeterminate="true"/>
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tl_seasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_alignParentTop="true"
+                app:tabMode="scrollable"
+                app:tabTextColor="@drawable/bnv_tab_item_foreground_text_color"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tl_seasons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:tabMode="fixed"
-            app:tabTextColor="@drawable/bnv_tab_item_foreground_text_color" />
+
 
         <se.mah.couchpotato.activitytvshow.ScrollableViewPager
             android:id="@+id/view_pager"

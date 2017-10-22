@@ -20,6 +20,7 @@ public class TvShowDataFragment extends Fragment {
     private ArrayList<TvShow> episodes;
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
     private int seasons;
+    private boolean bound = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,5 +58,13 @@ public class TvShowDataFragment extends Fragment {
 
     public void setSeasons(int seasons) {
         this.seasons = seasons;
+    }
+
+    public boolean isBound() {
+        return bound;
+    }
+
+    public void setBound(boolean bound) {
+        this.bound = bound;
     }
 }

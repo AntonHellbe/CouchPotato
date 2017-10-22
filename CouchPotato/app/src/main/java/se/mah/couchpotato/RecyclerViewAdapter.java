@@ -66,6 +66,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             setAnimation(holder.itemView, position);
             holder.animated = true;
         }
+        if (tvShow.getShow().getImage() == null)
+            return;
         if (tvShow.getShow().getImage().getMedium() == null) {
             holder.pbLoading.setVisibility(View.INVISIBLE);
             holder.ivPoster.setVisibility(View.VISIBLE);

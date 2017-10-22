@@ -6,7 +6,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ public class ActivityTvShow extends AppCompatActivity {
     private SeasonViewPagerAdapter adapter;
     private ViewPager viewPager;
     private TabLayout tabLayoutSeasons;
+    private ProgressBar pbLoading;
     private ImageView ivPoster;
     private TextView tvTitle, tvRating, tvPlot, tvAir;
     private TvShowController controller;
@@ -38,6 +41,7 @@ public class ActivityTvShow extends AppCompatActivity {
 
     private void initializeComponents() {
         ivPoster = (ImageView) findViewById(R.id.iv_id_poster);
+        pbLoading = (ProgressBar) findViewById(R.id.pb_loading_episodes);
     }
 
     private void handlePosterAnimation() {
@@ -56,5 +60,20 @@ public class ActivityTvShow extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayoutSeasons = (TabLayout) findViewById(R.id.tl_seasons);
         tabLayoutSeasons.setupWithViewPager(viewPager);
+        pbLoading.setVisibility(View.INVISIBLE);
+        tabLayoutSeasons.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        controller.onPause();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        controller.onDestroy();
     }
 }

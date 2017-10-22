@@ -50,7 +50,6 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(RecyclerViewSeasonAdapter.ViewHolder holder, int position) {
         TvShow episode = episodes.get(position);
-        Log.v("BBBBBBBBBB", String.valueOf(episode.getShow() == null));
         holder.tvTitle.setText(episode.getName());
         String summary = (String) episode.getSummary();
         if (summary != null) {
@@ -59,29 +58,30 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
         } else
             summary = "";
         holder.tvPlot.setText(summary);
-
+        String number = "S" + (episode.getSeason() < 10 ? "0" + String.valueOf(episode.getSeason()) : String.valueOf(episode.getSeason())) + "E" + (episode.getNumber() < 10 ? "0" + String.valueOf(episode.getNumber()) : String.valueOf(episode.getNumber()));
+        holder.tvNumber.setText(number);
 //        TvShow.Image im = (TvShow.Image) episode.getImage();
-        if (episode.getImage() == null) {   //TODO get actual URL
-            holder.pbLoading.setVisibility(View.INVISIBLE);
-            holder.ivPoster.setVisibility(View.VISIBLE);
-            holder.ivPoster.setImageResource(android.R.drawable.sym_def_app_icon);
-        } else {
-            Bitmap poster = activity.getController().getDataFragment().getPicture(episode.getId().toString());
-            if (poster != null) {
-                holder.pbLoading.setVisibility(View.INVISIBLE);
-                holder.ivPoster.setVisibility(View.VISIBLE);
-                holder.ivPoster.setImageBitmap(poster);
-            } else {
-                holder.pbLoading.setVisibility(View.VISIBLE);
-                holder.ivPoster.setVisibility(View.INVISIBLE);
-                activity.getController().downloadPoster(episode.getImage().getMedium(), episode.getId().toString(), holder);
-            }
-        }
+//        if (im.getMedium() == null) {
+//            holder.pbLoading.setVisibility(View.INVISIBLE);
+//            holder.ivPoster.setVisibility(View.VISIBLE);
+//            holder.ivPoster.setImageResource(android.R.drawable.sym_def_app_icon);
+//        } else {
+//            Bitmap poster = activity.getController().getDataFragment().getPicture(episode.getId().toString());
+//            if (poster != null) {
+//                holder.pbLoading.setVisibility(View.INVISIBLE);
+//                holder.ivPoster.setVisibility(View.VISIBLE);
+//                holder.ivPoster.setImageBitmap(poster);
+//            } else {
+//                holder.pbLoading.setVisibility(View.VISIBLE);
+//                holder.ivPoster.setVisibility(View.INVISIBLE);
+//                activity.getController().downloadPoster(im.getMedium(), episode.getId().toString(), holder);
+//            }
+//        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener {
         ImageView ivPoster;
-        TextView tvTitle, tvPlot, tvScore;
+        TextView tvTitle, tvPlot, tvScore, tvNumber;
         ProgressBar pbLoading;
 
         public ViewHolder(View itemView) {
@@ -90,6 +90,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
             tvTitle = itemView.findViewById(R.id.tv_episode_title);
             tvPlot = itemView.findViewById(R.id.tv_episode_plot);
             tvScore = itemView.findViewById(R.id.tv_episode_rating);
+            tvNumber = itemView.findViewById(R.id.tv_episode_number);
             pbLoading = itemView.findViewById(R.id.pb_loading_episode_poster);
         }
 
