@@ -442,6 +442,8 @@ public class CommunicationService extends Service {
                 try {
                     fetchedObject = new JSONObject(response);
                     episodeObject = mapper.readValue(fetchedObject.toString(), TvShow.class);
+                    Log.v("COMMSERVICE", episodeObject.getName() + " " + episodeObject.getSeason() + " " + episodeObject.getNumber());
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
