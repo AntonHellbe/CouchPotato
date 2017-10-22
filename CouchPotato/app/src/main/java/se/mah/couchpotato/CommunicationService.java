@@ -40,6 +40,7 @@ public class CommunicationService extends Service {
     private HttpURLConnection urlConnection;
     private MainActivity activity;
     private ObjectMapper mapper;
+    private UrlBuilder urlBuilder;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -50,6 +51,7 @@ public class CommunicationService extends Service {
     public IBinder onBind(Intent intent) {
         Log.d("CommunicationService", "In onBind");
         mapper = new ObjectMapper();
+        urlBuilder = new UrlBuilder();
         return new LocalService();
     }
 
@@ -371,6 +373,89 @@ public class CommunicationService extends Service {
                 posterListener.onPosterDownloaded(bitmap);
                 activity.getController().getDataFragment().putPictureMap(id, bitmap);
                 super.onPostExecute(bitmap);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+        }
+
+        public class EpisodeLoader extends AsyncTask<String, String, TvShow>{
+
+            private String id;
+            private String episodeNumber;
+            private String season;
+
+            public EpisodeLoader(String id, String episodeNumber, String season){
+                this.id = id;
+                this.episodeNumber = episodeNumber;
+                this.season = season;
+            }
+
+            @Override
+            protected TvShow doInBackground(String... strings) {
+                URL url;
+                String response = "";
+                String fullUrl = urlBuilder.getEpisodeByNumber(id, season, episodeNumber);
+                JSONObject fetchedObject = null;
+                BufferedReader br = null;
+                InputStream instream = null;
+                try {
+                    url = new URL(fullUrl);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    instream = new BufferedInputStream(urlConnection.getInputStream());
+                    br = new BufferedReader(new InputStreamReader(instream));
+                    response = br.readLine();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (br != null) {
+                        try {
+                            br.close();
+
+                        } catch (IOException e) {
+
+                        }
+                    }
+                    if (instream != null) {
+                        try {
+                            instream.close();
+                        } catch (IOException e) {
+
+                        }
+                    }
+                    if (urlConnection != null) {
+                        try {
+                            urlConnection.disconnect();
+                        } catch (NullPointerException e) {
+
+                        }
+                    }
+                }
+                TvShow episodeObject = null;
+                try {
+                    fetchedObject = new JSONObject(response);
+                    episodeObject = mapper.readValue(fetchedObject.toString(), TvShow.class);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
+                }
+
+                return episodeObject;
+
+
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(TvShow tvShow) {
+                super.onPostExecute(tvShow);
             }
 
             @Override

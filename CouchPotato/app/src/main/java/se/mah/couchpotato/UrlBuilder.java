@@ -41,7 +41,7 @@ public class UrlBuilder {
         return SHOW_BY_ID + id + EPISODES;
     }
 
-    public String getEpisodeByNumber(int id, int season, int episode){
+    public String getEpisodeByNumber(String id, String season, String episode){
         return SHOW_BY_ID + id + EPISODE_BY_SEASON + season + EPISODE_BY_NUMBER + episode;
     }
 
