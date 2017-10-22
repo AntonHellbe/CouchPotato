@@ -62,7 +62,7 @@ public class TvShow {
     @JsonProperty("runtime")
     private Integer runtime;
     @JsonProperty("image")
-    private Object image;
+    private Image image;
     @JsonProperty("summary")
     private Object summary;
     @JsonProperty("_links")
@@ -71,6 +71,7 @@ public class TvShow {
     private Embedded embedded;
     @JsonProperty("Show")
     private Show show;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -177,12 +178,12 @@ public class TvShow {
     }
 
     @JsonProperty("image")
-    public Object getImage() {
+    public Image getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(Object image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 
