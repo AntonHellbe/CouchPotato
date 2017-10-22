@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_test_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="OPEN SETTINGS"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_feed"
         android:layout_width="match_parent"

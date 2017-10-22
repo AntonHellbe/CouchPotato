@@ -39,17 +39,6 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));
         adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
-
-
-        //TODO remove test stuff
-
-        Button test = (Button) rootView.findViewById(R.id.btn_test_settings);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            getController().getEpisode();
-            }
-        });
     }
 
     @Override

@@ -89,8 +89,7 @@
         <se.mah.couchpotato.activitytvshow.ScrollableViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="100dp"
+            android:layout_height="600dp"
             android:layout_weight="1" />
 
     </LinearLayout>

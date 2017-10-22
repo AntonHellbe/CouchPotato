@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,7 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewToAnimate.startAnimation(animation);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener, View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener, View.OnClickListener, Palette.PaletteAsyncListener {
         boolean animated = false;
         ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
@@ -108,6 +110,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             ivPoster.setImageBitmap(bitmap);
             ivPoster.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.INVISIBLE);
+            Palette.generateAsync(bitmap,this);
         }
 
         @Override
@@ -126,6 +129,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             ActivityCompat.startActivity(activity, intent, bundle);
             //intent.putExtra("id", id);
             //activity.startActivity(intent);
+        }
+
+        @Override
+        public void onGenerated(Palette palette) {
+            Palette.Swatch vibrant = palette.getVibrantSwatch();
+            if (vibrant != null) {
+                ((CardView) itemView).setCardBackgroundColor(vibrant.getRgb());
+                tvTitle.setTextColor(vibrant.getTitleTextColor());
+            }
         }
     }
 }
