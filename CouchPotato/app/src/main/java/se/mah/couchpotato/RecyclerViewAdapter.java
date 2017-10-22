@@ -56,10 +56,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             setAnimation(holder.itemView, position);
             holder.animated = true;
         }
-        if (imagesLoaded) {
+        Bitmap poster = ((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getImage().getMedium());
+        if (poster != null) {
             holder.pbLoading.setVisibility(View.INVISIBLE);
             holder.ivPoster.setVisibility(View.VISIBLE);
-            holder.ivPoster.setImageBitmap(((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString()));
+            holder.ivPoster.setImageBitmap(poster);
+        }
+        else {
+            holder.pbLoading.setVisibility(View.VISIBLE);
+            holder.ivPoster.setVisibility(View.INVISIBLE);
+            
         }
     }
 
@@ -69,7 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewToAnimate.startAnimation(animation);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener {
         boolean animated = false;
         ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
@@ -80,6 +86,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             ivPoster = itemView.findViewById(R.id.iv_poster);
             tvTitle = itemView.findViewById(R.id.tv_title);
             pbLoading = itemView.findViewById(R.id.pb_loading_poster);
+        }
+
+        @Override
+        public void onPosterDownloaded(Bitmap bitmap) {
+            ivPoster.setImageBitmap(bitmap);
+            ivPoster.setVisibility(View.VISIBLE);
+            pbLoading.setVisibility(View.INVISIBLE);
         }
     }
 }
