@@ -36,6 +36,7 @@ public class CommunicationService extends Service {
     private SearchTask searchTask;
     private FavoriteTask favoriteTask;
     private ScheduleTask scheduleTask;
+    private AllEpisodesTask allEpisodesTask;
     private HttpURLConnection urlConnection;
     private MainActivity activity;
     private ObjectMapper mapper;
@@ -69,6 +70,11 @@ public class CommunicationService extends Service {
 
     }
 
+    public void getAllEpisodes(String id){
+        allEpisodesTask = new AllEpisodesTask(id);
+        allEpisodesTask.execute();
+    }
+
     public void sendSearchTask(String searchParam) {
         searchTask = new SearchTask();
         searchTask.execute(searchParam);
@@ -84,8 +90,8 @@ public class CommunicationService extends Service {
         scheduleTask.execute();
     }
 
-    public void sendEpisodeTask(String id, String season, String episode) {
-        EpisodeLoader epLoader = new EpisodeLoader(id, episode, season);
+    public void sendEpisodeTask(String id, String season, String episode, EpisodeListener episodeListener) {
+        EpisodeLoader epLoader = new EpisodeLoader(id, episode, season, episodeListener);
         epLoader.execute();
     }
 
@@ -100,7 +106,7 @@ public class CommunicationService extends Service {
             InputStream inStream = null;
             try {
                 url = new URL(UrlBuilder.SHOW_BY_ID + id);
-                Log.d("CommunicationService", "in doInBackground, message to send: " + url);
+//                Log.d("CommunicationService", "in doInBackground, message to send: " + url);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 inStream = new BufferedInputStream(urlConnection.getInputStream());
                 br = new BufferedReader((new InputStreamReader(inStream)));
@@ -390,11 +396,13 @@ public class CommunicationService extends Service {
             private String id;
             private String episodeNumber;
             private String season;
+            private EpisodeListener episodeListener;
 
-            public EpisodeLoader(String id, String episodeNumber, String season){
+            public EpisodeLoader(String id, String episodeNumber, String season, EpisodeListener episodeListener){
                 this.id = id;
                 this.episodeNumber = episodeNumber;
                 this.season = season;
+                this.episodeListener = episodeListener;
             }
 
             @Override
@@ -462,7 +470,92 @@ public class CommunicationService extends Service {
 
             @Override
             protected void onPostExecute(TvShow tvShow) {
+                episodeListener.onEpisodeRetrieved(tvShow);
                 super.onPostExecute(tvShow);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+        }
+
+
+        public class AllEpisodesTask extends AsyncTask<String, String, ArrayList<TvShow>>{
+
+            private String id;
+
+            public AllEpisodesTask(String id){
+                this.id = id;
+            }
+
+            @Override
+            protected ArrayList<TvShow> doInBackground(String... strings) {
+                URL url;
+                String response = "";
+                String fullUrl = urlBuilder.getEpisodeList(id);
+                ArrayList<TvShow> allEpisodes = null;
+                HttpURLConnection httpUrlConnection = null;
+                JSONArray episodeArray = null;
+                BufferedReader br = null;
+                InputStream instream = null;
+                try {
+                    url = new URL(fullUrl);
+                    httpUrlConnection = (HttpURLConnection) url.openConnection();
+                    instream = new BufferedInputStream(httpUrlConnection.getInputStream());
+                    br = new BufferedReader(new InputStreamReader(instream));
+                    response = br.readLine();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (br != null) {
+                        try {
+                            br.close();
+
+                        } catch (IOException e) {
+
+                        }
+                    }
+                    if (instream != null) {
+                        try {
+                            instream.close();
+                        } catch (IOException e) {
+
+                        }
+                    }
+                    if (httpUrlConnection != null) {
+                        try {
+                            httpUrlConnection.disconnect();
+                        } catch (NullPointerException e) {
+
+                        }
+                    }
+                }
+
+                try {
+                    episodeArray = new JSONArray(response);
+                    JSONObject temp;
+                    for (int i = 0; i < episodeArray.length(); i++) {
+                        temp = (JSONObject) episodeArray.get(i);
+                        allEpisodes.add(mapper.readValue(temp.toString(), TvShow.class));
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
+                }
+
+                return allEpisodes;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<TvShow> tvShows) {
+                activity.getController().episodesRecieved(tvShows);
+                super.onPostExecute(tvShows);
             }
 
             @Override

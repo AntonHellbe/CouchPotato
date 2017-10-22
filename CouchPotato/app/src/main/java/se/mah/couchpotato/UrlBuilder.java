@@ -37,7 +37,7 @@ public class UrlBuilder {
         return SHOW_BY_IMDB + imdb;
     }
 
-    public String getEpisodeList(int id){
+    public String getEpisodeList(String id){
         return SHOW_BY_ID + id + EPISODES;
     }
 

@@ -158,6 +158,10 @@ public class Controller {
         }
     }
 
+    public void episodesRecieved(ArrayList<TvShow> episodeList){
+        // @TODO - Do something with the recieved episodes
+    }
+
     public void search(String searchString) {
         if (communicationService != null)
             communicationService.sendSearchTask(searchString);
@@ -167,8 +171,8 @@ public class Controller {
         }
     }
 
-    public void getEpisode() {
-        communicationService.sendEpisodeTask("1", "1", "1");
+    public void getEpisode(EpisodeListener episodeListener) {
+        communicationService.sendEpisodeTask("1", "1", "1", episodeListener);
     }
 
     private void sendInitialRequests() {
