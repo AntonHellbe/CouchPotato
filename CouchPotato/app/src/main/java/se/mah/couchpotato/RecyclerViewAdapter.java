@@ -2,6 +2,9 @@ package se.mah.couchpotato;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -108,9 +111,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
+            String transitionPoster = activity.getResources().getString(R.string.transition_show_poster);
+            String transitionTitle = activity.getResources().getString(R.string.transition_show_title);
+            ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                            ivPoster,   // The view which starts the transition
+                            transitionPoster    // The transitionName of the view we’re transitioning to
+                    );
             Intent intent = new Intent(activity, ActivityEpisode.class);
-            intent.putExtra("id", id);
-            activity.startActivity(intent);
+            Bundle bundle = new Bundle();
+            ActivityCompat.startActivity(activity, intent, options.toBundle());
+            //intent.putExtra("id", id);
+            //activity.startActivity(intent);
         }
     }
 }

@@ -27,7 +27,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/sym_def_app_icon"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:transitionName="@string/transition_show_poster"/>
 
         </RelativeLayout>
 
@@ -38,7 +39,8 @@
             android:text="Title"
             android:textAlignment="center"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:transitionName="@string/transition_show_title"/>
 
         <!--Eventuell plot-->
         <!--<TextView-->
