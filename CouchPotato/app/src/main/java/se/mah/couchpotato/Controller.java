@@ -150,37 +150,37 @@ public class Controller {
         search.updateFragmentData(shows);
     }
 
-    public void imageReceived() {
-//        FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
-//        FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-//        FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
-//        feed.updateFragmentData(dataFragment.getSchedule(), true);
-//        favorites.updateFragmentData(new ArrayList<>(dataFragment.getFavorites().values()));  //null
-//        if (dataFragment.getSearchResult() != null)
-//            search.updateFragmentData(dataFragment.getSearchResult(), true);
-    }
-
-    public void downloadPoster(String url, String id, PosterListener posterListener){
-        communicationService.downloadPicture(id, posterListener, url);
-
+    public void downloadPoster(String url, String id, PosterListener posterListener) {
+        if (communicationService != null)
+            communicationService.downloadPicture(id, posterListener, url);
+        else {
+            dataFragment.getDownloadQueue().add(new DownloadImageRequest(url, id, posterListener));
+        }
     }
 
     public void search(String searchString) {
         if (communicationService != null)
             communicationService.sendSearchTask(searchString);
-        else
-            dataFragment.getSearhQueue().add(searchString);
+        else {
+            SearchQueryObject searchQuery = new SearchQueryObject(searchString);
+            dataFragment.getDownloadQueue().add(searchQuery);
+        }
+    }
+
+    public void getEpisode() {
+
     }
 
     private void sendInitialRequests() {
         if (dataFragment.getSchedule() == null)
             communicationService.sendSchedule();
-        if (!dataFragment.getSearhQueue().isEmpty()) {
-            String searchString = dataFragment.getSearhQueue().pop();
-            communicationService.sendSearchTask(searchString);
+        while (!dataFragment.getDownloadQueue().isEmpty()) {
+            DownloadRequest downloadRequest = dataFragment.getDownloadQueue().pop();
+            if (downloadRequest instanceof SearchQueryObject)
+                communicationService.sendSearchTask(downloadRequest.getQuery());
+            else if (downloadRequest instanceof DownloadImageRequest)
+                communicationService.downloadPicture(((DownloadImageRequest) downloadRequest).getId(), ((DownloadImageRequest) downloadRequest).getPosterListener(), ((DownloadImageRequest) downloadRequest).getQuery());
         }
-//        if (dataFragment.getFavorites() == null)
-//            communicationService.sendAddFavorite("");
     }
 
     public void onSearchTextChanged(String searchString) {

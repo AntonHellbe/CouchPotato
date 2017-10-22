@@ -24,7 +24,7 @@ public class DataFragment extends Fragment {
     private ArrayList<TvShow> searchResult;
     private HashMap<String, TvShow> favorites;
     private boolean allowNavigation = true;
-    private ArrayDeque<String> searhQueue = new ArrayDeque<>();
+    private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
 
     @Override
@@ -73,14 +73,6 @@ public class DataFragment extends Fragment {
         this.allowNavigation = allowNavigation;
     }
 
-    public ArrayDeque<String> getSearhQueue() {
-        return searhQueue;
-    }
-
-    public void setSearhQueue(ArrayDeque<String> searhQueue) {
-        this.searhQueue = searhQueue;
-    }
-
     public void putPictureMap(String id, Bitmap bitmap){
         pictureMap.put(id, bitmap);
     }
@@ -95,5 +87,13 @@ public class DataFragment extends Fragment {
 
     public void setSearchResult(ArrayList<TvShow> searchResult) {
         this.searchResult = searchResult;
+    }
+
+    public ArrayDeque<DownloadRequest> getDownloadQueue() {
+        return downloadQueue;
+    }
+
+    public void setDownloadQueue(ArrayDeque<DownloadRequest> downloadQueue) {
+        this.downloadQueue = downloadQueue;
     }
 }

@@ -12,9 +12,11 @@ import android.view.View;
 public class RecyclerViewStaggeredSpacing extends RecyclerView.ItemDecoration {
 
     private int spacing;
+    private int columns;
 
-    public RecyclerViewStaggeredSpacing(int spacing) {
+    public RecyclerViewStaggeredSpacing(int spacing, int columns) {
         this.spacing = spacing;
+        this.columns = columns;
     }
 
     @Override
@@ -25,9 +27,12 @@ public class RecyclerViewStaggeredSpacing extends RecyclerView.ItemDecoration {
         if (spanIndex == 0) {
             outRect.left = spacing;
             outRect.right = spacing / 2;
-        } else {
+        } else if (spanIndex == columns - 1) {
             outRect.left = spacing / 2;
             outRect.right = spacing;
+        } else {
+            outRect.left = spacing / 2;
+            outRect.right = spacing / 2;
         }
     }
 }

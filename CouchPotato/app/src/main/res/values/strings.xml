@@ -10,7 +10,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
 
-   
+
     <string name="settings_language">Language</string>
     <string name="settings_country">Country</string>
     <string name="settings_theme">Theme</string>
@@ -22,4 +22,5 @@
         <item>United States</item>
         <item>United Kingdoms</item>
     </array>
+    <string name="title_activity_episode">ActivityEpisode</string>
 </resources>

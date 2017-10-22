@@ -13,6 +13,8 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
  */
@@ -32,8 +34,9 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
 
     private void initializeComponents(View rootView) {
         recyclerViewShows = (RecyclerView) rootView.findViewById(R.id.rv_feed);
-        recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10));
-        recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        int columns = getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE ? 4 : 2;
+        recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10, columns));
+        recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));
         adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
 
@@ -44,8 +47,7 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(((MainActivity) getActivity()), SettingsActivity.class);
-//                getActivity().startActivity(i);
+
             }
         });
     }
@@ -58,5 +60,12 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
     @Override
     public void updateFragmentData(ArrayList<TvShow> shows) {
         adapter.setTvShowArrayList(shows);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getController().getDataFragment().getSchedule() != null)
+            adapter.setTvShowArrayList(getController().getDataFragment().getSchedule());
     }
 }

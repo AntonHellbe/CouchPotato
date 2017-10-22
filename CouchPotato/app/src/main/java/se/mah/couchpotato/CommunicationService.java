@@ -85,6 +85,10 @@ public class CommunicationService extends Service {
         scheduleTask.execute();
     }
 
+    public void sendEpisodeTask(String id, String season, String episode) {
+        
+    }
+
     private class FavoriteTask extends AsyncTask<String, String, TvShow> {
 
         @Override

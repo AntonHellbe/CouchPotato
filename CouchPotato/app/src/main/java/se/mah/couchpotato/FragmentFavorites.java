@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
  */
@@ -31,8 +33,9 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
 
     private void initalizeComponents(View rootView) {
         recyclerViewShows = (RecyclerView) rootView.findViewById(R.id.rv_favorites);
-        recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10));
-        recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        int columns = getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE ? 4 : 2;
+        recyclerViewShows.addItemDecoration(new RecyclerViewStaggeredSpacing(10, columns));
+        recyclerViewShows.setLayoutManager(new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL));
         adapter = new RecyclerViewAdapter((AppCompatActivity) getActivity());
         recyclerViewShows.setAdapter(adapter);
     }

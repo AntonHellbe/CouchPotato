@@ -66,6 +66,13 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="16dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Airs at 21:00 on Mondays"
+                android:textStyle="italic"
+                android:textColor="@color/white"/>
+
         </LinearLayout>
 
         <android.support.design.widget.TabLayout
