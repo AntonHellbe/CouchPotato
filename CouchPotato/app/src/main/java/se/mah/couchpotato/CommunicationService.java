@@ -453,6 +453,7 @@ public class CommunicationService extends Service {
                     Log.v("COMMSERVICE", episodeObject.getName() + " " + episodeObject.getSeason() + " " + episodeObject.getNumber());
 
 
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
