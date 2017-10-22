@@ -2,6 +2,7 @@ package se.mah.couchpotato;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -112,15 +113,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view) {
             String transitionPoster = activity.getResources().getString(R.string.transition_show_poster);
-            String transitionTitle = activity.getResources().getString(R.string.transition_show_title);
             ActivityOptionsCompat options =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
                             ivPoster,   // The view which starts the transition
                             transitionPoster    // The transitionName of the view we’re transitioning to
                     );
-            Intent intent = new Intent(activity, ActivityEpisode.class);
-            Bundle bundle = new Bundle();
-            ActivityCompat.startActivity(activity, intent, options.toBundle());
+            Intent intent = new Intent(activity, ActivityTvShow.class);
+            intent.putExtra("POSTER", ((BitmapDrawable) ivPoster.getDrawable()).getBitmap());
+            Bundle bundle = options.toBundle();
+//            bundle.putParcelable("POSTER", ((BitmapDrawable) ivPoster.getDrawable()).getBitmap());
+
+            ActivityCompat.startActivity(activity, intent, bundle);
             //intent.putExtra("id", id);
             //activity.startActivity(intent);
         }
