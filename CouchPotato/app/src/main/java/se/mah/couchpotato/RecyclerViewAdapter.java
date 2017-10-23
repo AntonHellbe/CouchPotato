@@ -20,7 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Random;
 
 import se.mah.couchpotato.activitytvshow.ActivityTvShow;
 
@@ -63,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.show = tvShow;
         holder.tvTitle.setText(tvShow.getShow().getName());
         if (!holder.animated) {
-            setAnimation(holder.itemView, position);
+            setAnimation(holder.itemView);
             holder.animated = true;
         }
         if (tvShow.getShow().getImage() == null)
@@ -86,9 +86,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    private void setAnimation(View viewToAnimate, int position) {
-        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_up);
-        animation.setStartOffset(position * 10);
+    private void setAnimation(View viewToAnimate) {
+        Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_fade_in);
+        animation.setStartOffset(new Random().nextInt(501));
         viewToAnimate.startAnimation(animation);
     }
 
