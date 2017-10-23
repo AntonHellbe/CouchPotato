@@ -1,5 +1,8 @@
 package se.mah.couchpotato;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -39,7 +42,7 @@ import java.util.Map;
         "_embedded"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TvShow {
+public class TvShow{
 
     public TvShow() {}
 

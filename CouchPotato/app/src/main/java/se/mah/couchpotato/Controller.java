@@ -90,14 +90,6 @@ public class Controller {
         }
     }
 
-
-    public void sendTest() {
-        //communicationService.setController(this);
-        communicationService.sendSearchTask("girls");
-        communicationService.sendAddFavorite("1");
-        communicationService.sendSchedule();
-    }
-
     //TODO kan också vara en string id, vilket som är smidigast
     public void addFavourite(TvShow show) {
         Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
