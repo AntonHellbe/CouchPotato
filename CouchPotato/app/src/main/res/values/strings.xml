@@ -5,6 +5,7 @@
     <string name="title_favorites">Favorites</string>
     
     <string name="transition_show_poster">TransitionShowPosterAnimation</string>
+    <string name="transition_show_poster_episode">TransitionShowPosterAnimationEpisode</string>
     <string name="transition_show_title">TransitionShowTitleAnimation</string>
 
     <string name="search">Search</string>

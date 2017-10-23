@@ -25,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/sym_def_app_icon"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:transitionName="@string/transition_show_poster_episode"/>
 
         </RelativeLayout>
 

@@ -4,9 +4,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,10 +19,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import se.mah.couchpotato.activtysettings.ActivitySettings;
+
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
     private Controller controller;
     private ContainerFragment containerFragment;
+    private FloatingActionButton fabSettings;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -61,8 +66,21 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         controller = new Controller(this);
+        initializeComponents();
         //TODO flytta detta till controller
         fragmentHandling(savedInstanceState);
+    }
+
+    private void initializeComponents() {
+        fabSettings = (FloatingActionButton) findViewById(R.id.fab);
+        final MainActivity activity = this;
+        fabSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(activity, ActivitySettings.class);
+                activity.startActivity(i);
+            }
+        });
     }
 
     //@TODO borde vara i kontrollern
