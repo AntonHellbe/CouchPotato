@@ -1,11 +1,17 @@
 package se.mah.couchpotato.activitytvshow;
 
+import android.animation.Animator;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -79,7 +85,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
 //        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PosterListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener {
         ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvNumber;
         ProgressBar pbLoading;
@@ -92,7 +98,6 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
             tvScore = itemView.findViewById(R.id.tv_episode_rating);
             tvNumber = itemView.findViewById(R.id.tv_episode_number);
             pbLoading = itemView.findViewById(R.id.pb_loading_episode_poster);
-            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -101,12 +106,6 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
             ivPoster.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.INVISIBLE);
             activity.getController().getDataFragment().putPicture(id, bitmap);
-        }
-
-        @Override
-        public void onClick(View view) {
-            EpisodeDialog dialog = new EpisodeDialog();
-            dialog.show(activity.getFragmentManager(), "EPISODE");
         }
     }
 }

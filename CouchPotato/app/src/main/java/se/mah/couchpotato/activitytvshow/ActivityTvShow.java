@@ -2,11 +2,16 @@ package se.mah.couchpotato.activitytvshow;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -23,7 +28,7 @@ import se.mah.couchpotato.TvShow;
 public class ActivityTvShow extends AppCompatActivity {
 
     private SeasonViewPagerAdapter adapter;
-    private ViewPager viewPager;
+    private ScrollableViewPager viewPager;
     private TabLayout tabLayoutSeasons;
     private ProgressBar pbLoading;
     private ImageView ivPoster;
@@ -56,8 +61,11 @@ public class ActivityTvShow extends AppCompatActivity {
 
     public void updateData(int seasons) {
         adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), seasons);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager = (ScrollableViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
+        Point p = new Point();
+        getWindowManager().getDefaultDisplay().getSize(p);
+        viewPager.setHardCodedHeight(p.y / 2);
         tabLayoutSeasons = (TabLayout) findViewById(R.id.tl_seasons);
         tabLayoutSeasons.setupWithViewPager(viewPager);
         pbLoading.setVisibility(View.INVISIBLE);
@@ -68,7 +76,6 @@ public class ActivityTvShow extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         controller.onPause();
-
     }
 
     @Override

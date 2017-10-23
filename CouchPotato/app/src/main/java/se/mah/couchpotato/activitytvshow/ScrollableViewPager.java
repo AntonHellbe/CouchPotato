@@ -3,6 +3,7 @@ package se.mah.couchpotato.activitytvshow;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -23,7 +24,12 @@ public class ScrollableViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.v("ScrollableViewPager", "HEIGHT = " + hardCodedHeight);
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(hardCodedHeight, MeasureSpec.EXACTLY));
+    }
+
+    public void setHardCodedHeight(int height) {
+        this.hardCodedHeight = height;
     }
 
     public void measureCurrentView(View currentView) {
