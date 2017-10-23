@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    android:id="@+id/sv_settings"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv_settings"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:background="@color/colorBackground"
@@ -15,12 +14,6 @@
         android:layout_height="wrap_content"
         android:transitionName="@string/transition_fab_settings">
 
-        <!--<View-->
-            <!--android:id="@+id/settings_view_animation"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1000dp"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:translationZ="10dp"/>-->
 
         <RelativeLayout
             android:id="@+id/rl_settings"
@@ -31,13 +24,12 @@
 
             <TextView
                 android:id="@+id/text_settings_category_top"
-                android:layout_alignParentStart="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/activity_settings_textSize_category"
+                android:layout_alignParentStart="true"
                 android:text="asidhaishfiashfip"
-                />
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/activity_settings_textSize_category" />
 
             <LinearLayout
                 android:id="@+id/linear_settings_top"
@@ -57,10 +49,10 @@
 
                 <Spinner
                     android:id="@+id/spinner_settings_language"
+                    style="@style/spinner_style"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="CheckBox" />
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -83,26 +75,28 @@
 
                 <Spinner
                     android:id="@+id/spinner_settings_countries"
+                    style="@style/spinner_style"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
+
             </LinearLayout>
 
             <TextView
                 android:id="@+id/divider_settings"
-                android:layout_below="@id/linear_settings_middle1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/activity_settings_divider"
-                android:background="@color/colorPrimary"/>
+                android:layout_below="@id/linear_settings_middle1"
+                android:background="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/text_category_settings_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/activity_settings_textSize_category"
+                android:layout_below="@id/divider_settings"
                 android:text="hejsan ssveaksndiasn"
-                android:layout_below="@id/divider_settings"/>
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/activity_settings_textSize_category" />
 
             <LinearLayout
                 android:id="@+id/linear_settings_middle2"
@@ -125,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="CheckBox" />
+                    android:buttonTint="@color/white" />
 
             </LinearLayout>
 
@@ -150,9 +144,8 @@
                     android:id="@+id/checkBox_settings_nsfw"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
                     android:layout_weight="1"
-                    android:text="CheckBox" />
+                    android:buttonTint="@color/white" />
 
             </LinearLayout>
 
