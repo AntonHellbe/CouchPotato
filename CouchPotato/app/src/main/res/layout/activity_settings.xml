@@ -39,6 +39,7 @@
 
                 <TextView
                     android:id="@+id/text_settings_language"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -49,6 +50,7 @@
                 <Spinner
                     android:id="@+id/spinner_settings_language"
                     style="@style/spinner_style"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -68,6 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginTop="10dp"
                     android:text="@string/settings_country"
                     android:textColor="@color/white"
                     android:textSize="24sp" />
@@ -75,6 +78,7 @@
                 <Spinner
                     android:id="@+id/spinner_settings_countries"
                     style="@style/spinner_style"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
