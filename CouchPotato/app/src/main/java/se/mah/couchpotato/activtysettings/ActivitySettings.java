@@ -6,17 +6,13 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-
-import java.lang.reflect.Array;
 
 import se.mah.couchpotato.R;
 
@@ -52,24 +48,10 @@ public class ActivitySettings extends AppCompatActivity {
         adapterCountry = ArrayAdapter.createFromResource(this, R.array.settings_array_country, R.layout.spinner_settings);
         spinnerCountry.setAdapter(adapterCountry);
         spinnerCountry.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
-//        spinnerCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                country = spinnerCountry.getSelectedItem().toString();
-//                Log.v("ActivitySettings","Selected country:" + country);
-//            }
-//        });
 
         adapterLanguage = ArrayAdapter.createFromResource(this, R.array.settings_array_language, R.layout.spinner_settings);
         spinnerLanguage.setAdapter(adapterLanguage);
         spinnerLanguage.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
-//        spinnerLanguage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                language = spinnerLanguage.getSelectedItem().toString();
-//                Log.v("ActivitySettings","Selected language:" + language);
-//            }
-//        });
 
     }
 
