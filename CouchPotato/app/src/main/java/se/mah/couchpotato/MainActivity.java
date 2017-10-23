@@ -1,5 +1,6 @@
 package se.mah.couchpotato;
 
+import android.animation.Animator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -9,10 +10,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -78,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(activity, ActivitySettings.class);
+                i.putExtra("revealX", (int) fabSettings.getX());
+                i.putExtra("revealY", (int) fabSettings.getY());
+                i.putExtra("startRadius", 24);
                 activity.startActivity(i);
             }
         });

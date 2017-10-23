@@ -1,146 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:id="@+id/sv_settings"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:background="@color/colorBackground"
     tools:context="se.mah.couchpotato.activtysettings.ActivitySettings">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_vertical_margin">
+        android:layout_height="wrap_content"
+        android:transitionName="@string/transition_fab_settings">
 
-        <TextView
-            android:id="@+id/text_settings_category_top"
-            android:layout_alignParentStart="true"
+        <!--<View-->
+            <!--android:id="@+id/settings_view_animation"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1000dp"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:translationZ="10dp"/>-->
+
+        <RelativeLayout
+            android:id="@+id/rl_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/activity_settings_textSize_category"
-            android:text="asidhaishfiashfip"
-            />
+            android:padding="@dimen/activity_vertical_margin">
 
-        <LinearLayout
-            android:id="@+id/linear_settings_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_settings_category_top"
-            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_settings_language"
+                android:id="@+id/text_settings_category_top"
+                android:layout_alignParentStart="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/settings_language"
-                android:textColor="@color/white"
-                android:textSize="@dimen/activity_settings_textSize_main" />
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/activity_settings_textSize_category"
+                android:text="asidhaishfiashfip"
+                />
 
-            <Spinner
-                android:id="@+id/spinner_settings_language"
+            <LinearLayout
+                android:id="@+id/linear_settings_top"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="CheckBox" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_settings_category_top"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/text_settings_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_language"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/activity_settings_textSize_main" />
 
-        <LinearLayout
-            android:id="@+id/linear_settings_middle1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/linear_settings_top"
-            android:orientation="horizontal">
+                <Spinner
+                    android:id="@+id/spinner_settings_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_settings_middle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/linear_settings_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_settings_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_country"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_settings_countries"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/text_settings_country"
+                android:id="@+id/divider_settings"
+                android:layout_below="@id/linear_settings_middle1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/settings_country"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
-
-            <Spinner
-                android:id="@+id/spinner_settings_countries"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/divider_settings"
-            android:layout_below="@id/linear_settings_middle1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_settings_divider"
-            android:background="@color/colorPrimary"/>
-
-        <TextView
-            android:id="@+id/text_category_settings_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/activity_settings_textSize_category"
-            android:text="hejsan ssveaksndiasn"
-            android:layout_below="@id/divider_settings"/>
-
-        <LinearLayout
-            android:id="@+id/linear_settings_middle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_category_settings_2"
-            android:orientation="horizontal">
+                android:layout_height="@dimen/activity_settings_divider"
+                android:background="@color/colorPrimary"/>
 
             <TextView
-                android:id="@+id/text_settings_theme"
+                android:id="@+id/text_category_settings_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/settings_theme"
-                android:textColor="@color/white"
-                android:textSize="@dimen/activity_settings_textSize_main" />
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/activity_settings_textSize_category"
+                android:text="hejsan ssveaksndiasn"
+                android:layout_below="@id/divider_settings"/>
 
-            <CheckBox
-                android:id="@+id/checkBox_settings_theme"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="CheckBox" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linear_settings_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/linear_settings_middle2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_settings_nsfw"
+            <LinearLayout
+                android:id="@+id/linear_settings_middle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/settings_nsfw"
-                android:textColor="@color/white"
-                android:textSize="@dimen/activity_settings_textSize_main" />
+                android:layout_below="@id/text_category_settings_2"
+                android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/checkBox_settings_nsfw"
+                <TextView
+                    android:id="@+id/text_settings_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_theme"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/activity_settings_textSize_main" />
+
+                <CheckBox
+                    android:id="@+id/checkBox_settings_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_settings_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_weight="1"
-                android:text="CheckBox" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear_settings_middle2"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/text_settings_nsfw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_nsfw"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/activity_settings_textSize_main" />
 
+                <CheckBox
+                    android:id="@+id/checkBox_settings_nsfw"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

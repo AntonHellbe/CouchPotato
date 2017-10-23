@@ -7,6 +7,7 @@
     <string name="transition_show_poster">TransitionShowPosterAnimation</string>
     <string name="transition_show_poster_episode">TransitionShowPosterAnimationEpisode</string>
     <string name="transition_show_title">TransitionShowTitleAnimation</string>
+    <string name="transition_fab_settings">TransitionFabSettings</string>
 
     <string name="search">Search</string>
 

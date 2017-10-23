@@ -26,7 +26,9 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/ic_settings"
             android:clickable="true"
-            app:fabSize="mini"/>
+            app:fabSize="mini"
+            app:backgroundTint="@color/colorBackground"
+            android:transitionName="@string/transition_fab_settings"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_filter"
