@@ -25,5 +25,10 @@
         <item>United States</item>
         <item>United Kingdoms</item>
     </array>
+
+    <array name="settings_array_language">
+        <item>Swedish</item>
+        <item>English</item>
+    </array>
     <string name="title_activity_episode">ActivityEpisode</string>
 </resources>
