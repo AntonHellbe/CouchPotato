@@ -30,6 +30,8 @@ public class ActivitySettings extends AppCompatActivity {
     private ArrayAdapter<CharSequence> adapterLanguage;
     private Settings settings;
     private String country,language;
+    private int x, y, startRadius;
+    private ScrollView sv_settings;
 
 
     @Override
@@ -73,26 +75,60 @@ public class ActivitySettings extends AppCompatActivity {
 
     private void animateView(Bundle savedInstanceState) {
 
-        final int x = getIntent().getIntExtra("revealX", 0);
-        final int y = getIntent().getIntExtra("revealY", 0);
-        final int startRadius = getIntent().getIntExtra("startRadius", 0);
-        final ScrollView sv = (ScrollView) findViewById(R.id.sv_settings);
-        sv.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+        x = getIntent().getIntExtra("revealX", 0);
+        y = getIntent().getIntExtra("revealY", 0);
+        startRadius = getIntent().getIntExtra("startRadius", 0);
+        sv_settings = (ScrollView) findViewById(R.id.sv_settings);
+        sv_settings.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View view) {
                 Point p = new Point();
                 getWindowManager().getDefaultDisplay().getSize(p);
-                Animator anim = ViewAnimationUtils.createCircularReveal(findViewById(R.id.sv_settings), x, y, startRadius, Math.max(p.x, p.y));
-                anim.setDuration(300);
+                Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, startRadius, Math.max(p.x, p.y));
+                anim.setDuration(200);
                 anim.setInterpolator(new LinearInterpolator());
                 anim.start();
             }
-
             @Override
             public void onViewDetachedFromWindow(View view) {
 
             }
         });
+    }
 
+    @Override
+    public void finish() {
+        Point p = new Point();
+        getWindowManager().getDefaultDisplay().getSize(p);
+        Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, Math.max(p.x, p.y), startRadius);
+        anim.setDuration(100);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.start();
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                sv_settings.setVisibility(View.INVISIBLE);
+                actualFinish();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+    }
+
+    public void actualFinish() {
+        super.finish();
     }
 }

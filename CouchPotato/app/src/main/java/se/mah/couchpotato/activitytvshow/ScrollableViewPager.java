@@ -13,6 +13,7 @@ import android.view.View;
 public class ScrollableViewPager extends ViewPager {
 
     private int hardCodedHeight = 600;
+    private int defaultHeight = 600;
 
     public ScrollableViewPager(Context context) {
         super(context);
@@ -24,8 +25,7 @@ public class ScrollableViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.v("ScrollableViewPager", "HEIGHT = " + hardCodedHeight);
-        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(hardCodedHeight, MeasureSpec.EXACTLY));
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(Math.max(hardCodedHeight, defaultHeight), MeasureSpec.EXACTLY));
     }
 
     public void setHardCodedHeight(int height) {

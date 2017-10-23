@@ -47,6 +47,18 @@ public class ActivityTvShow extends AppCompatActivity {
     private void initializeComponents() {
         ivPoster = (ImageView) findViewById(R.id.iv_id_poster);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading_episodes);
+        tvTitle = (TextView) findViewById(R.id.tv_id_title);
+        tvPlot = (TextView) findViewById(R.id.tv_id_plot);
+        String title = getIntent().getStringExtra("title");
+        String plot = getIntent().getStringExtra("plot");
+        plot = plot.replace("<p>", "");
+        plot = plot.replace("</p>", "");
+        plot = plot.replace("<b>", "");
+        plot = plot.replace("</b>", "");
+        plot = plot.replace("<i>", "");
+        plot = plot.replace("</i>", "");
+        tvTitle.setText(title);
+        tvPlot.setText(plot);
     }
 
     private void handlePosterAnimation() {

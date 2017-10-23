@@ -60,7 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
         TvShow tvShow = tvShowArrayList.get(position);
-        holder.id = tvShow.getShow().getId().toString();
+        holder.show = tvShow;
         holder.tvTitle.setText(tvShow.getShow().getName());
         if (!holder.animated) {
             setAnimation(holder.itemView, position);
@@ -97,7 +97,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageView ivPoster;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
         ProgressBar pbLoading;
-        String id;
+        TvShow show;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -119,20 +119,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view) {
             String transitionPoster = activity.getResources().getString(R.string.transition_show_poster);
-            ActivityOptionsCompat options =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
-                            ivPoster,   // The view which starts the transition
-                            transitionPoster    // The transitionName of the view we’re transitioning to
-                    );
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, ivPoster, transitionPoster);
             Intent intent = new Intent(activity, ActivityTvShow.class);
             intent.putExtra("POSTER", ((BitmapDrawable) ivPoster.getDrawable()).getBitmap());
-            intent.putExtra("id", id);
+            intent.putExtra("id", show.getShow().getId().toString());
+            intent.putExtra("title", show.getShow().getName());
+            intent.putExtra("plot", show.getShow().getSummary());
             Bundle bundle = options.toBundle();
-//            bundle.putParcelable("POSTER", ((BitmapDrawable) ivPoster.getDrawable()).getBitmap());
 
             ActivityCompat.startActivity(activity, intent, bundle);
-            //intent.putExtra("id", id);
-            //activity.startActivity(intent);
         }
 
         @Override
