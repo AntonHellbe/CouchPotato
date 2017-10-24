@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import se.mah.couchpotato.TvShow;
+import se.mah.couchpotato.EpisodeObject;
 
 /**
  * Created by Gustaf Bohlin on 22/10/2017.
@@ -17,7 +17,7 @@ import se.mah.couchpotato.TvShow;
 public class TvShowDataFragment extends Fragment {
 
     private String tvShowId;
-    private ArrayList<TvShow> episodes;
+    private ArrayList<EpisodeObject> episodes;
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
     private int seasons;
     private boolean bound = false;
@@ -36,11 +36,11 @@ public class TvShowDataFragment extends Fragment {
         this.tvShowId = tvShowId;
     }
 
-    public ArrayList<TvShow> getEpisodes() {
+    public ArrayList<EpisodeObject> getEpisodes() {
         return episodes;
     }
 
-    public void setEpisodes(ArrayList<TvShow> episodes) {
+    public void setEpisodes(ArrayList<EpisodeObject> episodes) {
         this.episodes = episodes;
     }
 

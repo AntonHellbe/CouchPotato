@@ -7,5 +7,5 @@ import java.util.ArrayList;
  */
 
 public interface AllEpisodesListener {
-    void onEpisodesRetrieved(ArrayList<TvShow> shows);
+    void onEpisodesRetrieved(ArrayList<EpisodeObject> shows);
 }

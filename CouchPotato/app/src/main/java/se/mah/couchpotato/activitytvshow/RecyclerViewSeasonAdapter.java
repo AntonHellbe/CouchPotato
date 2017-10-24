@@ -1,26 +1,20 @@
 package se.mah.couchpotato.activitytvshow;
 
-import android.animation.Animator;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import se.mah.couchpotato.EpisodeObject;
 import se.mah.couchpotato.PosterListener;
 import se.mah.couchpotato.R;
-import se.mah.couchpotato.TvShow;
 
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
@@ -28,15 +22,15 @@ import se.mah.couchpotato.TvShow;
 
 public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerViewSeasonAdapter.ViewHolder> {
 
-    private ArrayList<TvShow> episodes;
+    private ArrayList<EpisodeObject> episodes;
     private ActivityTvShow activity;
 
-    public void setTvShowArrayList(ArrayList<TvShow> episodes){
+    public void setTvShowArrayList(ArrayList<EpisodeObject> episodes){
         this.episodes = episodes;
         notifyDataSetChanged();
     }
 
-    public RecyclerViewSeasonAdapter(ArrayList<TvShow> episodes, ActivityTvShow activity) {
+    public RecyclerViewSeasonAdapter(ArrayList<EpisodeObject> episodes, ActivityTvShow activity) {
         this.episodes = episodes;
         this.activity = activity;
     }
@@ -55,7 +49,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(RecyclerViewSeasonAdapter.ViewHolder holder, int position) {
-        TvShow episode = episodes.get(position);
+        EpisodeObject episode = episodes.get(position);
         holder.tvTitle.setText(episode.getName());
         String summary = (String) episode.getSummary();
         if (summary != null) {
@@ -66,6 +60,11 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
         holder.tvPlot.setText(summary);
         String number = "S" + (episode.getSeason() < 10 ? "0" + String.valueOf(episode.getSeason()) : String.valueOf(episode.getSeason())) + "E" + (episode.getNumber() < 10 ? "0" + String.valueOf(episode.getNumber()) : String.valueOf(episode.getNumber()));
         holder.tvNumber.setText(number);
+        try{
+//            Log.v("RWVIEWSEASON", episode.toString());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 //        TvShow.Image im = (TvShow.Image) episode.getImage();
 //        if (im.getMedium() == null) {
 //            holder.pbLoading.setVisibility(View.INVISIBLE);

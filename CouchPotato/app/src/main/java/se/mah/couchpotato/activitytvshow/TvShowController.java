@@ -10,9 +10,8 @@ import java.util.ArrayList;
 
 import se.mah.couchpotato.AllEpisodesListener;
 import se.mah.couchpotato.CommunicationService;
-import se.mah.couchpotato.DataFragment;
+import se.mah.couchpotato.EpisodeObject;
 import se.mah.couchpotato.PosterListener;
-import se.mah.couchpotato.TvShow;
 
 /**
  * Created by Gustaf Bohlin on 22/10/2017.
@@ -59,15 +58,15 @@ public class TvShowController implements AllEpisodesListener {
     }
 
     @Override
-    public void onEpisodesRetrieved(ArrayList<TvShow> shows) {
+    public void onEpisodesRetrieved(ArrayList<EpisodeObject> shows) {
         Log.v("TvShowController", "EPISODES GOTTEN, size: " + shows.size());
         dataFragment.setEpisodes(shows);
         dataFragment.setSeasons(shows.get(shows.size() - 1).getSeason());
         activity.updateData(dataFragment.getSeasons());
     }
     
-    public ArrayList<TvShow> getEpisodesForSeason(int season) {
-        ArrayList<TvShow> episodesForSeason = new ArrayList<>();
+    public ArrayList<EpisodeObject> getEpisodesForSeason(int season) {
+        ArrayList<EpisodeObject> episodesForSeason = new ArrayList<>();
         for (int i = 0; i < dataFragment.getEpisodes().size(); i++) {
             if (dataFragment.getEpisodes().get(i).getSeason() == season) {
                 episodesForSeason.add(dataFragment.getEpisodes().get(i));

@@ -1,7 +1,6 @@
 package se.mah.couchpotato.activitytvshow;
 
 import android.support.v4.app.Fragment;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +12,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import se.mah.couchpotato.Episode;
+import se.mah.couchpotato.EpisodeObject;
 import se.mah.couchpotato.R;
-import se.mah.couchpotato.TvShow;
 
 /**
  * Created by Gustaf Bohlin on 19/10/2017.
@@ -50,7 +48,7 @@ public class FragmentSeason extends Fragment {
 
     private void initializeComponent(View rootView) {
         RecyclerView rvSeason = (RecyclerView) rootView;
-        ArrayList<TvShow> episodes = ((ActivityTvShow) getActivity()).getController().getEpisodesForSeason(season);
+        ArrayList<EpisodeObject> episodes = ((ActivityTvShow) getActivity()).getController().getEpisodesForSeason(season);
         RecyclerViewSeasonAdapter adapter = new RecyclerViewSeasonAdapter(episodes, (ActivityTvShow) getActivity());
         rvSeason.addItemDecoration(new RecyclerViewSpacing(10));
         rvSeason.setLayoutManager(new LinearLayoutManager(getActivity()));  //this might fail

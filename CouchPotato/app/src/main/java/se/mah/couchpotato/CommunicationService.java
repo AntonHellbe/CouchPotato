@@ -20,7 +20,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -494,7 +493,7 @@ public class CommunicationService extends Service {
         }
 
 
-        public class AllEpisodesTask extends AsyncTask<String, String, ArrayList<TvShow>>{
+        public class AllEpisodesTask extends AsyncTask<String, String, ArrayList<EpisodeObject>>{
 
             private String id;
             private AllEpisodesListener listener;
@@ -505,11 +504,11 @@ public class CommunicationService extends Service {
             }
 
             @Override
-            protected ArrayList<TvShow> doInBackground(String... strings) {
+            protected ArrayList<EpisodeObject> doInBackground(String... strings) {
                 URL url;
                 String response = "";
                 String fullUrl = urlBuilder.getEpisodeList(id);
-                ArrayList<TvShow> allEpisodes = new ArrayList<>();
+                ArrayList<EpisodeObject> allEpisodes = new ArrayList<>();
                 HttpURLConnection httpUrlConnection = null;
                 JSONArray episodeArray = null;
                 BufferedReader br = null;
@@ -550,9 +549,16 @@ public class CommunicationService extends Service {
                 try {
                     episodeArray = new JSONArray(response);
                     JSONObject temp;
+//                    Log.v("COMMSERVICE - IMAGE", response);
                     for (int i = 0; i < episodeArray.length(); i++) {
                         temp = (JSONObject) episodeArray.get(i);
-                        allEpisodes.add(mapper.readValue(temp.toString(), TvShow.class));
+                        allEpisodes.add(mapper.readValue(temp.toString(), EpisodeObject.class));
+                        if(allEpisodes.get(i).getImage() != null) {
+                            Log.v("COMMSERVICE - IMAGE", id);
+                            Log.v("COMMSERVICE - IMAGE", allEpisodes.get(i).getImage().getMedium());
+                        }
+
+
                     }
                 }catch (Exception e) {
                     e.printStackTrace();
@@ -568,7 +574,7 @@ public class CommunicationService extends Service {
             }
 
             @Override
-            protected void onPostExecute(ArrayList<TvShow> tvShows) {
+            protected void onPostExecute(ArrayList<EpisodeObject> tvShows) {
                 listener.onEpisodesRetrieved(tvShows);
                 super.onPostExecute(tvShows);
             }
