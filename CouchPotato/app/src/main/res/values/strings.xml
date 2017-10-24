@@ -33,4 +33,35 @@
         <item>English</item>
     </array>
     <string name="title_activity_episode">ActivityEpisode</string>
+
+    <array name="categories">
+        <item>Action</item>
+        <item>Adult</item>
+        <item>Adventure</item>
+        <item>Anime</item>
+        <item>Children</item>
+        <item>Comedy</item>
+        <item>Crime</item>
+        <item>DIY</item>
+        <item>Drama</item>
+        <item>Espionage</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>Food</item>
+        <item>History</item>
+        <item>Horror</item>
+        <item>Legal</item>
+        <item>Medical</item>
+        <item>Music</item>
+        <item>Mystery</item>
+        <item>Nature</item>
+        <item>Romance</item>
+        <item>Science-Fiction</item>
+        <item>Sports</item>
+        <item>Supernatural</item>
+        <item>Thriller</item>
+        <item>Travel</item>
+        <item>War</item>
+        <item>Western</item>
+    </array>
 </resources>

@@ -185,14 +185,14 @@ public class Controller {
 
     public void fabSettingsClicked(float x, float y) {
         Intent i = new Intent(mainActivity, ActivitySettings.class);
-        i.putExtra("revealX", (int) x + 12);    //to get middle of button
-        i.putExtra("revealY", (int) y + 12);
-        i.putExtra("startRadius", 24);
+        i.putExtra("revealX", (int) x);    //to get middle of button
+        i.putExtra("revealY", (int) y);
+        i.putExtra("startRadius", 40);
         mainActivity.startActivity(i);
     }
 
     public void fabFilterClicked() {
-        Toast.makeText(mainActivity, "Filter", Toast.LENGTH_SHORT).show();
+        mainActivity.toggleFilter();
     }
 
     public boolean navigationClicked(MenuItem item) {

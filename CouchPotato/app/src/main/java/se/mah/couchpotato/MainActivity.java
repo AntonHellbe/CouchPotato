@@ -1,13 +1,20 @@
 package se.mah.couchpotato;
 
+import android.animation.Animator;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
@@ -15,6 +22,9 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private Controller controller;
     private FloatingActionButton fabSettings, fabFilter;
     private BottomNavigationView bottomNavigationView;
+    private CardView cardViewFilter;
+    private RecyclerView recyclerViewFilters;
+    private String[] filters;
 
     public void hideKeyBoard() {
         View view = this.getCurrentFocus();
@@ -29,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         controller = new Controller(this);
+        initializeResources();
         initializeComponents();
         initializeListeners();
         controller.fragmentHandling();
@@ -38,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         fabSettings = (FloatingActionButton) findViewById(R.id.fab);
         fabFilter = (FloatingActionButton) findViewById(R.id.fab_filter);
+        cardViewFilter = (CardView) findViewById(R.id.cv_filter);
+        recyclerViewFilters = (RecyclerView) findViewById(R.id.rv_filter);
+        recyclerViewFilters.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewFilters.setAdapter(new RecyclerViewAdapterFilter(filters));
     }
 
     private void initializeListeners() {
@@ -45,6 +60,50 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         fabSettings.setOnClickListener(listener);
         fabFilter.setOnClickListener(listener);
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
+    }
+
+    private void initializeResources() {
+        filters = getResources().getStringArray(R.array.categories);
+    }
+
+    public void toggleFilter() {
+
+        Animator anim = null;
+        Point p = new Point();
+        getWindowManager().getDefaultDisplay().getSize(p);
+
+        if (cardViewFilter.getVisibility() == View.VISIBLE) {
+            anim = ViewAnimationUtils.createCircularReveal(cardViewFilter, (int) fabFilter.getX() + 20, (int) fabFilter.getY() + 20, p.y, 0);
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    cardViewFilter.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        }
+        else {
+            cardViewFilter.setVisibility(View.VISIBLE);
+            anim = ViewAnimationUtils.createCircularReveal(cardViewFilter, (int) fabFilter.getX() + 20, (int) fabFilter.getY() + 20, 0, p.y);
+        }
+//        TODO put in controller
+        anim.setDuration(500);
+        anim.setInterpolator(new AccelerateInterpolator());
+        anim.start();
     }
 
     @Override
@@ -75,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         @Override
         public void onClick(View view) {
             if (view == fabSettings)
-                controller.fabSettingsClicked(fabSettings.getX(), fabSettings.getY());
+                controller.fabSettingsClicked(fabSettings.getX() + 20, fabSettings.getY() + 20);
             if (view == fabFilter)
                 controller.fabFilterClicked();
         }
