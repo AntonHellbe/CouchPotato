@@ -197,7 +197,7 @@ public class EpisodeObject {
         "medium",
         "original"
 })
-static class Image {
+public static class Image {
 
     public Image(){}
 

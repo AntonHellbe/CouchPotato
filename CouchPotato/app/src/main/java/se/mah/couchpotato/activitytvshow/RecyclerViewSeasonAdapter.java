@@ -61,7 +61,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
         String number = "S" + (episode.getSeason() < 10 ? "0" + String.valueOf(episode.getSeason()) : String.valueOf(episode.getSeason())) + "E" + (episode.getNumber() < 10 ? "0" + String.valueOf(episode.getNumber()) : String.valueOf(episode.getNumber()));
         holder.tvNumber.setText(number);
         try{
-//            Log.v("RWVIEWSEASON", episode.toString());
+            Log.v("RWVIEWSEASON", episode.getImage().getMedium());
         }catch(Exception e){
             e.printStackTrace();
         }
