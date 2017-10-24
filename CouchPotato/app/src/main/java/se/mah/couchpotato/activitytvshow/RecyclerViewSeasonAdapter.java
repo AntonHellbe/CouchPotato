@@ -63,7 +63,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
         holder.tvNumber.setText(number);
         holder.tvAirDate.setText("2017-07-10");
         try{
-            Log.v("RWVIEWSEASON", episode.getImage().getMedium());
+//            Log.v("RWVIEWSEASON", episode.getImage().getMedium());
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -98,27 +98,16 @@ public class Controller {
     //TODO kan också vara en string id, vilket som är smidigast
     public void addFavourite(TvShow show) {
         Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
-        //add tvshow to favorites or retrieve all favorites again (solves the update situation)
-        //optional: update favorites
-
-        //Retrieve all current favourites
         HashMap<String,TvShow> favourites = dataFragment.getFavorites();
-        //put the new favourite in the hashmap
         favourites.put(""+show.getId(),show);
-        //Put it in the SharedPreference
         editor.putInt("" + show.getId(),show.getId());
-        //Update the favourite list
         dataFragment.setFavorites(favourites);
     }
 
-    public void removeFacourite(TvShow show){
-        //Retrieve all favourites
+    public void removeFavourite(TvShow show){
         HashMap<String, TvShow> favourties = dataFragment.getFavorites();
-        //Remove the show from the hashmap
         favourties.remove("" + show.getId());
-        //Remove it from the SharedPreference
         editor.remove(""+show.getId());
-        //Update the favourite list
         dataFragment.setFavorites(favourties);
     }
 

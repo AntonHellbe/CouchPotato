@@ -38,6 +38,7 @@ public class CommunicationService extends Service {
     private FavoriteTask favoriteTask;
     private ScheduleTask scheduleTask;
     private AllEpisodesTask allEpisodesTask;
+    private ImageLoader imLoader;
     private HttpURLConnection urlConnection;
     private MainActivity activity;
     private ActivityTvShow tvActivity;
@@ -99,6 +100,11 @@ public class CommunicationService extends Service {
     public void sendSchedule(){
         scheduleTask = new ScheduleTask();
         scheduleTask.execute();
+    }
+
+    public void downloadPicture(String id, PosterListener posterListener, String url){
+        imLoader = new ImageLoader(id, posterListener);
+        imLoader.execute(url);
     }
 
     public void sendEpisodeTask(String id, String season, String episode, EpisodeListener episodeListener) {
@@ -167,17 +173,10 @@ public class CommunicationService extends Service {
         @Override
         protected void onPostExecute(TvShow tvShow) {
             Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + tvShow.toString());
-            //@TODO fixa så att det inte kan komma ett null json objekt?
             activity.getController().favoritesReceived(tvShow);
             super.onPostExecute(tvShow);
         }
     }
-
-    public void downloadPicture(String id, PosterListener posterListener, String url){
-        ImageLoader imLoader = new ImageLoader(id, posterListener);
-        imLoader.execute(url);
-    }
-
 
     private class SearchTask extends AsyncTask<String, String, ArrayList<TvShow>> {
 
@@ -392,7 +391,6 @@ public class CommunicationService extends Service {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 posterListener.onPosterDownloaded(id, bitmap);
-                //activity.getController().getDataFragment().putPictureMap(id, bitmap);
                 super.onPostExecute(bitmap);
             }
 
@@ -469,9 +467,7 @@ public class CommunicationService extends Service {
                     e.printStackTrace();
                     Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
                 }
-
                 return episodeObject;
-
 
             }
 
@@ -549,16 +545,9 @@ public class CommunicationService extends Service {
                 try {
                     episodeArray = new JSONArray(response);
                     JSONObject temp;
-//                    Log.v("COMMSERVICE - IMAGE", response);
                     for (int i = 0; i < episodeArray.length(); i++) {
                         temp = (JSONObject) episodeArray.get(i);
                         allEpisodes.add(mapper.readValue(temp.toString(), EpisodeObject.class));
-                        if(allEpisodes.get(i).getImage() != null) {
-                            Log.v("COMMSERVICE - IMAGE", id);
-                            Log.v("COMMSERVICE - IMAGE", allEpisodes.get(i).getImage().getMedium());
-                        }
-
-
                     }
                 }catch (Exception e) {
                     e.printStackTrace();

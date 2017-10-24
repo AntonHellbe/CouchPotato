@@ -22,7 +22,6 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 public class FragmentFeed extends Fragment implements FragmentInterface {
 
-    private Button testButton;
     private RecyclerView recyclerViewShows;
     private RecyclerViewAdapter adapter;
     @Nullable

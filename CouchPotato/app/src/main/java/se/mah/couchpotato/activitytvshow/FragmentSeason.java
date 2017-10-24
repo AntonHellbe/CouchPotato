@@ -27,6 +27,7 @@ public class FragmentSeason extends Fragment {
         FragmentSeason fragment = new FragmentSeason();
         Bundle args = new Bundle();
         args.putInt("season", season);
+        Log.v("FRAGMENTSEASON", season + " ");
         fragment.setArguments(args);
         return fragment;
     }
