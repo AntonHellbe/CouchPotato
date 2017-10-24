@@ -8,10 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -46,7 +49,9 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
         etSearch = (EditText) rootView.findViewById(R.id.et_search);
         if (savedInstanceState != null)
             etSearch.setText(savedInstanceState.getString("searchString"));
-        etSearch.addTextChangedListener(new Listener());
+        Listener listener = new Listener();
+        etSearch.addTextChangedListener(listener);
+        etSearch.setOnEditorActionListener(listener);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
         adapter.setTvShowArrayList(shows);
     }
 
-    private class Listener implements TextWatcher {
+    private class Listener implements TextWatcher, TextView.OnEditorActionListener {
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -77,5 +82,14 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
 
         @Override
         public void afterTextChanged(Editable editable) {}
+
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                ((MainActivity) getActivity()).hideKeyBoard();
+                return true;
+            }
+            return false;
+        }
     }
 }

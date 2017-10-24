@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         }
     };
 
-    private void hideKeyBoard() {
+    public void hideKeyBoard() {
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
