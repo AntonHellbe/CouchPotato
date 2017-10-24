@@ -26,6 +26,7 @@ public class DataFragment extends Fragment {
     private boolean allowNavigation = true;
     private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
+    private boolean fragmentInstantiated = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,5 +96,13 @@ public class DataFragment extends Fragment {
 
     public void setDownloadQueue(ArrayDeque<DownloadRequest> downloadQueue) {
         this.downloadQueue = downloadQueue;
+    }
+
+    public boolean isFragmentInstantiated() {
+        return fragmentInstantiated;
+    }
+
+    public void setFragmentInstantiated(boolean fragmentInstantiated) {
+        this.fragmentInstantiated = fragmentInstantiated;
     }
 }

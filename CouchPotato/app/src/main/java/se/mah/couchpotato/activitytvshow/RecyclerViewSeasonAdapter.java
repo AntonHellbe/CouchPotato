@@ -2,6 +2,7 @@ package se.mah.couchpotato.activitytvshow;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,42 +51,43 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(RecyclerViewSeasonAdapter.ViewHolder holder, int position) {
         EpisodeObject episode = episodes.get(position);
         holder.tvTitle.setText(episode.getName());
-        String summary = (String) episode.getSummary();
+        String summary = episode.getSummary();
         if (summary != null) {
             summary = summary.replace("<p>", "");
             summary = summary.replace("</p>", "");
+            holder.tvPlot.setText(summary);
         } else
-            summary = "";
-        holder.tvPlot.setText(summary);
+            holder.tvPlot.setText("Summary not available");
+
         String number = "S" + (episode.getSeason() < 10 ? "0" + String.valueOf(episode.getSeason()) : String.valueOf(episode.getSeason())) + "E" + (episode.getNumber() < 10 ? "0" + String.valueOf(episode.getNumber()) : String.valueOf(episode.getNumber()));
         holder.tvNumber.setText(number);
+        holder.tvAirDate.setText("2017-07-10");
         try{
             Log.v("RWVIEWSEASON", episode.getImage().getMedium());
         }catch(Exception e){
             e.printStackTrace();
         }
-//        TvShow.Image im = (TvShow.Image) episode.getImage();
-//        if (im.getMedium() == null) {
-//            holder.pbLoading.setVisibility(View.INVISIBLE);
-//            holder.ivPoster.setVisibility(View.VISIBLE);
-//            holder.ivPoster.setImageResource(android.R.drawable.sym_def_app_icon);
-//        } else {
-//            Bitmap poster = activity.getController().getDataFragment().getPicture(episode.getId().toString());
-//            if (poster != null) {
-//                holder.pbLoading.setVisibility(View.INVISIBLE);
-//                holder.ivPoster.setVisibility(View.VISIBLE);
-//                holder.ivPoster.setImageBitmap(poster);
-//            } else {
-//                holder.pbLoading.setVisibility(View.VISIBLE);
-//                holder.ivPoster.setVisibility(View.INVISIBLE);
-//                activity.getController().downloadPoster(im.getMedium(), episode.getId().toString(), holder);
-//            }
-//        }
+        if (episode.getImage() == null) {
+            holder.pbLoading.setVisibility(View.INVISIBLE);
+            holder.ivPoster.setVisibility(View.VISIBLE);
+            holder.ivPoster.setImageResource(android.R.drawable.sym_def_app_icon);
+        } else {
+            Bitmap poster = activity.getController().getDataFragment().getPicture(episode.getId().toString());
+            if (poster != null) {
+                holder.pbLoading.setVisibility(View.INVISIBLE);
+                holder.ivPoster.setVisibility(View.VISIBLE);
+                holder.ivPoster.setImageBitmap(poster);
+            } else {
+                holder.pbLoading.setVisibility(View.VISIBLE);
+                holder.ivPoster.setVisibility(View.INVISIBLE);
+                activity.getController().downloadPoster(episode.getImage().getMedium(), episode.getId().toString(), holder);
+            }
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener {
         ImageView ivPoster;
-        TextView tvTitle, tvPlot, tvScore, tvNumber;
+        TextView tvTitle, tvPlot, tvScore, tvNumber, tvAirDate;
         ProgressBar pbLoading;
 
         public ViewHolder(View itemView) {
@@ -95,6 +97,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
             tvPlot = itemView.findViewById(R.id.tv_episode_plot);
             tvScore = itemView.findViewById(R.id.tv_episode_rating);
             tvNumber = itemView.findViewById(R.id.tv_episode_number);
+            tvAirDate = itemView.findViewById(R.id.tv_episode_air_date);
             pbLoading = itemView.findViewById(R.id.pb_loading_episode_poster);
         }
 

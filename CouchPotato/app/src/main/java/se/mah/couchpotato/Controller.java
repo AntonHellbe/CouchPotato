@@ -8,10 +8,14 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import se.mah.couchpotato.activtysettings.ActivitySettings;
 
 /**
  * Created by robin on 19/10/2017.
@@ -28,6 +32,7 @@ public class Controller {
 
     private boolean bound;
     private int showId;
+    private ContainerFragment containerFragment;
 
 
     public Controller(MainActivity mainActivity) {
@@ -122,13 +127,13 @@ public class Controller {
             Log.d("CONTROLLERSCHEDULE", shows.get(i).getShow().getName() + " " + shows.get(i).getShow().getUrl() + shows.get(i).getShow().getStatus());
         }
         dataFragment.setSchedule(shows);
-        FragmentInterface feed = mainActivity.getFragmentByTag(ContainerFragment.TAG_FEED);
+        FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
         feed.updateFragmentData(dataFragment.getSchedule());
     }
 
     public void favoritesReceived(TvShow show) {
         dataFragment.getFavorites().put(show.getId().toString(), show);
-        FragmentInterface favorites = mainActivity.getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+        FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites().values());
         favorites.updateFragmentData(tvshows);
     }
@@ -137,7 +142,7 @@ public class Controller {
         for(TvShow t: shows){
             Log.d("CONTROLLERSEARCH", t.getShow().getName() + " " + t.getShow().getRuntime() + " " + t.getShow().getUrl() + " " + t.getShow().getId());
         }
-        FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+        FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
         dataFragment.setSearchResult(shows);
         search.updateFragmentData(shows);
     }
@@ -184,9 +189,61 @@ public class Controller {
         if (searchString.length() > 3) {
             search(searchString);
         } else {
-            FragmentInterface search = mainActivity.getFragmentByTag(ContainerFragment.TAG_SEARCH);
+            FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
             search.updateFragmentData(new ArrayList<TvShow>());
         }
+    }
+
+    public void fabSettingsClicked(float x, float y) {
+        Intent i = new Intent(mainActivity, ActivitySettings.class);
+        i.putExtra("revealX", (int) x + 12);    //to get middle of button
+        i.putExtra("revealY", (int) y + 12);
+        i.putExtra("startRadius", 24);
+        mainActivity.startActivity(i);
+    }
+
+    public void fabFilterClicked() {
+        Toast.makeText(mainActivity, "Filter", Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean navigationClicked(MenuItem item) {
+        if (dataFragment.isAllowNavigation()) {
+            mainActivity.hideKeyBoard();
+            switch (item.getItemId()) {
+                case R.id.navigation_feed:
+                    containerFragment.show(ContainerFragment.TAG_FEED);
+                    return true;
+                case R.id.navigation_favorites:
+                    containerFragment.show(ContainerFragment.TAG_FAVORITES);
+                    return true;
+                case R.id.navigation_search:
+                    containerFragment.show(ContainerFragment.TAG_SEARCH);
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public void fragmentHandling() {
+        FragmentManager fml = mainActivity.getFragmentManager();
+        containerFragment = (ContainerFragment) fml.findFragmentById(R.id.container_fragment);
+        FragmentManager fm = containerFragment.getChildFragmentManager();
+        if (!dataFragment.isFragmentInstantiated()) {
+            containerFragment.add(new FragmentFavorites(), ContainerFragment.TAG_FAVORITES);
+            containerFragment.add(new FragmentFeed(), ContainerFragment.TAG_FEED);
+            containerFragment.add(new FragmentSearch(), ContainerFragment.TAG_SEARCH);
+            containerFragment.setCurrentTag(ContainerFragment.TAG_FEED);
+            dataFragment.setFragmentInstantiated(true);
+        } else {
+            containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_FEED),ContainerFragment.TAG_FEED);
+            containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_FAVORITES),ContainerFragment.TAG_FAVORITES);
+            containerFragment.add(fm.findFragmentByTag(ContainerFragment.TAG_SEARCH),ContainerFragment.TAG_SEARCH);
+        }
+    }
+
+    public FragmentInterface getFragmentByTag(String tag) {
+        FragmentManager fm = containerFragment.getChildFragmentManager();
+        return (FragmentInterface) fm.findFragmentByTag(tag);
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{
