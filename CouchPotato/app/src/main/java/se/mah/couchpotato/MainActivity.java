@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -130,7 +131,8 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         }
         if (requestCode == REQUESTCODETVSHOW) {
             if (resultCode == RESULT_OK) {
-                //TODO favorites
+                Log.v("MAINACTIVITY", "IS SHOW: " + data.getStringExtra("id") + " A FAVORITE? " + data.getBooleanExtra("favorite", false));
+                controller.modifyFavorites(data.getStringExtra("id") , data.getBooleanExtra("favorite", false));
             }
         }
     }

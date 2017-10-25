@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Spinner;
 
 /**
@@ -11,7 +12,7 @@ import android.widget.Spinner;
  */
 
 public class LanguageSpinner extends Spinner {
-    public LanguageSpinner(Context context) {
+    public LanguageSpinner(final Context context) {
         super(context);
     }
 
@@ -42,6 +43,5 @@ public class LanguageSpinner extends Spinner {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        ((ActivitySettings) getContext()).setSpinnerListener();
     }
 }

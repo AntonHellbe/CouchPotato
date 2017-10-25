@@ -43,7 +43,7 @@ public class Controller {
         sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
         initializeResources();
         initializeDataFragment();
-        if (dataFragment.getFavorites() == null)
+        if (!dataFragment.isFavoritesHandled())
             restoreFavourites();
         if (dataFragment.getSettings() == null)
             restoreSettings();
@@ -115,30 +115,25 @@ public class Controller {
                 dataFragment.getDownloadQueue().add(req);
             }
         }
+        dataFragment.setFavoritesHandled(true);
     }
 
     private void saveFavourites() {
         Log.d("ControllerSettings","in saveFavorites");
         if (dataFragment.getFavorites() != null) {
-            ArrayList<TvShow> favourites = dataFragment.getFavorites();
-            Set<String> favIdSet = new HashSet<String>();
-            for (int i = 0; i < favourites.size(); i++) {
-                favIdSet.add(favourites.get(i).getId().toString());
-
-            }
+            HashMap<String, TvShow> favourites = dataFragment.getFavorites();
             Log.d("ControllerSettings", "exiting saveFavorites");
             editor = sP.edit();
-            editor.putStringSet("favourites", favIdSet);
+            editor.putStringSet("favourites", favourites.keySet());
             editor.apply();
         }
         Log.d("ControllerSettings","exiting saveFavorites");
     }
 
-    //TODO kan också vara en string id, vilket som är smidigast
     public void addFavourite(TvShow show) {
         Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
-        ArrayList<TvShow> favourites = dataFragment.getFavorites();
-        favourites.add(show);
+        HashMap<String, TvShow> favourites = dataFragment.getFavorites();
+        favourites.put(show.getShow().getId().toString(), show);
         if (communicationService != null)
             communicationService.sendGetFavorite(show.getId().toString(), new FavoriteListenerCallback());
         else{
@@ -148,7 +143,7 @@ public class Controller {
     }
 
     public void removeFavourite(TvShow show){
-        dataFragment.removeFavorite(show.getId().toString());
+        dataFragment.getFavorites().remove(show.getShow().getId().toString());
     }
 
     public void scheduleRecieved(ArrayList<TvShow> shows) {
@@ -160,14 +155,6 @@ public class Controller {
         ArrayList<TvShow> filteredFeed = dataFragment.filterShows(shows);
         FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
         feed.updateFragmentData(filteredFeed);
-    }
-
-    public void favoritesReceived(TvShow show) {
-        //dataFragment.getFavorites().put(show.getId().toString(), show);
-        dataFragment.getFavorites().add(show);
-        FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-        ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites());
-        favorites.updateFragmentData(tvshows);
     }
 
     public void searchReceived(ArrayList<TvShow> shows) {
@@ -338,6 +325,16 @@ public class Controller {
         return filters;
     }
 
+    public void modifyFavorites(String id, boolean favorite) {
+        id = "1";
+        if (favorite)
+            if (!dataFragment.getFavorites().containsKey(id))
+                communicationService.sendGetFavorite(id, new FavoriteListenerCallback());
+        else
+            if (dataFragment.getFavorites().containsKey(id))
+                dataFragment.getFavorites().remove(id);
+    }
+
     private class ServiceConnection implements android.content.ServiceConnection{
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -359,9 +356,7 @@ public class Controller {
         @Override
         public void onFavoriteRecieved(TvShow tvShow) {
             FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-            if (dataFragment.getFavorites() == null)
-                dataFragment.setFavorites(new ArrayList<TvShow>());
-            dataFragment.getFavorites().add(tvShow);
+            dataFragment.getFavorites().put(tvShow.getShow().getId().toString(), tvShow);
             favorites.insertTvShow(tvShow);
         }
     }

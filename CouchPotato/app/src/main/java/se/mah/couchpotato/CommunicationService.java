@@ -166,6 +166,7 @@ public class CommunicationService extends Service {
             }
 
             TvShow newShow = null;
+            Log.v("COMMSERVICE", "RESPONSE, FAVORITETASK: " + response);
             try {
                 newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
                 Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
@@ -179,7 +180,6 @@ public class CommunicationService extends Service {
         @Override
         protected void onPostExecute(TvShow tvShow) {
             callback.onFavoriteRecieved(tvShow);
-            activity.getController().favoritesReceived(tvShow);
         }
     }
 

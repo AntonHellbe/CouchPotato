@@ -31,7 +31,7 @@ public class DataFragment extends Fragment {
     private String currentTag;
     private ArrayList<TvShow> schedule;
     private ArrayList<TvShow> searchResult = new ArrayList<>();
-    private ArrayList<TvShow> favorites;
+    private HashMap<String, TvShow> favorites = new HashMap<>();
     private boolean allowNavigation = true;
     private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
@@ -39,6 +39,7 @@ public class DataFragment extends Fragment {
     private HashMap<String, Boolean> filterIncludeMap = new HashMap<>();
     private HashMap<String, ArrayList<TvShow>> filterMap = new HashMap();
     private Settings settings;
+    private boolean favoritesHandled = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,11 +71,11 @@ public class DataFragment extends Fragment {
         this.schedule = schedule;
     }
 
-    public ArrayList<TvShow> getFavorites() {
+    public HashMap<String, TvShow> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(ArrayList<TvShow> favorites) {
+    public void setFavorites(HashMap<String, TvShow> favorites) {
         this.favorites = favorites;
     }
 
@@ -181,13 +182,11 @@ public class DataFragment extends Fragment {
         this.filterIncludeMap = filterIncludeMap;
     }
 
+    public boolean isFavoritesHandled() {
+        return favoritesHandled;
+    }
 
-    public void removeFavorite(String s) {
-        for (int i = 0; i < favorites.size(); i++) {
-            if (favorites.get(i).getId().toString().equals(s)) {
-                favorites.remove(i);
-                return;
-            }
-        }
+    public void setFavoritesHandled(boolean favoritesHandled) {
+        this.favoritesHandled = favoritesHandled;
     }
 }

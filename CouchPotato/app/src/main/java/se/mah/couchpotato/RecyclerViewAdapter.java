@@ -67,13 +67,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TvShow tvShow = tvShowArrayList.get(position);
         holder.show = tvShow;
         holder.tvTitle.setText(tvShow.getShow().getName());
-
-//        if(((MainActivity) activity).getController().getDataFragment().getFavorites().get(tvShow.getId()) != null){
-//            //@TODO - Set a cute little star to indicate that this is a favorite tvshow
-//
-//        }
-
-
+        if (((MainActivity) activity).getController().getDataFragment().getFavorites().containsKey(tvShow.getShow().getId().toString()))
+            holder.ivFavorite.setVisibility(View.VISIBLE);
+        else
+            holder.ivFavorite.setVisibility(View.GONE);
         if (!holder.animated) {
             setAnimation(holder.itemView);
             holder.animated = true;
@@ -106,7 +103,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener, View.OnClickListener, Palette.PaletteAsyncListener {
         boolean animated = false;
-        ImageView ivPoster;
+        ImageView ivPoster, ivFavorite;
         TextView tvTitle, tvPlot, tvScore, tvGenres;
         ProgressBar pbLoading;
         TvShow show;
@@ -114,6 +111,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             ivPoster = itemView.findViewById(R.id.iv_poster);
+            ivFavorite = itemView.findViewById(R.id.iv_favorite);
             tvTitle = itemView.findViewById(R.id.tv_title);
             pbLoading = itemView.findViewById(R.id.pb_loading_poster);
             itemView.setOnClickListener(this);
@@ -121,11 +119,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onPosterDownloaded(String id, Bitmap bitmap) {
-            ivPoster.setImageBitmap(bitmap);
+            if (show.getShow().getId().toString().equals(id))
+                ivPoster.setImageBitmap(bitmap);
             ivPoster.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.INVISIBLE);
             ((MainActivity)activity).getController().getDataFragment().putPictureMap(id, bitmap);
-            Palette.generateAsync(bitmap,this);
+            if (bitmap == null)
+                Log.e("RECYCLERVIEWADAPTER", "DOWNLOADED BITMAP IS NULL");  //TODO we really should handle network problems here
         }
 
         @Override
@@ -138,9 +138,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("title", show.getShow().getName());
             intent.putExtra("plot", show.getShow().getSummary());
             intent.putExtra("hd", show.getShow().getImage().getOriginal());
+            intent.putExtra("isfavorite", ((MainActivity) activity).getController().getDataFragment().getFavorites().containsKey(show.getShow().getId().toString()));
             Bundle bundle = options.toBundle();
-
-            ActivityCompat.startActivity(activity, intent, bundle);
+            ActivityCompat.startActivityForResult(activity, intent, MainActivity.REQUESTCODETVSHOW, bundle);
         }
 
         @Override
