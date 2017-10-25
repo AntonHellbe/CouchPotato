@@ -370,7 +370,11 @@ public class CommunicationService extends Service {
                     inputStream = httpURLConnection.getInputStream();
                     br = new BufferedInputStream(httpURLConnection.getInputStream());
 
-                    bitmap = BitmapFactory.decodeStream(br);
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = false;
+
+                    bitmap = BitmapFactory.decodeStream(br, null, options);
+
                 }catch(Exception e){
                     e.printStackTrace();
                 }finally {
