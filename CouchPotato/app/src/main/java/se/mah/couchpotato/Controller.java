@@ -33,10 +33,12 @@ public class Controller {
     private boolean bound;
     private int showId;
     private ContainerFragment containerFragment;
+    private String[] filters;
 
 
     public Controller(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+        initializeResources();
         initializeDataFragment();
         initializeCommunication();
         sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
@@ -49,7 +51,13 @@ public class Controller {
         if(dataFragment == null){
             dataFragment = new DataFragment();
             fm.beginTransaction().add(dataFragment, "data").commit();
+            fillFilter();
         }
+    }
+
+    private void fillFilter() {
+        for (String category: filters)
+            dataFragment.getFilterIncludeMap().put(category, true);
     }
 
     private void initializeCommunication() {
@@ -62,6 +70,10 @@ public class Controller {
         serviceConnection = new ServiceConnection();
         boolean status = mainActivity.bindService(intent, serviceConnection,0);
         Log.d("Controller","initializeCommunication, connected: " + status);
+    }
+
+    private void initializeResources() {
+        filters = mainActivity.getResources().getStringArray(R.array.categories);
     }
 
     public DataFragment getDataFragment() {
@@ -230,6 +242,18 @@ public class Controller {
     public FragmentInterface getFragmentByTag(String tag) {
         FragmentManager fm = containerFragment.getChildFragmentManager();
         return (FragmentInterface) fm.findFragmentByTag(tag);
+    }
+
+    public void modifyFilter(String category, boolean include) {
+        dataFragment.getFilterIncludeMap().put(category, include);
+        FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
+        FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+        FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
+        //TODO update the recyclerviews
+    }
+
+    public String[] getFilters() {
+        return filters;
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{

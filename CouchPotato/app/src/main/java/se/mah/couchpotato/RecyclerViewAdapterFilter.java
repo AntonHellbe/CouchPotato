@@ -16,8 +16,10 @@ import java.util.ArrayList;
 public class RecyclerViewAdapterFilter extends RecyclerView.Adapter<RecyclerViewAdapterFilter.ViewHolder> {
 
     private String[] filters;
+    private MainActivity activity;
 
-    public RecyclerViewAdapterFilter(String[] filters) {
+    public RecyclerViewAdapterFilter(MainActivity activity, String[] filters) {
+        this.activity = activity;
         this.filters = filters;
     }
 
@@ -49,8 +51,9 @@ public class RecyclerViewAdapterFilter extends RecyclerView.Adapter<RecyclerView
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            //TODO put value in datafragment
+        public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+            String category = compoundButton.getText().toString();
+            activity.getController().modifyFilter(category, checked);
         }
     }
 }

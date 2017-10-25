@@ -32,7 +32,7 @@ public class DataFragment extends Fragment {
     private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
     private boolean fragmentInstantiated = false;
-
+    private HashMap<String, Boolean> filterIncludeMap = new HashMap<>();
     private HashMap<String, ArrayList<TvShow>> filterMap = new HashMap();
 
     @Override
@@ -153,5 +153,13 @@ public class DataFragment extends Fragment {
         filteredShows = new ArrayList<>(tvShowHashset);
         return filteredShows;
 
+    }
+
+    public HashMap<String, Boolean> getFilterIncludeMap() {
+        return filterIncludeMap;
+    }
+
+    public void setFilterIncludeMap(HashMap<String, Boolean> filterIncludeMap) {
+        this.filterIncludeMap = filterIncludeMap;
     }
 }

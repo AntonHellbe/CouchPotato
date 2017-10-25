@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private BottomNavigationView bottomNavigationView;
     private CardView cardViewFilter;
     private RecyclerView recyclerViewFilters;
-    private String[] filters;
 
     public void hideKeyBoard() {
         View view = this.getCurrentFocus();
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         controller = new Controller(this);
-        initializeResources();
         initializeComponents();
         initializeListeners();
         controller.fragmentHandling();
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         cardViewFilter = (CardView) findViewById(R.id.cv_filter);
         recyclerViewFilters = (RecyclerView) findViewById(R.id.rv_filter);
         recyclerViewFilters.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewFilters.setAdapter(new RecyclerViewAdapterFilter(filters));
+        recyclerViewFilters.setAdapter(new RecyclerViewAdapterFilter(this, controller.getFilters()));
     }
 
     private void initializeListeners() {
@@ -60,10 +58,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         fabSettings.setOnClickListener(listener);
         fabFilter.setOnClickListener(listener);
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
-    }
-
-    private void initializeResources() {
-        filters = getResources().getStringArray(R.array.categories);
     }
 
     public void toggleFilter() {
