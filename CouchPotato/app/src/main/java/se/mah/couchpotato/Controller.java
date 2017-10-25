@@ -145,6 +145,7 @@ public class Controller {
         for(TvShow t: shows){
             Log.d("CONTROLLERSEARCH", t.getShow().getName() + " " + t.getShow().getRuntime() + " " + t.getShow().getUrl() + " " + t.getShow().getId());
         }
+//        ArrayList<TvShow> filteredResult = dataFragment.filterSearchResult(shows);
         FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
         dataFragment.setSearchResult(shows);
         search.updateFragmentData(shows);

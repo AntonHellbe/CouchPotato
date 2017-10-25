@@ -541,7 +541,6 @@ public class CommunicationService extends Service {
                         }
                     }
                 }
-
                 try {
                     episodeArray = new JSONArray(response);
                     JSONObject temp;

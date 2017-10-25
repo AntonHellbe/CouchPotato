@@ -146,7 +146,6 @@ public class DataFragment extends Fragment {
     public ArrayList<TvShow> getFilteredShows(){
         ArrayList<TvShow> filteredShows;
         HashSet<TvShow> tvShowHashset = new HashSet<>();
-
         Iterator filterInclude = filterIncludeMap.entrySet().iterator();
 
         while(filterInclude.hasNext()){
@@ -176,4 +175,23 @@ public class DataFragment extends Fragment {
     public void setFilterIncludeMap(HashMap<String, Boolean> filterIncludeMap) {
         this.filterIncludeMap = filterIncludeMap;
     }
+
+//    public ArrayList<TvShow> filterSearchResult(ArrayList<TvShow> shows) {
+//        ArrayList<TvShow> filteredResult = new ArrayList<>();
+//        for(TvShow t: shows){
+//            if(t.getShow().getGenres().size() == 0){
+//                if(filterIncludeMap.get(OTHER) == true)
+//                    filteredResult.add(t);
+//            }else{
+//                for (int i = 0; i < t.getShow().getGenres().size(); i++) {
+//                    if(filterIncludeMap.get(t.getShow().getGenres().get(i))){
+//                        filteredResult.add(t);
+//                        break;
+//                    }
+//
+//                }
+//            }
+//        }
+//        return filteredResult;
+//    }
 }
