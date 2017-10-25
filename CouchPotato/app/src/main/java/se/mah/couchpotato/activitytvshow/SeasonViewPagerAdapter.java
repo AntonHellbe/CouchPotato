@@ -12,17 +12,21 @@ import android.view.ViewGroup;
 
 public class SeasonViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private int seasons = 0;
+    private int seasons = 1;
     private int position = -1;
+    private int startSeason;
+    private boolean seasonIsYear;
 
-    public SeasonViewPagerAdapter(FragmentManager fragmentManager, int seasons) {
+    public SeasonViewPagerAdapter(FragmentManager fragmentManager, int seasons, int startSeason, boolean seasonIsYear) {
         super(fragmentManager);
         this.seasons = seasons;
+        this.startSeason = startSeason;
+        this.seasonIsYear = seasonIsYear;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return FragmentSeason.newInstance(position + 1);
+        return FragmentSeason.newInstance(position + startSeason);
     }
 
     @Override
@@ -32,8 +36,9 @@ public class SeasonViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-
-        return "Season " + String.valueOf(position + 1);
+        if (seasonIsYear)
+            return String.valueOf(position + startSeason);
+        return "Season " + String.valueOf(position + startSeason);
     }
 
     @Override

@@ -20,6 +20,8 @@ public class TvShowDataFragment extends Fragment {
     private ArrayList<EpisodeObject> episodes;
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
     private int seasons;
+    private int startSeason;
+    private boolean seasonIsYear;
     private boolean bound = false;
 
     @Override
@@ -66,5 +68,21 @@ public class TvShowDataFragment extends Fragment {
 
     public void setBound(boolean bound) {
         this.bound = bound;
+    }
+
+    public int getStartSeason() {
+        return startSeason;
+    }
+
+    public void setStartSeason(int startSeason) {
+        this.startSeason = startSeason;
+    }
+
+    public boolean isSeasonIsYear() {
+        return seasonIsYear;
+    }
+
+    public void setSeasonIsYear(boolean seasonIsYear) {
+        this.seasonIsYear = seasonIsYear;
     }
 }

@@ -34,7 +34,7 @@ public class TvShowController implements AllEpisodesListener {
 
     private void populateViewPager() {
         if (dataFragment.getEpisodes() != null)
-            activity.updateData(dataFragment.getSeasons());
+            activity.updateData(dataFragment.getSeasons(), dataFragment.getStartSeason(), dataFragment.isSeasonIsYear());
     }
 
     private void initializeDataFragment() {
@@ -61,8 +61,15 @@ public class TvShowController implements AllEpisodesListener {
     public void onEpisodesRetrieved(ArrayList<EpisodeObject> shows) {
         Log.v("TvShowController", "EPISODES GOTTEN, size: " + shows.size());
         dataFragment.setEpisodes(shows);
-        dataFragment.setSeasons(shows.get(shows.size() - 1).getSeason());
-        activity.updateData(dataFragment.getSeasons());
+        int seasons = 1;
+        if (!shows.isEmpty()) {
+            seasons = Math.max(shows.get(shows.size() - 1).getSeason() - shows.get(0).getSeason(), 1);  //atleast one season
+            dataFragment.setStartSeason(shows.get(0).getSeason());
+        }
+        dataFragment.setSeasons(seasons);
+        if (dataFragment.getStartSeason() > 1900)
+            dataFragment.setSeasonIsYear(true);
+        activity.updateData(dataFragment.getSeasons(), dataFragment.getStartSeason(), dataFragment.isSeasonIsYear());
     }
     
     public ArrayList<EpisodeObject> getEpisodesForSeason(int season) {

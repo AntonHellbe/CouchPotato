@@ -3,6 +3,7 @@ package se.mah.couchpotato.activitytvshow;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -35,12 +36,14 @@ public class ActivityTvShow extends AppCompatActivity {
     private ImageView ivPoster;
     private TextView tvTitle, tvRating, tvPlot, tvAir;
     private TvShowController controller;
+    private FloatingActionButton fabFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_show);
         initializeComponents();
+        initializeListeners();
         handlePosterAnimation();
         controller = new TvShowController(this, getIntent().getStringExtra("id"));
     }
@@ -50,6 +53,7 @@ public class ActivityTvShow extends AppCompatActivity {
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading_episodes);
         tvTitle = (TextView) findViewById(R.id.tv_id_title);
         tvPlot = (TextView) findViewById(R.id.tv_id_plot);
+        fabFavorite = (FloatingActionButton) findViewById(R.id.fab_favorite);
         String title = getIntent().getStringExtra("title");
         String plot = getIntent().getStringExtra("plot");
         plot = plot.replace("<p>", "");
@@ -62,6 +66,10 @@ public class ActivityTvShow extends AppCompatActivity {
         tvPlot.setText(plot);
     }
 
+    private void initializeListeners() {
+        fabFavorite.setOnClickListener(new Listener());
+    }
+
     private void handlePosterAnimation() {
         Intent intent = getIntent();
         Bitmap poster = intent.getParcelableExtra("POSTER");
@@ -72,8 +80,8 @@ public class ActivityTvShow extends AppCompatActivity {
         return controller;
     }
 
-    public void updateData(int seasons) {
-        adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), seasons);
+    public void updateData(int seasons, int startSeason, boolean seasonIsYear) {
+        adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), seasons, startSeason, seasonIsYear);
         viewPager = (ScrollableViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
         Point p = new Point();
@@ -95,5 +103,13 @@ public class ActivityTvShow extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         controller.onDestroy();
+    }
+
+    private class Listener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            //TODO add favorite
+        }
     }
 }
