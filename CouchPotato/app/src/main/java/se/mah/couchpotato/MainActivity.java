@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         if (requestCode == REQUESTCODESETTINGS) {
             if (resultCode == RESULT_OK) {
                 //TODO update sharedpreferences
+
             }else {
                 Toast.makeText(this, "Settings not applied", Toast.LENGTH_SHORT).show();    //TODO @strings
             }

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import se.mah.couchpotato.activtysettings.ActivitySettings;
 import se.mah.couchpotato.activtysettings.Settings;
@@ -220,6 +222,11 @@ public class Controller {
         i.putExtra("revealX", (int) x);    //to get middle of button
         i.putExtra("revealY", (int) y);
         i.putExtra("startRadius", 40);
+//        @TODO Använd data fragment istället
+        Settings settings = new Settings();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("data_settings",settings);
+        i.putExtras(bundle);
         mainActivity.startActivityForResult(i, MainActivity.REQUESTCODESETTINGS);
     }
 

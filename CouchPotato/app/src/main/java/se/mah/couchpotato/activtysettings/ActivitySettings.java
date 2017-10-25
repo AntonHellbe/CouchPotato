@@ -37,6 +37,13 @@ public class ActivitySettings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         animateView(savedInstanceState);
         initComp();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            settings = bundle.getParcelable("data_settings");
+            setStartScreen();
+        }
+
     }
 
 
@@ -82,12 +89,15 @@ public class ActivitySettings extends AppCompatActivity {
     private Intent createIntent() {
         Intent intent = new Intent();
         Settings settings = new Settings(checkBoxNsfw.isChecked(),
-                spinnerLanguage.getSelectedItem().toString(),spinnerCountry.getSelectedItem().toString());
-        Log.v("ACTIVITYSETTINGS","Checkbox:" + checkBoxNsfw +
-                        ",language:" + spinnerLanguage.getSelectedItem().toString() +
-                        "country:" + spinnerCountry.getSelectedItem().toString());
-//        intent.putExtra("Data_Settings",null);
+                spinnerLanguage.getSelectedItem().toString(), spinnerCountry.getSelectedItem().toString());
+        intent.putExtra("Data_Settings", settings);
         return null;
+    }
+
+    private void setStartScreen(){
+        checkBoxNsfw.setChecked(settings.isNsfw());
+        spinnerCountry.setSelection(settings.getPosition_count());
+        spinnerLanguage.setSelection(settings.getPosition_lang());
     }
 
     @Override
@@ -123,9 +133,7 @@ public class ActivitySettings extends AppCompatActivity {
     }
 
     public void actualFinish() {
-        Log.v("ACTIVITYSETTINGS","In actual finish");
-        createIntent();
-//        setResult(Activity.RESULT_OK,createIntent());
+        setResult(Activity.RESULT_OK, createIntent());
         super.finish();
     }
 

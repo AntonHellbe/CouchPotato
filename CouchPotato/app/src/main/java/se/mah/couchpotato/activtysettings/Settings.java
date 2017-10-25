@@ -13,11 +13,16 @@ public class Settings implements Parcelable {
     private String language;
     private String country;
     private int timeZone;
+    private int position_lang;
+    private int position_count;
+
 
     public Settings() {
         nsfw = false;
         country = "US";
         language = "English";
+        position_count = 1;
+        position_lang = 1;
     }
 
     public Settings(boolean nsfw, String language, String country) {
@@ -33,13 +38,23 @@ public class Settings implements Parcelable {
         this.timeZone = timeZone;
     }
 
+    public Settings(boolean nsfw, String language, String country, int timeZone, int position_lang, int position_count) {
+        this.nsfw = nsfw;
+        this.language = language;
+        this.country = country;
+        this.timeZone = timeZone;
+        this.position_lang = position_lang;
+        this.position_count = position_count;
+    }
+
     public static final Creator<Settings> CREATOR = new Creator<Settings>() {
         @Override
         public Settings createFromParcel(Parcel parcel) {
             boolean tempTheme, tempNsfw;
             tempNsfw = (parcel.readInt() == 0) ? false : true;
             return new Settings(tempNsfw, parcel.readString(),
-                    parcel.readString(), parcel.readInt());
+                    parcel.readString(), parcel.readInt(),
+                    parcel.readInt(),parcel.readInt());
         }
 
         @Override
@@ -59,6 +74,8 @@ public class Settings implements Parcelable {
         parcel.writeString(language);
         parcel.writeString(country);
         parcel.writeInt(timeZone);
+        parcel.writeInt(position_lang);
+        parcel.writeInt(position_count);
     }
 
 
@@ -92,5 +109,21 @@ public class Settings implements Parcelable {
 
     public void setTimeZone(int timeZone) {
         this.timeZone = timeZone;
+    }
+
+    public int getPosition_lang() {
+        return position_lang;
+    }
+
+    public void setPosition_lang(int position_lang) {
+        this.position_lang = position_lang;
+    }
+
+    public int getPosition_count() {
+        return position_count;
+    }
+
+    public void setPosition_count(int position_count) {
+        this.position_count = position_count;
     }
 }
