@@ -3,25 +3,32 @@ package se.mah.couchpotato.activtysettings;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ScrollingTabContainerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+
+import java.util.Locale;
 
 import se.mah.couchpotato.R;
 
 public class ActivitySettings extends AppCompatActivity {
 
     public static final String SETTINGS_BUNDLE_NAME = "data_settings";
+
+    private static final String SAVE_SETTEINGS = "save_settings";
 
     private CheckBox checkBoxNsfw;
     private Spinner spinnerCountry;
@@ -30,7 +37,7 @@ public class ActivitySettings extends AppCompatActivity {
     private ArrayAdapter<CharSequence> adapterLanguage;
     private int x, y, startRadius;
     private ScrollView sv_settings;
-
+    private Settings settings;
 
 
     @Override
@@ -38,33 +45,83 @@ public class ActivitySettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         animateView(savedInstanceState);
-        initComp();
-
         Bundle bundle = getIntent().getExtras();
-        Settings settings;
+        settings = new Settings();
         if (bundle != null) {
-            settings = bundle.getParcelable(SETTINGS_BUNDLE_NAME);
-            if (settings == null) {
-                settings = new Settings();
+            try {
+                settings = bundle.getParcelable(SETTINGS_BUNDLE_NAME);
+            } catch (NullPointerException e) {
+
             }
-            setStartScreen(settings);
+
         }
+        initComp();
 
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            settings = savedInstanceState.getParcelable(SAVE_SETTEINGS);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (settings != null) {
+            outState.putParcelable(SAVE_SETTEINGS, settings);
+        }
+    }
 
     private void initComp() {
         checkBoxNsfw = (CheckBox) findViewById(R.id.checkBox_settings_nsfw);
         spinnerCountry = (Spinner) findViewById(R.id.spinner_settings_countries);
         spinnerLanguage = (Spinner) findViewById(R.id.spinner_settings_language);
 
+        checkBoxNsfw.setChecked(settings.isNsfw());
+
         adapterCountry = ArrayAdapter.createFromResource(this, R.array.settings_array_country, R.layout.spinner_settings);
         spinnerCountry.setAdapter(adapterCountry);
         spinnerCountry.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+        spinnerCountry.setSelection(settings.getPosition_count());
 
         adapterLanguage = ArrayAdapter.createFromResource(this, R.array.settings_array_language, R.layout.spinner_settings);
         spinnerLanguage.setAdapter(adapterLanguage);
         spinnerLanguage.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+        spinnerLanguage.setSelection(settings.getPosition_lang());
+        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (settings.getPosition_lang() != i) {
+//                    changeLanguage(i);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void changeLanguage(int position) {
+        if (position == 0) {
+            Locale locale = new Locale("sv");
+            Configuration configuration = new Configuration();
+            configuration.locale = locale;
+            getApplicationContext().getResources().updateConfiguration(configuration, null);
+            recreate();
+        } else if (position == 1) {
+            Locale locale = new Locale("en");
+            Configuration configuration = new Configuration();
+            configuration.locale = locale;
+            getApplicationContext().getResources().updateConfiguration(configuration, null);
+            recreate();
+        } else {
+            //@TODO ERROR MESSAGE ?
+        }
 
     }
 
@@ -110,7 +167,7 @@ public class ActivitySettings extends AppCompatActivity {
             settings.setPosition_count(spinnerCountry.getSelectedItemPosition());
             settings.setLanguage(spinnerLanguage.getSelectedItem().toString());
             settings.setPosition_lang(spinnerLanguage.getSelectedItemPosition());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             //TODO Tiast here or in main Activity ?
         }
 
@@ -123,13 +180,6 @@ public class ActivitySettings extends AppCompatActivity {
         intent.putExtras(bundle);
 
         return intent;
-    }
-
-
-    private void setStartScreen(Settings settings) {
-        checkBoxNsfw.setChecked(settings.isNsfw());
-        spinnerCountry.setSelection(settings.getPosition_count());
-        spinnerLanguage.setSelection(settings.getPosition_lang());
     }
 
 
