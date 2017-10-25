@@ -42,6 +42,8 @@ public class Controller {
         this.mainActivity = mainActivity;
         initializeResources();
         initializeDataFragment();
+        if (dataFragment.getFavorites() == null)
+            restoreFavourites();
         initializeCommunication();
         sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
     }
@@ -81,16 +83,10 @@ public class Controller {
         return dataFragment;
     }
 
-    public void onCreate(){
-        if (dataFragment.getFavorites() == null){
-            restoreFavourites();
-        }
-    }
-
     public void onPause() {
         if(mainActivity.isFinishing()){
-            mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
             saveFavourites();
+            mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
         }
     }
 
@@ -104,25 +100,14 @@ public class Controller {
         }
     }
 
-    public void onResume() {
-        /*
-        if (dataFragment.getFavorites() == null){
-            HashMap<String, Integer> restoredFavourites = new HashMap<>();
-            Map<String, ?> map = sP.getAll();
-            for(Map.Entry<String, ?> entry: map.entrySet()){
-                restoredFavourites.put(entry.getKey(), (Integer) entry.getValue());
-            }
-            //TODO call add favorite for every id
-        }
-        */
-    }
-
     private void restoreFavourites() {
-        ArrayList<TvShow> favourites = new ArrayList<>();
-        Set<String> favIdSet = sP.getStringSet("favourites", null);
+        ArrayList<String> favIds = new ArrayList<>(sP.getStringSet("favourites", null));
 
-        for (int i = 0; i < favIdSet.size(); i++) {
-            
+        FavoriteListenerCallback callback = new FavoriteListenerCallback();
+
+        for (int i = 0; i < favIds.size(); i++) {
+            DownloadFavoriteRequest req = new DownloadFavoriteRequest(favIds.get(i), callback);
+            dataFragment.getDownloadQueue().add(req);
         }
     }
 
@@ -134,7 +119,7 @@ public class Controller {
         }
         editor = sP.edit();
         editor.putStringSet("favourites",favIdSet);
-        editor.commit();
+        editor.apply();
     }
 
     //TODO kan också vara en string id, vilket som är smidigast
@@ -142,13 +127,16 @@ public class Controller {
         Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
         ArrayList<TvShow> favourites = dataFragment.getFavorites();
         favourites.add(show);
-        dataFragment.setFavorites(favourites);
+        if (communicationService != null)
+            communicationService.sendGetFavorite(show.getId().toString(), new FavoriteListenerCallback());
+        else{
+            DownloadFavoriteRequest req = new DownloadFavoriteRequest(show.getId().toString(), new FavoriteListenerCallback());
+            dataFragment.getDownloadQueue().add(req);
+        }
     }
 
     public void removeFavourite(TvShow show){
-        ArrayList<TvShow> favourties = dataFragment.getFavorites();
-        favourties.remove(favourties.indexOf(show));
-        dataFragment.setFavorites(favourties);
+        dataFragment.removeFavorite(show.getId().toString());
     }
 
     public void scheduleRecieved(ArrayList<TvShow> shows) {
@@ -210,6 +198,8 @@ public class Controller {
                 communicationService.sendSearchTask(downloadRequest.getQuery());
             else if (downloadRequest instanceof DownloadImageRequest)
                 communicationService.downloadPicture(((DownloadImageRequest) downloadRequest).getId(), ((DownloadImageRequest) downloadRequest).getPosterListener(), ((DownloadImageRequest) downloadRequest).getQuery());
+            else if (downloadRequest instanceof DownloadFavoriteRequest)
+                communicationService.sendGetFavorite(downloadRequest.getQuery(), ((DownloadFavoriteRequest) downloadRequest).getCallback());
         }
     }
 
@@ -239,6 +229,7 @@ public class Controller {
             dataFragment.setSettings(settings);
         }else {
             // TODO: 25/10/2017 extract settings from sP
+            
         }
     }
 
@@ -331,4 +322,15 @@ public class Controller {
         }
     }
 
+    private class FavoriteListenerCallback implements FavoriteListener{
+
+        @Override
+        public void onFavoriteRecieved(TvShow tvShow) {
+            FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+            if (dataFragment.getFavorites() == null)
+                dataFragment.setFavorites(new ArrayList<TvShow>());
+            dataFragment.getFavorites().add(tvShow);
+            favorites.insertTvShow(tvShow);
+        }
+    }
 }

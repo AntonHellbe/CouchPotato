@@ -92,8 +92,8 @@ public class CommunicationService extends Service {
         searchTask.execute(searchParam);
     }
 
-    public void sendAddFavorite(String id){
-        favoriteTask = new FavoriteTask();
+    public void sendGetFavorite(String id, FavoriteListener callback){
+        favoriteTask = new FavoriteTask(callback);
         favoriteTask.execute(id);
     }
 
@@ -113,6 +113,12 @@ public class CommunicationService extends Service {
     }
 
     private class FavoriteTask extends AsyncTask<String, String, TvShow> {
+
+        private FavoriteListener callback;
+
+        public FavoriteTask(FavoriteListener callback) {
+            this.callback = callback;
+        }
 
         @Override
         protected TvShow doInBackground(String... params) {
@@ -172,9 +178,8 @@ public class CommunicationService extends Service {
 
         @Override
         protected void onPostExecute(TvShow tvShow) {
-            Log.d("CommunicationService", "In service, backgroundTask, response from GET-request is: " + tvShow.toString());
+            callback.onFavoriteRecieved(tvShow);
             activity.getController().favoritesReceived(tvShow);
-            super.onPostExecute(tvShow);
         }
     }
 

@@ -52,6 +52,6 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
 
     @Override
     public void insertTvShow(TvShow show) {
-        
+        adapter.insertTvShow(show);
     }
 }

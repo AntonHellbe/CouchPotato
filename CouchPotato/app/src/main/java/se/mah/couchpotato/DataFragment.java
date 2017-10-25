@@ -182,4 +182,12 @@ public class DataFragment extends Fragment {
     }
 
 
+    public void removeFavorite(String s) {
+        for (int i = 0; i < favorites.size(); i++) {
+            if (favorites.get(i).getId().toString().equals(s)) {
+                favorites.remove(i);
+                return;
+            }
+        }
+    }
 }

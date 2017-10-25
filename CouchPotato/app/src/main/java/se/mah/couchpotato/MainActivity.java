@@ -118,12 +118,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     }
 
     @Override
-    protected void onResume() {
-        controller.onResume();
-        super.onResume();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUESTCODESETTINGS) {
