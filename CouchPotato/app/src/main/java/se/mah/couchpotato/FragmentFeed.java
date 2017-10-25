@@ -55,6 +55,6 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
     public void onResume() {
         super.onResume();
         if (getController().getDataFragment().getSchedule() != null)
-            adapter.setTvShowArrayList(getController().getDataFragment().getSchedule());
+            adapter.setTvShowArrayList(getController().getDataFragment().getFilteredShows());
     }
 }

@@ -33,6 +33,7 @@ public class RecyclerViewAdapterFilter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.checkBox.setText(filters[position]);
+        holder.checkBox.setChecked(activity.getController().getDataFragment().getFilterIncludeMap().get(filters[position]));
     }
 
     @Override

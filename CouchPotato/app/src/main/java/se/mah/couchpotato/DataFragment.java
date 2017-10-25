@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class DataFragment extends Fragment {
 
-    private static final String OTHER = "other";
+    private static final String OTHER = "Other";
 
     private boolean serviceExist;
     private String currentTag;
