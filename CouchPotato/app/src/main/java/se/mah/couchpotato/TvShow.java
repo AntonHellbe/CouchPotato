@@ -53,7 +53,9 @@ public class TvShow{
 
     @Override
     public int hashCode() {
-        return this.number;
+        return this.id;
+
+
     }
 
     @Override

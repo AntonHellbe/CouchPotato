@@ -144,14 +144,11 @@ public class CommunicationService extends Service {
                 inStream = new BufferedInputStream(urlConnection.getInputStream());
                 br = new BufferedReader((new InputStreamReader(inStream)));
                 response = br.readLine();
-                jsonObject = new JSONObject(response);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
+            }finally {
                 if (br != null) {
                     try {
                         br.close();
@@ -176,13 +173,18 @@ public class CommunicationService extends Service {
             }
 
             TvShow newShow = null;
-            Log.v("COMMSERVICE", "RESPONSE, FAVORITETASK: " + response);
-            Log.v("COMMSERVICEFAVORITE", response);
             try {
-                newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
+                jsonObject = new JSONObject(response);
+            }catch (JSONException e){
+
+            }
+            try {
+//                newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
+                newShow = mapper.readValue(jsonObject.toString(), TvShow.class);
                 Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
             } catch (Exception e) {
-                Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
+                e.printStackTrace();
+//                Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
             }
 
             return newShow;

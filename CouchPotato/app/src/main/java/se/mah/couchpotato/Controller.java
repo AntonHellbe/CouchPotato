@@ -355,8 +355,9 @@ public class Controller {
 
         @Override
         public void onFavoriteRecieved(TvShow tvShow) {
+            Log.v("RECIEVEDFAV", tvShow.getName() + tvShow.getId());
             FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-            dataFragment.getFavorites().put(tvShow.getShow().getId().toString(), tvShow);
+            dataFragment.getFavorites().put(tvShow.getId().toString(), tvShow);
             favorites.insertTvShow(tvShow);
         }
     }
