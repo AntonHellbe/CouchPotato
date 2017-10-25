@@ -87,7 +87,9 @@ public class Controller {
     }
 
     public void onPause() {
+        Log.d("ControllerSettings","in onPause");
         if(mainActivity.isFinishing()){
+            Log.d("ControllerSettings","in onPause, is finishing");
             saveFavourites();
             saveSettingsToSP();
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
@@ -116,14 +118,20 @@ public class Controller {
     }
 
     private void saveFavourites() {
-        ArrayList<TvShow> favourites = dataFragment.getFavorites();
-        Set<String> favIdSet = new HashSet<String>();
-        for (int i = 0; i < favourites.size(); i++) {
-            favIdSet.add(favourites.get(i).getId().toString());
+        Log.d("ControllerSettings","in saveFavorites");
+        if (dataFragment.getFavorites() != null) {
+            ArrayList<TvShow> favourites = dataFragment.getFavorites();
+            Set<String> favIdSet = new HashSet<String>();
+            for (int i = 0; i < favourites.size(); i++) {
+                favIdSet.add(favourites.get(i).getId().toString());
+
+            }
+            Log.d("ControllerSettings", "exiting saveFavorites");
+            editor = sP.edit();
+            editor.putStringSet("favourites", favIdSet);
+            editor.apply();
         }
-        editor = sP.edit();
-        editor.putStringSet("favourites",favIdSet);
-        editor.apply();
+        Log.d("ControllerSettings","exiting saveFavorites");
     }
 
     //TODO kan också vara en string id, vilket som är smidigast
@@ -228,29 +236,31 @@ public class Controller {
     }
 
     private void saveSettingsToSP(){
-        Set<String> settings = new HashSet<String>();
-
-        settings.add(dataFragment.getSettings().getCountry());
-        settings.add(dataFragment.getSettings().getLanguage());
-        settings.add(""+dataFragment.getSettings().getPosition_count());
-        settings.add(""+dataFragment.getSettings().getPosition_lang());
-        settings.add(""+dataFragment.getSettings().isNsfw());
 
         editor = sP.edit();
-        editor.putStringSet("settings", settings);
+        editor.putBoolean("nsfw",dataFragment.getSettings().isNsfw());
+        editor.putString("language", dataFragment.getSettings().getLanguage());
+        editor.putString("country", dataFragment.getSettings().getCountry());
+        editor.putInt("posLang", dataFragment.getSettings().getPosition_lang());
+        editor.putInt("posCount", dataFragment.getSettings().getPosition_count());
         editor.apply();
+        Log.d("ControllerSettings", "in saveSettingsToSP, saved stuff");
     }
 
     public void restoreSettings(){
-        if (!sP.contains("settings")){
+        if (!sP.contains("language")){
             Settings settings = new Settings();
             dataFragment.setSettings(settings);
+            Log.d("ControllerSettings","in restoreSettings, does not contain the word settings");
         }else {
             // TODO: 25/10/2017 extract settings from sP
-            ArrayList<String> savedSettings = new ArrayList<>(sP.getStringSet("settings", null));
-            Boolean nsfw = (savedSettings.get(4)=="true");
-            int country = Integer.parseInt(savedSettings.get(2)), lang = Integer.parseInt(savedSettings.get(3));
-            Settings settings = new Settings(nsfw, savedSettings.get(1), savedSettings.get(0),lang, country);
+
+
+            Settings settings = new Settings(sP.getBoolean("nsfw", true),
+                    sP.getString("language",null),
+                    sP.getString("country",null),
+                    sP.getInt("posLang",0),
+                    sP.getInt("posCount",0));
             dataFragment.setSettings(settings);
         }
     }
