@@ -105,11 +105,21 @@ public class ActivityTvShow extends AppCompatActivity {
         controller.onDestroy();
     }
 
+    public void setIvPosterBitmap(Bitmap bitmap) {
+        ivPoster.setImageBitmap(bitmap);
+    }
+
     private class Listener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
             //TODO add favorite
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
     }
 }

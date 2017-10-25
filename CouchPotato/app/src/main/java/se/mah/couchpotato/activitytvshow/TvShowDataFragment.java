@@ -23,6 +23,9 @@ public class TvShowDataFragment extends Fragment {
     private int startSeason;
     private boolean seasonIsYear;
     private boolean bound = false;
+    private boolean favorite;
+    private Bitmap hdImage;
+    private String hdImagePath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,5 +87,29 @@ public class TvShowDataFragment extends Fragment {
 
     public void setSeasonIsYear(boolean seasonIsYear) {
         this.seasonIsYear = seasonIsYear;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public Bitmap getHdImage() {
+        return hdImage;
+    }
+
+    public void setHdImage(Bitmap hdImage) {
+        this.hdImage = hdImage;
+    }
+
+    public String getHdImagePath() {
+        return hdImagePath;
+    }
+
+    public void setHdImagePath(String hdImagePath) {
+        this.hdImagePath = hdImagePath;
     }
 }

@@ -3,6 +3,7 @@ package se.mah.couchpotato.activitytvshow;
 import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -17,7 +18,7 @@ import se.mah.couchpotato.PosterListener;
  * Created by Gustaf Bohlin on 22/10/2017.
  */
 
-public class TvShowController implements AllEpisodesListener {
+public class TvShowController implements AllEpisodesListener, PosterListener {
 
     private ActivityTvShow activity;
     private CommunicationService communicationService;
@@ -43,6 +44,8 @@ public class TvShowController implements AllEpisodesListener {
         if(dataFragment == null){
             dataFragment = new TvShowDataFragment();
             fm.beginTransaction().add(dataFragment, "tvData").commit();
+            dataFragment.setFavorite(activity.getIntent().getBooleanExtra("isfavorite", false));
+            dataFragment.setHdImagePath(activity.getIntent().getStringExtra("hd"));
         }
     }
 
@@ -52,9 +55,11 @@ public class TvShowController implements AllEpisodesListener {
         activity.bindService(intent, serviceConnection,0);
     }
 
-    public void getEpisodes() {
+    public void sendInitialRequests() {
         if (dataFragment.getEpisodes() == null)
             communicationService.getAllEpisodes(dataFragment.getTvShowId(), this);
+        if (dataFragment.getHdImage() == null)
+            communicationService.downloadPicture("", this, dataFragment.getHdImagePath());
     }
 
     @Override
@@ -63,7 +68,7 @@ public class TvShowController implements AllEpisodesListener {
         dataFragment.setEpisodes(shows);
         int seasons = 1;
         if (!shows.isEmpty()) {
-            seasons = Math.max(shows.get(shows.size() - 1).getSeason() - shows.get(0).getSeason(), 1);  //atleast one season
+            seasons = Math.max(shows.get(shows.size() - 1).getSeason() - shows.get(0).getSeason() + 1, 1);  //atleast one season
             dataFragment.setStartSeason(shows.get(0).getSeason());
         }
         dataFragment.setSeasons(seasons);
@@ -104,6 +109,12 @@ public class TvShowController implements AllEpisodesListener {
         }
     }
 
+    @Override
+    public void onPosterDownloaded(String id, Bitmap bitmap) {
+        dataFragment.setHdImage(bitmap);
+        activity.setIvPosterBitmap(bitmap);
+    }
+
 
     private class ServiceConnection implements android.content.ServiceConnection{
         @Override
@@ -112,7 +123,7 @@ public class TvShowController implements AllEpisodesListener {
             communicationService = ls.getService(activity);
             Log.d("Controller","In onServiceConnected");
             dataFragment.setBound(true);
-            getEpisodes();
+            sendInitialRequests();
         }
 
         @Override

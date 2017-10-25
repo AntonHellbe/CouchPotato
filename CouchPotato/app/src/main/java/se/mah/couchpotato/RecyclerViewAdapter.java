@@ -137,6 +137,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("id", show.getShow().getId().toString());
             intent.putExtra("title", show.getShow().getName());
             intent.putExtra("plot", show.getShow().getSummary());
+            intent.putExtra("hd", show.getShow().getImage().getOriginal());
             Bundle bundle = options.toBundle();
 
             ActivityCompat.startActivity(activity, intent, bundle);
