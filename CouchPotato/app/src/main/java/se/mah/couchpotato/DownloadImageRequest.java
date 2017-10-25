@@ -15,7 +15,6 @@ public class DownloadImageRequest extends DownloadRequest {
         this.posterListener = posterListener;
     }
 
-
     public String getId() {
         return id;
     }
