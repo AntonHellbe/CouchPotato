@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import se.mah.couchpotato.activtysettings.ActivitySettings;
+import se.mah.couchpotato.activtysettings.Settings;
 
 /**
  * Created by robin on 19/10/2017.
@@ -191,6 +192,26 @@ public class Controller {
         } else {
             FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
             search.updateFragmentData(new ArrayList<TvShow>());
+        }
+    }
+
+    public void saveSettings(Settings settings){
+
+        // TODO: 25/10/2017 change the current settings to the newly changed, and also save it into sP
+
+        //First convert settings to strings/int/other things that can be saved in sP
+        //Then remove old settings from sP and replace them with the new ones
+        //After that save it to datafragment
+
+        dataFragment.setSettings(settings);
+    }
+
+    public void getSettings(){
+        if (sP==null){
+            Settings settings = new Settings();
+            dataFragment.setSettings(settings);
+        }else {
+            // TODO: 25/10/2017 extract settings from sP
         }
     }
 

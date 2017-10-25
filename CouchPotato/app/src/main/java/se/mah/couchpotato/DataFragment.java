@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import se.mah.couchpotato.activtysettings.Settings;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -36,6 +38,7 @@ public class DataFragment extends Fragment {
     private boolean fragmentInstantiated = false;
     private HashMap<String, Boolean> filterIncludeMap = new HashMap<>();
     private HashMap<String, ArrayList<TvShow>> filterMap = new HashMap();
+    private Settings settings;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -178,13 +181,13 @@ public class DataFragment extends Fragment {
 
     public ArrayList<TvShow> filterSearchResult(ArrayList<TvShow> shows) {
         ArrayList<TvShow> filteredResult = new ArrayList<>();
-        for(TvShow t: shows){
-            if(t.getShow().getGenres().size() == 0){
-                if(filterIncludeMap.get(OTHER) == true)
+        for (TvShow t : shows) {
+            if (t.getShow().getGenres().size() == 0) {
+                if (filterIncludeMap.get(OTHER) == true)
                     filteredResult.add(t);
-            }else{
+            } else {
                 for (int i = 0; i < t.getShow().getGenres().size(); i++) {
-                    if(filterIncludeMap.get(t.getShow().getGenres().get(i))){
+                    if (filterIncludeMap.get(t.getShow().getGenres().get(i))) {
                         filteredResult.add(t);
                         break;
                     }
@@ -193,5 +196,12 @@ public class DataFragment extends Fragment {
             }
         }
         return filteredResult;
+    }
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public Settings getSettings(){
+        return this.settings;
     }
 }
