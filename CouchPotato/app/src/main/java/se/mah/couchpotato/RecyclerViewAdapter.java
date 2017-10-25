@@ -62,6 +62,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TvShow tvShow = tvShowArrayList.get(position);
         holder.show = tvShow;
         holder.tvTitle.setText(tvShow.getShow().getName());
+
+//        if(((MainActivity) activity).getController().getDataFragment().getFavorites().get(tvShow.getId()) != null){
+//            //@TODO - Set a cute little star to indicate that this is a favorite tvshow
+//
+//        }
+
+
         if (!holder.animated) {
             setAnimation(holder.itemView);
             holder.animated = true;
