@@ -2,6 +2,7 @@ package se.mah.couchpotato.activtysettings;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.Spinner;
 
@@ -39,8 +40,8 @@ public class LanguageSpinner extends Spinner {
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         ((ActivitySettings) getContext()).setSpinnerListener();
     }
 }
