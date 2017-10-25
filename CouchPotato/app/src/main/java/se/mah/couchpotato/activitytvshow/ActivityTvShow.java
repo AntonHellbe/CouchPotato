@@ -109,17 +109,27 @@ public class ActivityTvShow extends AppCompatActivity {
         ivPoster.setImageBitmap(bitmap);
     }
 
+    public void setFabImage(boolean favorite) {
+        if (favorite)
+            fabFavorite.setImageResource(R.drawable.ic_star_yellow);
+        else
+            fabFavorite.setImageResource(R.drawable.ic_star);
+    }
+
     private class Listener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            //TODO add favorite
+            controller.fabFavoriteClicked();
         }
     }
 
     @Override
-    public void onBackPressed() {
-
-        super.onBackPressed();
+    public void finish() {
+        Intent i = new Intent();
+        i.putExtra("favorite", controller.getDataFragment().isFavorite());
+        i.putExtra("id", getIntent().getStringExtra("id"));
+        setResult(RESULT_OK, i);
+        super.finish();
     }
 }

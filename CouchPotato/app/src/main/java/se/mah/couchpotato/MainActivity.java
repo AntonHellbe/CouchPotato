@@ -19,8 +19,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import se.mah.couchpotato.activtysettings.Settings;
-
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
     private Controller controller;
@@ -29,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private CardView cardViewFilter;
     private RecyclerView recyclerViewFilters;
     public static final int REQUESTCODESETTINGS = 8;
+    public static final int REQUESTCODETVSHOW = 7;
 
     public void hidekeyboard() {
         View view = this.getCurrentFocus();
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
     public void toggleFilter() {
 
-        Animator anim = null;
+        Animator anim;
         Point p = new Point();
         getWindowManager().getDefaultDisplay().getSize(p);
 
@@ -127,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
                 controller.saveSettings(bundle);
             }else {
                 Toast.makeText(this, "Settings not applied", Toast.LENGTH_SHORT).show();    //TODO @strings
+            }
+        }
+        if (requestCode == REQUESTCODETVSHOW) {
+            if (resultCode == RESULT_OK) {
+                //TODO favorites
             }
         }
     }

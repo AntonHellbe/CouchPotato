@@ -107,9 +107,7 @@ public class Controller {
     private void restoreFavourites() {
         if (sP.contains("favourites")) {
             ArrayList<String> favIds = new ArrayList<>(sP.getStringSet("favourites", null));
-
             FavoriteListenerCallback callback = new FavoriteListenerCallback();
-
             for (int i = 0; i < favIds.size(); i++) {
                 DownloadFavoriteRequest req = new DownloadFavoriteRequest(favIds.get(i), callback);
                 dataFragment.getDownloadQueue().add(req);

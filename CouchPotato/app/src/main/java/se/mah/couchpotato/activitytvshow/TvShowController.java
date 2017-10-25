@@ -13,6 +13,7 @@ import se.mah.couchpotato.AllEpisodesListener;
 import se.mah.couchpotato.CommunicationService;
 import se.mah.couchpotato.EpisodeObject;
 import se.mah.couchpotato.PosterListener;
+import se.mah.couchpotato.R;
 
 /**
  * Created by Gustaf Bohlin on 22/10/2017.
@@ -31,6 +32,7 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
         dataFragment.setTvShowId(tvShowId);
         initializeCommunication();
         populateViewPager();
+        activity.setFabImage(dataFragment.isFavorite());
     }
 
     private void populateViewPager() {
@@ -113,6 +115,11 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
     public void onPosterDownloaded(String id, Bitmap bitmap) {
         dataFragment.setHdImage(bitmap);
         activity.setIvPosterBitmap(bitmap);
+    }
+
+    public void fabFavoriteClicked() {
+        dataFragment.setFavorite(!dataFragment.isFavorite());
+        activity.setFabImage(dataFragment.isFavorite());
     }
 
 
