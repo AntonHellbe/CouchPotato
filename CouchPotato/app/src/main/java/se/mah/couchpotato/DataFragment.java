@@ -150,10 +150,8 @@ public class DataFragment extends Fragment {
         ArrayList<TvShow> filteredResult = new ArrayList<>();
         for (TvShow t : tvShowFilter) {
             if (t.getShow().getGenres().size() == 0) {
-                if (filterIncludeMap.get(OTHER) == true)
-                    if (t.getShow().getGenres().size() == 0) {
-                        if (filterIncludeMap.get(OTHER))
-                            filteredResult.add(t);
+                if (filterIncludeMap.get(OTHER))
+                        filteredResult.add(t);
                     } else {
                         for (int i = 0; i < t.getShow().getGenres().size(); i++) {
                             if (filterIncludeMap.get(t.getShow().getGenres().get(i))) {
@@ -162,7 +160,7 @@ public class DataFragment extends Fragment {
                             }
                         }
                     }
-                }
+
         }
         return filteredResult;
     }

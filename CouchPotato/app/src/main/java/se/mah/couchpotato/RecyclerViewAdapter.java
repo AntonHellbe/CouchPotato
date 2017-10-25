@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void setTvShowArrayList(ArrayList<TvShow> tvShowList) {
         this.tvShowArrayList = tvShowList;
+//        Log.v("RWADAPTER", getItemCount() + "");
         imagesLoaded = false;
         notifyDataSetChanged();
     }
