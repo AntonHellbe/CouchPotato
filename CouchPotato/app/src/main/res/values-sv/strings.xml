@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CouchPotato</string>
+    <string name="search">Sök</string>
+
+    <string name="title_activity_settings">Inställnigar</string>
+    <string name="title_favorites">Favoriter</string>
+    <string name="title_feed">Flöde</string>
+    <string name="title_search">Sök</string>
+
+    <string name="settings_theme">Tema</string>
+    <string name="settings_nsfw">Nsfw</string>
+    <string name="settings_language">Språk</string>
+    <string name="settings_country">Land</string>
+    <string name="settings_category_top">Data</string>
+    <string name="settings_category_bottom">Preferens</string>
+    <array name="settings_array_country">
+        <item>Svenska</item>
+        <item>USA</item>
+        <item>Storbritannien</item>
+    </array>
+    <array name="settings_array_language">
+        <item>Svenska</item>
+        <item>Engelska</item>
+    </array>
+
+
+    <string name="transition_fab_settings">TransitionFabSettings</string>
+    <string name="transition_show_poster">TransitionShowPosterAnimation</string>
+    <string name="transition_show_poster_episode">TransitionShowPosterAnimationEpisode</string>
+    <string name="transition_show_title">TransitionShowTitleAnimation</string>
+
+    <string name="title_activity_episode">ActivityEpisode</string>
+    <string name="activity_tv_show_no_airtime">Ingen sänningstid tillgänglig</string>
+    <string name="activity_tv_show_no_rating">0/0</string>
+    <string name="activity_tv_show_title">Titel</string>
+    <string name="activity_tv_show_no_plot">Ingen beskrivning tillgänglig</string>
+
+
+    <!--<array name="categories">-->
+        <!--<item>Action</item>-->
+        <!--<item>Andra</item>-->
+        <!--<item>Anime</item>-->
+        <!--<item>Barn</item>-->
+        <!--<item>DIY</item>-->
+        <!--<item>Drama</item>-->
+        <!--<item>Äventyr</item>-->
+        <!--<item>Familj</item>-->
+        <!--<item>Fantasy</item>-->
+        <!--<item>Historia</item>-->
+        <!--<item>Komedi</item>-->
+        <!--<item>Kriminalare</item>-->
+        <!--<item>Krig</item>-->
+        <!--<item>Mat</item>-->
+        <!--<item>Medicinskt</item>-->
+        <!--<item>Musik</item>-->
+        <!--<item>Myserie</item>-->
+        <!--<item>Natur</item>-->
+        <!--<item>Romans</item>-->
+        <!--<item>Rättslig</item>-->
+        <!--<item>Rysare</item>-->
+        <!--<item>Resa</item>-->
+        <!--<item>Science-Fiction</item>-->
+        <!--<item>Sport</item>-->
+        <!--<item>Skräck</item>-->
+        <!--<item>Spion</item>-->
+        <!--<item>Vilda-Västern</item>-->
+        <!--<item>Vuxet</item>-->
+        <!--<item>Övernaturlig</item>-->
+    <!--</array>-->
+
+</resources>

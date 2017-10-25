@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CouchPotato</string>
     <string name="title_feed">Feed</string>
     <string name="title_search">Search</string>
     <string name="title_favorites">Favorites</string>
-    
+
     <string name="transition_show_poster">TransitionShowPosterAnimation</string>
     <string name="transition_show_poster_episode">TransitionShowPosterAnimationEpisode</string>
     <string name="transition_show_title">TransitionShowTitleAnimation</string>
@@ -20,22 +21,18 @@
     <string name="settings_nsfw">Nsfw</string>
     <string name="settings_category_top">Data</string>
     <string name="settings_category_bottom">Preference</string>
+
     <array name="settings_array_country">
         <item>Sweden</item>
         <item>United States</item>
         <item>United Kingdoms</item>
     </array>
+
     <array name="settings_array_language">
         <item>Swedish</item>
         <item>English</item>
     </array>
-
     <string name="title_activity_episode">ActivityEpisode</string>
-
-    <string name="activity_tv_show_title">Title</string>
-    <string name="activity_tv_show_no_rating">0/0</string>
-    <string name="activity_tv_show_no_plot">No plot available</string>
-    <string name="activity_tv_show_no_airtime">No airtime available</string>
 
     <array name="categories">
         <item>Action</item>
@@ -68,4 +65,8 @@
         <item>Western</item>
         <item>Other</item>
     </array>
+    <string name="activity_tv_show_no_plot">No plot available</string>
+    <string name="activity_tv_show_no_airtime">No airtime available</string>
+    <string name="activity_tv_show_no_rating">0/0</string>
+    <string name="activity_tv_show_title">Title</string>
 </resources>

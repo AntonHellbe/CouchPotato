@@ -31,7 +31,7 @@
                 android:textSize="@dimen/activity_settings_textSize_category" />
 
             <LinearLayout
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/activity_settings_marginTop2dp"
                 android:id="@+id/linear_settings_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/activity_settings_marginTop2dp"
                 android:id="@+id/linear_settings_middle1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_category_settings_2"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="@dimen/activity_settings_marginTop5dp">
 
                 <TextView
                     android:id="@+id/text_settings_nsfw"

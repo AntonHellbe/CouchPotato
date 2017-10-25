@@ -45,7 +45,7 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="@string/activity_tv_show_title"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold"
