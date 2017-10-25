@@ -42,7 +42,6 @@ public class Controller {
         initializeDataFragment();
         initializeCommunication();
         sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
-        editor = sP.edit();
     }
 
     private void initializeDataFragment() {
@@ -112,14 +111,18 @@ public class Controller {
         Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
         HashMap<String,TvShow> favourites = dataFragment.getFavorites();
         favourites.put(""+show.getId(),show);
+        editor = sP.edit();
         editor.putInt("" + show.getId(),show.getId());
+        editor.commit();
         dataFragment.setFavorites(favourites);
     }
 
     public void removeFavourite(TvShow show){
         HashMap<String, TvShow> favourties = dataFragment.getFavorites();
         favourties.remove("" + show.getId());
+        editor = sP.edit();
         editor.remove(""+show.getId());
+        editor.commit();
         dataFragment.setFavorites(favourties);
     }
 
