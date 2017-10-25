@@ -1,6 +1,7 @@
 package se.mah.couchpotato;
 
 import android.animation.Animator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private BottomNavigationView bottomNavigationView;
     private CardView cardViewFilter;
     private RecyclerView recyclerViewFilters;
+    private NetworkInfo networkInfo;
+    private ConnectivityManager connectivityManager;
     public static final int REQUESTCODESETTINGS = 8;
     public static final int REQUESTCODETVSHOW = 7;
 
@@ -157,6 +160,16 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             return controller.navigationClicked(item);
+        }
+    }
+
+    private class NetworkStateReciever extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+            controller.networkChange(networkInfo);
         }
     }
 }

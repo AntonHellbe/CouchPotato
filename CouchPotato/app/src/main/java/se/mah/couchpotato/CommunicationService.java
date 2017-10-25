@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -48,8 +49,8 @@ public class CommunicationService extends Service {
     private ActivityTvShow tvActivity;
     private ObjectMapper mapper;
     private UrlBuilder urlBuilder;
-    private ConnectivityManager connectivityManager;
-    private NetworkInfo networkInfo;
+    private Boolean networkProblem;
+    private ArrayDeque<AsyncTask> networkQue = new ArrayDeque<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -67,12 +68,24 @@ public class CommunicationService extends Service {
     public void setActivity(MainActivity activity) {
         Log.d("CommunicationService","adding reference");
         this.activity = activity;
-        connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        networkInfo = connectivityManager.getActiveNetworkInfo();
     }
 
     public void setTvActivity(ActivityTvShow activity) {
         tvActivity = activity;
+    }
+
+    public Boolean getNetworkProblem() {
+        return networkProblem;
+    }
+
+    public void setNetworkProblem(Boolean networkProblem) {
+        this.networkProblem = networkProblem;
+    }
+
+    public void executeCommands() {
+        while(networkQue.size() != 0){
+            networkQue.pop().execute();
+        }
     }
 
 
@@ -92,17 +105,27 @@ public class CommunicationService extends Service {
 
     public void getAllEpisodes(String id, AllEpisodesListener listener){
         allEpisodesTask = new AllEpisodesTask(id, listener);
-        allEpisodesTask.execute();
+        if(!networkProblem)
+            allEpisodesTask.execute();
+        else
+            networkQue.add(allEpisodesTask);
+
     }
 
     public void sendSearchTask(String searchParam) {
-        searchTask = new SearchTask();
-        searchTask.execute(searchParam);
+        searchTask = new SearchTask(searchParam);
+        if(!networkProblem)
+            searchTask.execute();
+        else
+            networkQue.add(searchTask);
     }
 
     public void sendGetFavorite(String id, FavoriteListener callback){
-        favoriteTask = new FavoriteTask(callback);
-        favoriteTask.execute(id);
+        favoriteTask = new FavoriteTask(callback, id);
+        if(!networkProblem)
+            favoriteTask.execute();
+        else
+            networkQue.add(favoriteTask);
     }
 
     public void sendSchedule(){
@@ -111,35 +134,35 @@ public class CommunicationService extends Service {
     }
 
     public void downloadPicture(String id, PosterListener posterListener, String url){
-        imLoader = new ImageLoader(id, posterListener);
-        imLoader.execute(url);
+        imLoader = new ImageLoader(id, posterListener, url);
+        imLoader.execute();
     }
 
-    public void sendEpisodeTask(String id, String season, String episode, EpisodeListener episodeListener) {
-        EpisodeLoader epLoader = new EpisodeLoader(id, episode, season, episodeListener);
-        epLoader.execute();
-    }
-
-//    public boolean
+//    public void sendEpisodeTask(String id, String season, String episode, EpisodeListener episodeListener) {
+//        EpisodeLoader epLoader = new EpisodeLoader(id, episode, season, episodeListener);
+//        epLoader.execute();
+//    }
 
     private class FavoriteTask extends AsyncTask<String, String, TvShow> {
 
         private FavoriteListener callback;
+        private String id;
 
-        public FavoriteTask(FavoriteListener callback) {
+        public FavoriteTask(FavoriteListener callback, String id) {
             this.callback = callback;
+            this.id = id;
         }
 
         @Override
         protected TvShow doInBackground(String... params) {
-            String response = "", id = params[0];
+            String response = "";
+            id = params[0];
             URL url;
             JSONObject jsonObject = null;
             BufferedReader br = null;
             InputStream inStream = null;
             try {
                 url = new URL(UrlBuilder.SHOW_BY_ID + id);
-//                Log.d("CommunicationService", "in doInBackground, message to send: " + url);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 inStream = new BufferedInputStream(urlConnection.getInputStream());
                 br = new BufferedReader((new InputStreamReader(inStream)));
@@ -177,12 +200,10 @@ public class CommunicationService extends Service {
                 jsonObject = new JSONObject(response);
             }catch (JSONException e){ }
             try {
-//                newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
                 newShow = mapper.readValue(jsonObject.toString(), TvShow.class);
                 Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
             } catch (Exception e) {
                 e.printStackTrace();
-//                Log.d("COMMUNICATIONSERVICE", "ERROR PARSING TVSHOW");
             }
 
             return newShow;
@@ -196,11 +217,16 @@ public class CommunicationService extends Service {
 
     private class SearchTask extends AsyncTask<String, String, ArrayList<TvShow>> {
 
+        private String searchParam;
+
+        public SearchTask(String searchParam){
+            this.searchParam = searchParam;
+        }
+
         @Override
         protected ArrayList<TvShow> doInBackground(String... strings) {
             URL url;
             String response = "";
-            String searchParam = strings[0];
             ArrayList<TvShow> resultList;
             JSONArray jsonArray = null;
             BufferedReader br = null;
@@ -356,18 +382,18 @@ public class CommunicationService extends Service {
 
         public class ImageLoader extends AsyncTask<String, String, Bitmap>{
 
-            private String id;
+            private String id, urlString;
             private PosterListener posterListener;
 
-            public ImageLoader(String id, PosterListener posterListener){
+            public ImageLoader(String id, PosterListener posterListener, String url){
                 this.id = id;
                 this.posterListener = posterListener;
+                this.urlString = url;
             }
 
             @Override
             protected Bitmap doInBackground(String... strings) {
                 URL url;
-                String urlString = strings[0].trim();
                 HttpURLConnection httpURLConnection = null;
                 InputStream inputStream = null;
                 BufferedInputStream br = null;

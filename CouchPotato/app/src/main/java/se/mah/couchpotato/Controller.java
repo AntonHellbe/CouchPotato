@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -323,6 +324,15 @@ public class Controller {
         else
             if (dataFragment.getFavorites().containsKey(id))
                 dataFragment.getFavorites().remove(id);
+    }
+
+    public void networkChange(NetworkInfo networkInfo) {
+        if(networkInfo.getState() == NetworkInfo.State.CONNECTED || networkInfo.getState() == NetworkInfo.State.CONNECTING){
+            communicationService.executeCommands();
+            communicationService.setNetworkProblem(false);
+        }else if(networkInfo.getState() == NetworkInfo.State.DISCONNECTED || networkInfo.getState() == NetworkInfo.State.DISCONNECTING){
+            communicationService.setNetworkProblem(true);
+        }
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{
