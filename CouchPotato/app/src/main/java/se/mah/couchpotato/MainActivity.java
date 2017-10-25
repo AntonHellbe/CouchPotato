@@ -2,6 +2,7 @@ package se.mah.couchpotato;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
@@ -24,8 +26,9 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private BottomNavigationView bottomNavigationView;
     private CardView cardViewFilter;
     private RecyclerView recyclerViewFilters;
+    public static final int REQUESTCODESETTINGS = 8;
 
-    public void hideKeyBoard() {
+    public void hidekeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -116,6 +119,18 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     protected void onResume() {
         controller.onResume();
         super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUESTCODESETTINGS) {
+            if (resultCode == RESULT_OK) {
+                //TODO update sharedpreferences
+            }else {
+                Toast.makeText(this, "Settings not applied", Toast.LENGTH_SHORT).show();    //TODO @strings
+            }
+        }
     }
 
     @Override

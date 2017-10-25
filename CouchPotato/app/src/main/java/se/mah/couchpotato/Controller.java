@@ -5,11 +5,9 @@ import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,7 +198,7 @@ public class Controller {
         i.putExtra("revealX", (int) x);    //to get middle of button
         i.putExtra("revealY", (int) y);
         i.putExtra("startRadius", 40);
-        mainActivity.startActivity(i);
+        mainActivity.startActivityForResult(i, MainActivity.REQUESTCODESETTINGS);
     }
 
     public void fabFilterClicked() {
@@ -209,7 +207,7 @@ public class Controller {
 
     public boolean navigationClicked(MenuItem item) {
         if (dataFragment.isAllowNavigation()) {
-            mainActivity.hideKeyBoard();
+            mainActivity.hidekeyboard();
             switch (item.getItemId()) {
                 case R.id.navigation_feed:
                     containerFragment.show(ContainerFragment.TAG_FEED);
