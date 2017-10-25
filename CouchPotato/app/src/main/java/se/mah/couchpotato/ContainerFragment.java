@@ -28,7 +28,6 @@ public class ContainerFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.v("ContainerFragment","Hello ? ");
         View view = inflater.inflate(R.layout.fragment_container,container,false);
         FragmentManager fm = getChildFragmentManager();
         viewer = new FragmentViewer((MainActivity) getActivity(), fm, R.id.fragment_container);

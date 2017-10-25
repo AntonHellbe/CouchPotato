@@ -63,7 +63,8 @@
                         android:layout_weight="2"
                         android:text="@string/activity_tv_show_no_rating"
                         android:textColor="@color/white"
-                        android:textSize="30sp" />
+                        android:textSize="30sp"
+                        android:id="@+id/tv_show_rating"/>
 
                 </LinearLayout>
 

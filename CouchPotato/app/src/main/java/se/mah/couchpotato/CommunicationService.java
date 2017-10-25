@@ -1,13 +1,17 @@
 package se.mah.couchpotato;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,6 +48,8 @@ public class CommunicationService extends Service {
     private ActivityTvShow tvActivity;
     private ObjectMapper mapper;
     private UrlBuilder urlBuilder;
+    private ConnectivityManager connectivityManager;
+    private NetworkInfo networkInfo;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -61,6 +67,8 @@ public class CommunicationService extends Service {
     public void setActivity(MainActivity activity) {
         Log.d("CommunicationService","adding reference");
         this.activity = activity;
+        connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = connectivityManager.getActiveNetworkInfo();
     }
 
     public void setTvActivity(ActivityTvShow activity) {
@@ -111,6 +119,8 @@ public class CommunicationService extends Service {
         EpisodeLoader epLoader = new EpisodeLoader(id, episode, season, episodeListener);
         epLoader.execute();
     }
+
+//    public boolean
 
     private class FavoriteTask extends AsyncTask<String, String, TvShow> {
 
@@ -167,6 +177,7 @@ public class CommunicationService extends Service {
 
             TvShow newShow = null;
             Log.v("COMMSERVICE", "RESPONSE, FAVORITETASK: " + response);
+            Log.v("COMMSERVICEFAVORITE", response);
             try {
                 newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
                 Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());

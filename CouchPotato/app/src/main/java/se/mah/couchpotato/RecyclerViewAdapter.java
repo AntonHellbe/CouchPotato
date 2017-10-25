@@ -139,6 +139,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("plot", show.getShow().getSummary());
             intent.putExtra("hd", show.getShow().getImage().getOriginal());
             intent.putExtra("isfavorite", ((MainActivity) activity).getController().getDataFragment().getFavorites().containsKey(show.getShow().getId().toString()));
+            if(show.getShow().getImage().getOriginal() != null) //Apparently a show can have a medium image but not a original
+                intent.putExtra("hd", show.getShow().getImage().getOriginal());
+            if(show.getShow().getRating().getAverage() != null)
+                intent.putExtra("rating", show.getShow().getRating().getAverage().toString());
             Bundle bundle = options.toBundle();
             ActivityCompat.startActivityForResult(activity, intent, MainActivity.REQUESTCODETVSHOW, bundle);
         }

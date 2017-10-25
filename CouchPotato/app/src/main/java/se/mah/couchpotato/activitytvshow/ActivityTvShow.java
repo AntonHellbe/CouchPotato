@@ -53,9 +53,11 @@ public class ActivityTvShow extends AppCompatActivity {
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading_episodes);
         tvTitle = (TextView) findViewById(R.id.tv_id_title);
         tvPlot = (TextView) findViewById(R.id.tv_id_plot);
+        tvRating = (TextView) findViewById(R.id.tv_show_rating);
         fabFavorite = (FloatingActionButton) findViewById(R.id.fab_favorite);
         String title = getIntent().getStringExtra("title");
         String plot = getIntent().getStringExtra("plot");
+        String rating = getIntent().getStringExtra("rating");
         plot = plot.replace("<p>", "");
         plot = plot.replace("</p>", "");
         plot = plot.replace("<b>", "");
@@ -64,6 +66,10 @@ public class ActivityTvShow extends AppCompatActivity {
         plot = plot.replace("</i>", "");
         tvTitle.setText(title);
         tvPlot.setText(plot);
+        if(rating == null)
+            tvRating.setText("-/10");
+        else
+            tvRating.setText(rating + "/10");
     }
 
     private void initializeListeners() {
