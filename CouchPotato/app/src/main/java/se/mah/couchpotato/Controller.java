@@ -133,8 +133,9 @@ public class Controller {
         }
         dataFragment.setSchedule(shows);
         dataFragment.filterTvShows(shows);
+        ArrayList<TvShow> filteredFeed = dataFragment.filterShows(shows);
         FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
-        feed.updateFragmentData(dataFragment.getSchedule());
+        feed.updateFragmentData(filteredFeed);
     }
 
     public void favoritesReceived(TvShow show) {
@@ -148,9 +149,9 @@ public class Controller {
         for(TvShow t: shows){
             Log.d("CONTROLLERSEARCH", t.getShow().getName() + " " + t.getShow().getRuntime() + " " + t.getShow().getUrl() + " " + t.getShow().getId());
         }
-        ArrayList<TvShow> filteredResult = dataFragment.filterSearchResult(shows);
+        dataFragment.setSearchResult(shows);
+        ArrayList<TvShow> filteredResult = dataFragment.filterShows(dataFragment.getSearchResult());
         FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
-        dataFragment.setSearchResult(filteredResult);
         search.updateFragmentData(filteredResult);
     }
 
@@ -188,7 +189,7 @@ public class Controller {
     }
 
     public void onSearchTextChanged(String searchString) {
-        dataFragment.setSearchResult(null);
+//        dataFragment.setSearchResult(new ArrayList<TvShow>());
         if (searchString.length() > 3) {
             search(searchString);
         } else {
@@ -279,7 +280,8 @@ public class Controller {
         FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
         FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
-        feed.updateFragmentData(dataFragment.getFilteredShows());
+        feed.updateFragmentData(dataFragment.filterShows(dataFragment.getSchedule()));
+        search.updateFragmentData(dataFragment.filterShows(dataFragment.getSearchResult()));
         //TODO update the recyclerviews
     }
 

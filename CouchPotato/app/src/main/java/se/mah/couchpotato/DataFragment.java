@@ -30,7 +30,7 @@ public class DataFragment extends Fragment {
     private boolean serviceExist;
     private String currentTag;
     private ArrayList<TvShow> schedule;
-    private ArrayList<TvShow> searchResult;
+    private ArrayList<TvShow> searchResult = new ArrayList<>();
     private HashMap<String, TvShow> favorites;
     private boolean allowNavigation = true;
     private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
@@ -146,29 +146,33 @@ public class DataFragment extends Fragment {
 
     }
 
-    public ArrayList<TvShow> getFilteredShows(){
-        ArrayList<TvShow> filteredShows;
-        HashSet<TvShow> tvShowHashset = new HashSet<>();
-        Iterator filterInclude = filterIncludeMap.entrySet().iterator();
-
-        while(filterInclude.hasNext()){
-            Map.Entry<String, Boolean> entry = (Map.Entry<String, Boolean>) filterInclude.next();
-            String key = entry.getKey();
-            boolean value = entry.getValue();
-            if(value){
-                if(filterMap.get(key) != null)
-                    tvShowHashset.addAll(filterMap.get(key));
-            }
-
+    public ArrayList<TvShow> filterShows(ArrayList<TvShow> tvShowFilter) {
+        ArrayList<TvShow> filteredResult = new ArrayList<>();
+        for (TvShow t : tvShowFilter) {
+            if (t.getShow().getGenres().size() == 0) {
+                if (filterIncludeMap.get(OTHER) == true)
+                    if (t.getShow().getGenres().size() == 0) {
+                        if (filterIncludeMap.get(OTHER))
+                            filteredResult.add(t);
+                    } else {
+                        for (int i = 0; i < t.getShow().getGenres().size(); i++) {
+                            if (filterIncludeMap.get(t.getShow().getGenres().get(i))) {
+                                filteredResult.add(t);
+                                break;
+                            }
+                        }
+                    }
+                }
         }
-        filteredShows = new ArrayList<>(tvShowHashset);
+        return filteredResult;
+    }
 
-        for(TvShow t: filteredShows){
-            Log.v("DATAFRAG", t.getName() + " " + t.getId());
-        }
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 
-        return filteredShows;
-
+    public Settings getSettings(){
+        return this.settings;
     }
 
     public HashMap<String, Boolean> getFilterIncludeMap() {
@@ -179,29 +183,5 @@ public class DataFragment extends Fragment {
         this.filterIncludeMap = filterIncludeMap;
     }
 
-    public ArrayList<TvShow> filterSearchResult(ArrayList<TvShow> shows) {
-        ArrayList<TvShow> filteredResult = new ArrayList<>();
-        for (TvShow t : shows) {
-            if (t.getShow().getGenres().size() == 0) {
-                if (filterIncludeMap.get(OTHER) == true)
-                    filteredResult.add(t);
-            } else {
-                for (int i = 0; i < t.getShow().getGenres().size(); i++) {
-                    if (filterIncludeMap.get(t.getShow().getGenres().get(i))) {
-                        filteredResult.add(t);
-                        break;
-                    }
 
-                }
-            }
-        }
-        return filteredResult;
-    }
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
-
-    public Settings getSettings(){
-        return this.settings;
-    }
 }
