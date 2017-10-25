@@ -11,4 +11,6 @@ public interface FragmentInterface {
     Controller getController();
 
     void updateFragmentData(ArrayList<TvShow> shows);
+
+    void insertTvShow(TvShow show);
 }

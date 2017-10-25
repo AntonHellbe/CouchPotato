@@ -33,13 +33,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<TvShow> tvShowArrayList;
     private AppCompatActivity activity;
-    private boolean imagesLoaded = false;
 
     public void setTvShowArrayList(ArrayList<TvShow> tvShowList) {
         this.tvShowArrayList = tvShowList;
-//        Log.v("RWADAPTER", getItemCount() + "");
-        imagesLoaded = false;
         notifyDataSetChanged();
+        Log.v("RECYCLERVIEWADAPTER", String.valueOf(getItemCount()));
+    }
+
+    public void insertTvShow(TvShow show) {
+        tvShowArrayList.add(show);
+        notifyItemInserted(getItemCount() - 1);
     }
 
     public RecyclerViewAdapter(AppCompatActivity activity) {

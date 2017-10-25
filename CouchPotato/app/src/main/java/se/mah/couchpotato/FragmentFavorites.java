@@ -49,4 +49,9 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
     public void updateFragmentData(ArrayList<TvShow> shows) {
         adapter.setTvShowArrayList(shows);
     }
+
+    @Override
+    public void insertTvShow(TvShow show) {
+        
+    }
 }

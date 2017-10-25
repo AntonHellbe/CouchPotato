@@ -70,6 +70,11 @@ public class FragmentSearch extends Fragment implements FragmentInterface {
         adapter.setTvShowArrayList(shows);
     }
 
+    @Override
+    public void insertTvShow(TvShow show) {
+
+    }
+
     private class Listener implements TextWatcher, TextView.OnEditorActionListener {
 
         @Override

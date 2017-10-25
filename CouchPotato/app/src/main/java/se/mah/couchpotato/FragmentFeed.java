@@ -52,6 +52,11 @@ public class FragmentFeed extends Fragment implements FragmentInterface {
     }
 
     @Override
+    public void insertTvShow(TvShow show) {
+        adapter.insertTvShow(show);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (getController().getDataFragment().getSchedule() != null)
