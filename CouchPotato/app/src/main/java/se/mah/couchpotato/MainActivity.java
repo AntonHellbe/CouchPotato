@@ -19,6 +19,8 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import se.mah.couchpotato.activtysettings.Settings;
+
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
 
     private Controller controller;
@@ -127,7 +129,8 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         if (requestCode == REQUESTCODESETTINGS) {
             if (resultCode == RESULT_OK) {
                 //TODO update sharedpreferences
-
+                Bundle bundle = data.getExtras();
+                controller.saveSettings(bundle);
             }else {
                 Toast.makeText(this, "Settings not applied", Toast.LENGTH_SHORT).show();    //TODO @strings
             }

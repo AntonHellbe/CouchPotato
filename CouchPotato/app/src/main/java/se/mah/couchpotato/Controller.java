@@ -198,14 +198,13 @@ public class Controller {
         }
     }
 
-    public void saveSettings(Settings settings){
+    public void saveSettings(Bundle bundle){
 
         // TODO: 25/10/2017 change the current settings to the newly changed, and also save it into sP
-
+        Settings settings = bundle.getParcelable(ActivitySettings.SETTINGS_BUNDLE_NAME);
         //First convert settings to strings/int/other things that can be saved in sP
         //Then remove old settings from sP and replace them with the new ones
         //After that save it to datafragment
-
         dataFragment.setSettings(settings);
     }
 
@@ -224,9 +223,11 @@ public class Controller {
         i.putExtra("revealY", (int) y);
         i.putExtra("startRadius", 40);
 //        @TODO Använd data fragment istället
-        Settings settings = new Settings();
+//        Settings settings = new Settings();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("data_settings",settings);
+//        bundle.putParcelable("data_settings",settings);
+        Settings settings = dataFragment.getSettings();
+        bundle.putParcelable(ActivitySettings.SETTINGS_BUNDLE_NAME,settings);
         i.putExtras(bundle);
         mainActivity.startActivityForResult(i, MainActivity.REQUESTCODESETTINGS);
     }

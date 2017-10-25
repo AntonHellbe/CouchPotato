@@ -21,14 +21,16 @@ import se.mah.couchpotato.R;
 
 public class ActivitySettings extends AppCompatActivity {
 
+    public static final String SETTINGS_BUNDLE_NAME = "data_settings";
+
     private CheckBox checkBoxNsfw;
     private Spinner spinnerCountry;
     private Spinner spinnerLanguage;
     private ArrayAdapter<CharSequence> adapterCountry;
     private ArrayAdapter<CharSequence> adapterLanguage;
-    private Settings settings;
     private int x, y, startRadius;
     private ScrollView sv_settings;
+
 
 
     @Override
@@ -39,9 +41,13 @@ public class ActivitySettings extends AppCompatActivity {
         initComp();
 
         Bundle bundle = getIntent().getExtras();
+        Settings settings;
         if (bundle != null) {
-            settings = bundle.getParcelable("data_settings");
-            setStartScreen();
+            settings = bundle.getParcelable(SETTINGS_BUNDLE_NAME);
+            if (settings == null) {
+                settings = new Settings();
+            }
+            setStartScreen(settings);
         }
 
     }
@@ -61,6 +67,7 @@ public class ActivitySettings extends AppCompatActivity {
         spinnerLanguage.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
 
     }
+
 
     private void animateView(Bundle savedInstanceState) {
 
@@ -86,19 +93,45 @@ public class ActivitySettings extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * '
+     * Saves settings information and returns it through a bundle inside an intent
+     *
+     * @return intent with settings data
+     */
     private Intent createIntent() {
+
+        //creates a new settings object
+        Settings settings = new Settings();
+        try {
+            settings.setNsfw(checkBoxNsfw.isChecked());
+            settings.setCountry(spinnerCountry.getSelectedItem().toString());
+            settings.setPosition_count(spinnerCountry.getSelectedItemPosition());
+            settings.setLanguage(spinnerLanguage.getSelectedItem().toString());
+            settings.setPosition_lang(spinnerLanguage.getSelectedItemPosition());
+        }catch (NullPointerException e){
+            //TODO Tiast here or in main Activity ?
+        }
+
+        //Bundle to store the settings data
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SETTINGS_BUNDLE_NAME, settings);
+
+        //Put the bundle in the intent
         Intent intent = new Intent();
-        Settings settings = new Settings(checkBoxNsfw.isChecked(),
-                spinnerLanguage.getSelectedItem().toString(), spinnerCountry.getSelectedItem().toString());
-        intent.putExtra("Data_Settings", settings);
-        return null;
+        intent.putExtras(bundle);
+
+        return intent;
     }
 
-    private void setStartScreen(){
+
+    private void setStartScreen(Settings settings) {
         checkBoxNsfw.setChecked(settings.isNsfw());
         spinnerCountry.setSelection(settings.getPosition_count());
         spinnerLanguage.setSelection(settings.getPosition_lang());
     }
+
 
     @Override
     public void finish() {
