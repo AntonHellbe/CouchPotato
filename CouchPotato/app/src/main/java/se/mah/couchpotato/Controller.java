@@ -116,6 +116,7 @@ public class Controller {
             Log.d("CONTROLLERSCHEDULE", shows.get(i).getShow().getName() + " " + shows.get(i).getShow().getUrl() + shows.get(i).getShow().getStatus());
         }
         dataFragment.setSchedule(shows);
+        dataFragment.filterTvShows(shows);
         FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
         feed.updateFragmentData(dataFragment.getSchedule());
     }
@@ -155,10 +156,6 @@ public class Controller {
             SearchQueryObject searchQuery = new SearchQueryObject(searchString);
             dataFragment.getDownloadQueue().add(searchQuery);
         }
-    }
-
-    public void getEpisode(EpisodeListener episodeListener) {
-        communicationService.sendEpisodeTask("1", "1", "1", episodeListener);
     }
 
     private void sendInitialRequests() {

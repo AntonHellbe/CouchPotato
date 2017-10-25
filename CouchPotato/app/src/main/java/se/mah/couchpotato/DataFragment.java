@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import java.util.HashMap;
  * A simple {@link Fragment} subclass.
  */
 public class DataFragment extends Fragment {
+
+    private static final String OTHER = "other";
+
     private boolean serviceExist;
     private String currentTag;
     private ArrayList<TvShow> schedule;
@@ -27,6 +31,8 @@ public class DataFragment extends Fragment {
     private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
     private boolean fragmentInstantiated = false;
+
+    private HashMap<String, ArrayList<TvShow>> filterMap = new HashMap();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,5 +110,46 @@ public class DataFragment extends Fragment {
 
     public void setFragmentInstantiated(boolean fragmentInstantiated) {
         this.fragmentInstantiated = fragmentInstantiated;
+    }
+
+    public HashMap<String, ArrayList<TvShow>> getFilterMap() {
+        return filterMap;
+    }
+
+    public void setFilterMap(HashMap<String, ArrayList<TvShow>> filterMap) {
+        this.filterMap = filterMap;
+    }
+
+    public void filterTvShows(ArrayList<TvShow> tvShowList){
+        for(TvShow t: tvShowList){
+
+            if(t.getShow().getGenres().isEmpty()){
+                if(filterMap.get(OTHER) == null){
+                    filterMap.put(OTHER, new ArrayList<TvShow>());
+                }
+                filterMap.get(OTHER).add(t);
+            }else{
+                for (int i = 0; i < t.getShow().getGenres().size(); i++) {
+                    if (filterMap.get(t.getShow().getGenres().get(i)) == null)
+                        filterMap.put((String)t.getShow().getGenres().get(i), new ArrayList<TvShow>());
+                    Log.v("DATAFRAG", "ADDING SHOW" + t.getShow().getName() + " TO FOLLOWING GENRE " + t.getShow().getGenres().get(i));
+                    filterMap.get((String) t.getShow().getGenres().get(i)).add(t);
+                }
+            }
+
+        }
+
+    }
+
+    public ArrayList<TvShow> getFilteredShows(String[] filters){
+        ArrayList<TvShow> filteredShows = new ArrayList<>();
+
+        for (int i = 0; i < filters.length; i++) {
+            if(filterMap.get(filters[i]) != null)
+                filteredShows.addAll(filterMap.get(filters[i]));
+        }
+
+        return filteredShows;
+
     }
 }
