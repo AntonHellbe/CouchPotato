@@ -90,7 +90,7 @@ public class ActivitySettings extends AppCompatActivity {
         spinnerLanguage.setAdapter(adapterLanguage);
         spinnerLanguage.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
         spinnerLanguage.setSelection(settings.getPosition_lang());
-        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (settings.getPosition_lang() != i) {
@@ -102,7 +102,7 @@ public class ActivitySettings extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
     }
 
     private void changeLanguage(int position) {
@@ -220,4 +220,17 @@ public class ActivitySettings extends AppCompatActivity {
     }
 
 
+    public void setSpinnerListener() {
+        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                changeLanguage(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
 }

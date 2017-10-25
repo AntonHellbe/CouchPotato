@@ -47,7 +47,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/activity_settings_textSize_main" />
 
-                <Spinner
+                <se.mah.couchpotato.activtysettings.LanguageSpinner
                     android:id="@+id/spinner_settings_language"
                     style="@style/spinner_style"
                     android:layout_width="match_parent"
