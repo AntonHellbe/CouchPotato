@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,7 +123,6 @@ public class DataFragment extends Fragment {
 
     public void filterTvShows(ArrayList<TvShow> tvShowList){
         for(TvShow t: tvShowList){
-
             if(t.getShow().getGenres().isEmpty()){
                 if(filterMap.get(OTHER) == null){
                     filterMap.put(OTHER, new ArrayList<TvShow>());
@@ -132,7 +132,7 @@ public class DataFragment extends Fragment {
                 for (int i = 0; i < t.getShow().getGenres().size(); i++) {
                     if (filterMap.get(t.getShow().getGenres().get(i)) == null)
                         filterMap.put((String)t.getShow().getGenres().get(i), new ArrayList<TvShow>());
-                    Log.v("DATAFRAG", "ADDING SHOW" + t.getShow().getName() + " TO FOLLOWING GENRE " + t.getShow().getGenres().get(i));
+//                    Log.v("DATAFRAG", "ADDING SHOW" + t.getShow().getName() + " TO FOLLOWING GENRE " + t.getShow().getGenres().get(i));
                     filterMap.get((String) t.getShow().getGenres().get(i)).add(t);
                 }
             }
@@ -142,13 +142,15 @@ public class DataFragment extends Fragment {
     }
 
     public ArrayList<TvShow> getFilteredShows(String[] filters){
-        ArrayList<TvShow> filteredShows = new ArrayList<>();
+        ArrayList<TvShow> filteredShows;
+        HashSet<TvShow> tvShowHashset = new HashSet<>();
 
         for (int i = 0; i < filters.length; i++) {
             if(filterMap.get(filters[i]) != null)
-                filteredShows.addAll(filterMap.get(filters[i]));
+                tvShowHashset.addAll(filterMap.get(filters[i]));
         }
 
+        filteredShows = new ArrayList<>(tvShowHashset);
         return filteredShows;
 
     }

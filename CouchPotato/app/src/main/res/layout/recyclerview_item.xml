@@ -51,6 +51,7 @@
             android:textStyle="bold"
             android:transitionName="@string/transition_show_title"/>
 
+
         <!--Eventuell plot-->
         <!--<TextView-->
         <!--android:id="@+id/tv_plot"-->

@@ -50,6 +50,21 @@ public class TvShow{
     private Integer id;
     @JsonProperty("url")
     private String url;
+
+    @Override
+    public int hashCode() {
+        return this.number;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        TvShow tvShow = (TvShow) obj;
+        if(this.name == tvShow.name)
+            return true;
+
+        return false;
+    }
+
     @JsonProperty("name")
     private String name;
     @JsonProperty("season")
