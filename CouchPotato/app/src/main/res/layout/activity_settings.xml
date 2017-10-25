@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="asidhaishfiashfip"
+                android:text="@string/settings_category_top"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/activity_settings_textSize_category" />
 
@@ -96,42 +96,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/divider_settings"
-                android:text="hejsan ssveaksndiasn"
+                android:text="@string/settings_category_bottom"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/activity_settings_textSize_category" />
-
-            <LinearLayout
-                android:id="@+id/linear_settings_middle2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_category_settings_2"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:id="@+id/text_settings_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/settings_theme"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/activity_settings_textSize_main" />
-
-                <CheckBox
-                    android:id="@+id/checkBox_settings_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/white" />
-
-            </LinearLayout>
 
 
             <LinearLayout
                 android:id="@+id/linear_settings_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linear_settings_middle2"
+                android:layout_below="@id/text_category_settings_2"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp">
 

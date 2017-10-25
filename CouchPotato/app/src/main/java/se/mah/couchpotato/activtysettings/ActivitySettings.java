@@ -18,14 +18,12 @@ import se.mah.couchpotato.R;
 
 public class ActivitySettings extends AppCompatActivity {
 
-    private CheckBox checkBoxTheme;
     private CheckBox checkBoxNsfw;
     private Spinner spinnerCountry;
     private Spinner spinnerLanguage;
     private ArrayAdapter<CharSequence> adapterCountry;
     private ArrayAdapter<CharSequence> adapterLanguage;
     private Settings settings;
-    private String country,language;
     private int x, y, startRadius;
     private ScrollView sv_settings;
 
@@ -40,7 +38,6 @@ public class ActivitySettings extends AppCompatActivity {
 
 
     private void initComp() {
-        checkBoxTheme = (CheckBox) findViewById(R.id.checkBox_settings_theme);
         checkBoxNsfw = (CheckBox) findViewById(R.id.checkBox_settings_nsfw);
         spinnerCountry = (Spinner) findViewById(R.id.spinner_settings_countries);
         spinnerLanguage = (Spinner) findViewById(R.id.spinner_settings_language);
@@ -71,12 +68,15 @@ public class ActivitySettings extends AppCompatActivity {
                 anim.setInterpolator(new LinearInterpolator());
                 anim.start();
             }
+
             @Override
             public void onViewDetachedFromWindow(View view) {
 
             }
         });
     }
+
+
 
     @Override
     public void finish() {

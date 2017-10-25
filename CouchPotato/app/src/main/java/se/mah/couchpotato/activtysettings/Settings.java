@@ -16,7 +16,15 @@ public class Settings implements Parcelable {
     private int timeZone;
 
     public Settings(){
+        nsfw = false;
+        country = "US";
+        language = "English";
+    }
 
+    public Settings(boolean nsfw, String language, String country) {
+        this.nsfw = nsfw;
+        this.language = language;
+        this.country = country;
     }
 
     public Settings(boolean theme, boolean nsfw, String language, String country) {
