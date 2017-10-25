@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,9 +81,16 @@ public class Controller {
         return dataFragment;
     }
 
+    public void onCreate(){
+        if (dataFragment.getFavorites() == null){
+            restoreFavourites();
+        }
+    }
+
     public void onPause() {
         if(mainActivity.isFinishing()){
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
+            saveFavourites();
         }
     }
 
@@ -97,6 +105,7 @@ public class Controller {
     }
 
     public void onResume() {
+        /*
         if (dataFragment.getFavorites() == null){
             HashMap<String, Integer> restoredFavourites = new HashMap<>();
             Map<String, ?> map = sP.getAll();
@@ -105,25 +114,40 @@ public class Controller {
             }
             //TODO call add favorite for every id
         }
+        */
+    }
+
+    private void restoreFavourites() {
+        ArrayList<TvShow> favourites = new ArrayList<>();
+        Set<String> favIdSet = sP.getStringSet("favourites", null);
+
+        for (int i = 0; i < favIdSet.size(); i++) {
+            
+        }
+    }
+
+    private void saveFavourites() {
+        ArrayList<TvShow> favourites = dataFragment.getFavorites();
+        Set<String> favIdSet = new HashSet<String>();
+        for (int i = 0; i < favourites.size(); i++) {
+            favIdSet.add(favourites.get(i).getId().toString());
+        }
+        editor = sP.edit();
+        editor.putStringSet("favourites",favIdSet);
+        editor.commit();
     }
 
     //TODO kan också vara en string id, vilket som är smidigast
     public void addFavourite(TvShow show) {
         Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
-        HashMap<String,TvShow> favourites = dataFragment.getFavorites();
-        favourites.put(""+show.getId(),show);
-        editor = sP.edit();
-        editor.putInt("" + show.getId(),show.getId());
-        editor.commit();
+        ArrayList<TvShow> favourites = dataFragment.getFavorites();
+        favourites.add(show);
         dataFragment.setFavorites(favourites);
     }
 
     public void removeFavourite(TvShow show){
-        HashMap<String, TvShow> favourties = dataFragment.getFavorites();
-        favourties.remove("" + show.getId());
-        editor = sP.edit();
-        editor.remove(""+show.getId());
-        editor.commit();
+        ArrayList<TvShow> favourties = dataFragment.getFavorites();
+        favourties.remove(favourties.indexOf(show));
         dataFragment.setFavorites(favourties);
     }
 
@@ -139,9 +163,10 @@ public class Controller {
     }
 
     public void favoritesReceived(TvShow show) {
-        dataFragment.getFavorites().put(show.getId().toString(), show);
+        //dataFragment.getFavorites().put(show.getId().toString(), show);
+        dataFragment.getFavorites().add(show);
         FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-        ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites().values());
+        ArrayList<TvShow> tvshows = new ArrayList<>(dataFragment.getFavorites());
         favorites.updateFragmentData(tvshows);
     }
 

@@ -31,7 +31,7 @@ public class DataFragment extends Fragment {
     private String currentTag;
     private ArrayList<TvShow> schedule;
     private ArrayList<TvShow> searchResult = new ArrayList<>();
-    private HashMap<String, TvShow> favorites;
+    private ArrayList<TvShow> favorites;
     private boolean allowNavigation = true;
     private ArrayDeque<DownloadRequest> downloadQueue = new ArrayDeque<>();
     private HashMap<String, Bitmap> pictureMap = new HashMap<>();
@@ -70,11 +70,11 @@ public class DataFragment extends Fragment {
         this.schedule = schedule;
     }
 
-    public HashMap<String, TvShow> getFavorites() {
+    public ArrayList<TvShow> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(HashMap<String, TvShow> favorites) {
+    public void setFavorites(ArrayList<TvShow> favorites) {
         this.favorites = favorites;
     }
 
