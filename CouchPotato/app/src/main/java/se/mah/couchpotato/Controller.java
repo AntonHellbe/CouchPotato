@@ -40,12 +40,15 @@ public class Controller {
 
     public Controller(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
         initializeResources();
         initializeDataFragment();
         if (dataFragment.getFavorites() == null)
             restoreFavourites();
+        if (dataFragment.getSettings() == null)
+            restoreSettings();
         initializeCommunication();
-        sP = mainActivity.getSharedPreferences("MainActivity", Activity.MODE_PRIVATE);
+
     }
 
     private void initializeDataFragment() {
@@ -86,6 +89,7 @@ public class Controller {
     public void onPause() {
         if(mainActivity.isFinishing()){
             saveFavourites();
+            saveSettingsToSP();
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
         }
     }
@@ -101,13 +105,15 @@ public class Controller {
     }
 
     private void restoreFavourites() {
-        ArrayList<String> favIds = new ArrayList<>(sP.getStringSet("favourites", null));
+        if (sP.contains("favourites")) {
+            ArrayList<String> favIds = new ArrayList<>(sP.getStringSet("favourites", null));
 
-        FavoriteListenerCallback callback = new FavoriteListenerCallback();
+            FavoriteListenerCallback callback = new FavoriteListenerCallback();
 
-        for (int i = 0; i < favIds.size(); i++) {
-            DownloadFavoriteRequest req = new DownloadFavoriteRequest(favIds.get(i), callback);
-            dataFragment.getDownloadQueue().add(req);
+            for (int i = 0; i < favIds.size(); i++) {
+                DownloadFavoriteRequest req = new DownloadFavoriteRequest(favIds.get(i), callback);
+                dataFragment.getDownloadQueue().add(req);
+            }
         }
     }
 
@@ -223,13 +229,31 @@ public class Controller {
         dataFragment.setSettings(settings);
     }
 
-    public void getSettings(){
-        if (sP==null){
+    private void saveSettingsToSP(){
+        Set<String> settings = new HashSet<String>();
+
+        settings.add(dataFragment.getSettings().getCountry());
+        settings.add(dataFragment.getSettings().getLanguage());
+        settings.add(""+dataFragment.getSettings().getPosition_count());
+        settings.add(""+dataFragment.getSettings().getPosition_lang());
+        settings.add(""+dataFragment.getSettings().isNsfw());
+
+        editor = sP.edit();
+        editor.putStringSet("settings", settings);
+        editor.apply();
+    }
+
+    public void restoreSettings(){
+        if (!sP.contains("settings")){
             Settings settings = new Settings();
             dataFragment.setSettings(settings);
         }else {
             // TODO: 25/10/2017 extract settings from sP
-            
+            ArrayList<String> savedSettings = new ArrayList<>(sP.getStringSet("settings", null));
+            Boolean nsfw = (savedSettings.get(4)=="true");
+            int country = Integer.parseInt(savedSettings.get(2)), lang = Integer.parseInt(savedSettings.get(3));
+            Settings settings = new Settings(nsfw, savedSettings.get(1), savedSettings.get(0),lang, country);
+            dataFragment.setSettings(settings);
         }
     }
 

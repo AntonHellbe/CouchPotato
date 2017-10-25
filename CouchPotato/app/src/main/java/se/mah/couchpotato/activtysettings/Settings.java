@@ -38,6 +38,14 @@ public class Settings implements Parcelable {
         this.timeZone = timeZone;
     }
 
+    public Settings(boolean nsfw, String language, String country, int position_lang, int position_count) {
+        this.nsfw = nsfw;
+        this.language = language;
+        this.country = country;
+        this.position_lang = position_lang;
+        this.position_count = position_count;
+    }
+
     public Settings(boolean nsfw, String language, String country, int timeZone, int position_lang, int position_count) {
         this.nsfw = nsfw;
         this.language = language;
@@ -46,6 +54,8 @@ public class Settings implements Parcelable {
         this.position_lang = position_lang;
         this.position_count = position_count;
     }
+
+
 
     public static final Creator<Settings> CREATOR = new Creator<Settings>() {
         @Override
