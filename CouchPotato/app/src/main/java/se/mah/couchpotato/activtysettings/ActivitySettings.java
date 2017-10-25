@@ -16,6 +16,7 @@ import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -78,6 +79,7 @@ public class ActivitySettings extends AppCompatActivity {
         checkBoxNsfw = (CheckBox) findViewById(R.id.checkBox_settings_nsfw);
         spinnerCountry = (Spinner) findViewById(R.id.spinner_settings_countries);
         spinnerLanguage = (Spinner) findViewById(R.id.spinner_settings_language);
+
 
         checkBoxNsfw.setChecked(settings.isNsfw());
 
