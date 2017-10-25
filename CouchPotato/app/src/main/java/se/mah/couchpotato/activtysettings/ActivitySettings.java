@@ -1,11 +1,14 @@
 package se.mah.couchpotato.activtysettings;
 
 import android.animation.Animator;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -76,7 +79,16 @@ public class ActivitySettings extends AppCompatActivity {
         });
     }
 
-
+    private Intent createIntent() {
+        Intent intent = new Intent();
+        Settings settings = new Settings(checkBoxNsfw.isChecked(),
+                spinnerLanguage.getSelectedItem().toString(),spinnerCountry.getSelectedItem().toString());
+        Log.v("ACTIVITYSETTINGS","Checkbox:" + checkBoxNsfw +
+                        ",language:" + spinnerLanguage.getSelectedItem().toString() +
+                        "country:" + spinnerCountry.getSelectedItem().toString());
+//        intent.putExtra("Data_Settings",null);
+        return null;
+    }
 
     @Override
     public void finish() {
@@ -111,6 +123,11 @@ public class ActivitySettings extends AppCompatActivity {
     }
 
     public void actualFinish() {
+        Log.v("ACTIVITYSETTINGS","In actual finish");
+        createIntent();
+//        setResult(Activity.RESULT_OK,createIntent());
         super.finish();
     }
+
+
 }
