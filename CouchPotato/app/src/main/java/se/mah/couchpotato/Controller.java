@@ -252,6 +252,7 @@ public class Controller {
         FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
         FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
+
         //TODO update the recyclerviews
     }
 

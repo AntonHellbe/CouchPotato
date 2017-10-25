@@ -15,6 +15,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -141,16 +143,28 @@ public class DataFragment extends Fragment {
 
     }
 
-    public ArrayList<TvShow> getFilteredShows(String[] filters){
+    public ArrayList<TvShow> getFilteredShows(){
         ArrayList<TvShow> filteredShows;
         HashSet<TvShow> tvShowHashset = new HashSet<>();
 
-        for (int i = 0; i < filters.length; i++) {
-            if(filterMap.get(filters[i]) != null)
-                tvShowHashset.addAll(filterMap.get(filters[i]));
+        Iterator filterInclude = filterIncludeMap.entrySet().iterator();
+
+        while(filterInclude.hasNext()){
+            Map.Entry<String, Boolean> entry = (Map.Entry<String, Boolean>) filterInclude.next();
+            String key = entry.getKey();
+            boolean value = entry.getValue();
+            if(value){
+                if(filterMap.get(key) != null)
+                    tvShowHashset.addAll(filterMap.get(key));
+            }
+
+        }
+        filteredShows = new ArrayList<>(tvShowHashset);
+
+        for(TvShow t: filteredShows){
+            Log.v("DATAFRAG", t.getName() + " " + t.getId());
         }
 
-        filteredShows = new ArrayList<>(tvShowHashset);
         return filteredShows;
 
     }
