@@ -176,22 +176,22 @@ public class DataFragment extends Fragment {
         this.filterIncludeMap = filterIncludeMap;
     }
 
-//    public ArrayList<TvShow> filterSearchResult(ArrayList<TvShow> shows) {
-//        ArrayList<TvShow> filteredResult = new ArrayList<>();
-//        for(TvShow t: shows){
-//            if(t.getShow().getGenres().size() == 0){
-//                if(filterIncludeMap.get(OTHER) == true)
-//                    filteredResult.add(t);
-//            }else{
-//                for (int i = 0; i < t.getShow().getGenres().size(); i++) {
-//                    if(filterIncludeMap.get(t.getShow().getGenres().get(i))){
-//                        filteredResult.add(t);
-//                        break;
-//                    }
-//
-//                }
-//            }
-//        }
-//        return filteredResult;
-//    }
+    public ArrayList<TvShow> filterSearchResult(ArrayList<TvShow> shows) {
+        ArrayList<TvShow> filteredResult = new ArrayList<>();
+        for(TvShow t: shows){
+            if(t.getShow().getGenres().size() == 0){
+                if(filterIncludeMap.get(OTHER) == true)
+                    filteredResult.add(t);
+            }else{
+                for (int i = 0; i < t.getShow().getGenres().size(); i++) {
+                    if(filterIncludeMap.get(t.getShow().getGenres().get(i))){
+                        filteredResult.add(t);
+                        break;
+                    }
+
+                }
+            }
+        }
+        return filteredResult;
+    }
 }
