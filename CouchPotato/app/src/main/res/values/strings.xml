@@ -36,6 +36,7 @@
     <string name="activity_tv_show_no_rating">0/0</string>
     <string name="activity_tv_show_no_plot">No plot available</string>
     <string name="activity_tv_show_no_airtime">No airtime available</string>
+    <string name="nothing_here">There\'s nothing here :(</string>
 
     <array name="categories">
         <item>Action</item>

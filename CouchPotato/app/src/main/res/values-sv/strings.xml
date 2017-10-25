@@ -35,6 +35,7 @@
     <string name="activity_tv_show_no_rating">0/0</string>
     <string name="activity_tv_show_title">Titel</string>
     <string name="activity_tv_show_no_plot">Ingen beskrivning tillgänglig</string>
+    <string name="nothing_here">Det finns inget här :(</string>
 
 
     <!--<array name="categories">-->

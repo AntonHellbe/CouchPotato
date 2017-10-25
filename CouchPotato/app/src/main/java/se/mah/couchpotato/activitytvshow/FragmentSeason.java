@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ import se.mah.couchpotato.R;
 public class FragmentSeason extends Fragment {
 
     private int season;
+    private TextView tvNoEpisodes;
 
     static FragmentSeason newInstance(int season) {
         FragmentSeason fragment = new FragmentSeason();
@@ -48,11 +50,16 @@ public class FragmentSeason extends Fragment {
     }
 
     private void initializeComponent(View rootView) {
-        RecyclerView rvSeason = (RecyclerView) rootView;
+        RecyclerView rvSeason = (RecyclerView) rootView.findViewById(R.id.rv_episodes);
+        tvNoEpisodes = (TextView) rootView.findViewById(R.id.tv_no_episodes);
         ArrayList<EpisodeObject> episodes = ((ActivityTvShow) getActivity()).getController().getEpisodesForSeason(season);
         RecyclerViewSeasonAdapter adapter = new RecyclerViewSeasonAdapter(episodes, (ActivityTvShow) getActivity());
         rvSeason.addItemDecoration(new RecyclerViewSpacing(10));
-        rvSeason.setLayoutManager(new LinearLayoutManager(getActivity()));  //this might fail
+        rvSeason.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSeason.setAdapter(adapter);
+        if (episodes.size() == 0)
+            tvNoEpisodes.setVisibility(View.VISIBLE);
+        else
+            tvNoEpisodes.setVisibility(View.GONE);
     }
 }
