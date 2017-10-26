@@ -136,22 +136,6 @@ public class Controller {
         Log.d("ControllerSettings","exiting saveFavorites");
     }
 
-    public void addFavourite(TvShow show) {
-        Log.d("CONTROLLERFAVORITE", show.getName() + " " + show.getUrl());
-        HashMap<String, TvShow> favourites = dataFragment.getFavorites();
-        favourites.put(show.getShow().getId().toString(), show);
-        if (communicationService != null)
-            communicationService.sendGetFavorite(show.getId().toString(), new FavoriteListenerCallback());
-        else{
-            DownloadFavoriteRequest req = new DownloadFavoriteRequest(show.getId().toString(), new FavoriteListenerCallback());
-            dataFragment.getDownloadQueue().add(req);
-        }
-    }
-
-    public void removeFavourite(TvShow show){
-        dataFragment.getFavorites().remove(show.getShow().getId().toString());
-    }
-
     public void scheduleRecieved(ArrayList<TvShow> shows) {
         for (int i = 0; i < shows.size(); i++) {
             Log.d("CONTROLLERSCHEDULE", shows.get(i).getShow().getName() + " " + shows.get(i).getShow().getUrl() + shows.get(i).getShow().getStatus());
