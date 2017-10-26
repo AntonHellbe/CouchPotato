@@ -25,7 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements ActivityInterface {
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private Controller controller;
     private FloatingActionButton fabSettings, fabFilter;
     private BottomNavigationView bottomNavigationView;
+    private TextView tvNetworkProblems;
     private CardView cardViewFilter;
     private RecyclerView recyclerViewFilters;
     public static final int REQUESTCODESETTINGS = 8;
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         recyclerViewFilters = (RecyclerView) findViewById(R.id.rv_filter);
         recyclerViewFilters.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewFilters.setAdapter(new RecyclerViewAdapterFilter(this, controller.getFilters()));
+        tvNetworkProblems = (TextView) findViewById(R.id.tv_network_problems);
     }
 
     private void initializeListeners() {
@@ -171,6 +176,48 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         this.networkProblem = networkProblem;
     }
 
+    public void indicateNetworkProblem() {
+        final MainActivity activity = this;
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_in_down);
+                tvNetworkProblems.setAnimation(animation);
+                animation.start();
+                tvNetworkProblems.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void removeNetworkProblem() {
+        Log.v("TEST", "REMOVE NETWORK PROBLEM");
+        final MainActivity activity = this;
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE");
+                Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_out_up);
+                tvNetworkProblems.setAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        tvNetworkProblems.setVisibility(View.GONE);
+                        Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE VIEW BE GONE!");
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                animation.start();
+            }
+        });
+    }
+
 
     private class Listener implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -191,27 +238,31 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     public class NetworkHandler extends NetworkCallback{
         @Override
         public void onUnavailable() {
+            Log.v("TEST", "CHANGES IN NETWORK!! UNAVAILABLE");
             networkProblem = true;
+            indicateNetworkProblem();
             super.onUnavailable();
         }
 
         @Override
         public void onAvailable(Network network) {
-            Log.v("TEST", "CHANGES IN NETWORK!!");
+            Log.v("TEST", "CHANGES IN NETWORK!! AVAILABLE");
             networkInfo = connManger.getActiveNetworkInfo();
             networkProblem = false;
             if(networkInfo != null)
                 controller.networkChange(networkInfo);
+            removeNetworkProblem();
             super.onAvailable(network);
         }
 
         @Override
         public void onLost(Network network) {
-            Log.v("TEST", "CHANGES IN NETWORK!!");
+            Log.v("TEST", "CHANGES IN NETWORK!! LOST");
             networkInfo = connManger.getActiveNetworkInfo();
             networkProblem = true;
             if(networkInfo != null)
                 controller.networkChange(networkInfo);
+            indicateNetworkProblem();
             super.onLost(network);
         }
     }
