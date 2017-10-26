@@ -190,12 +190,14 @@ public class CommunicationService extends Service {
                 }
             }
 
-            TvShow newShow = null;
+            TvShow newShow = new TvShow();
+            newShow.setId(Integer.parseInt(id));
+            newShow.setName("HEEEEEEEEELLLLOOO");
             try {
                 jsonObject = new JSONObject(response);
             }catch (JSONException e){ }
             try {
-                newShow = mapper.readValue(jsonObject.toString(), TvShow.class);
+                newShow.setShow(mapper.readValue(jsonObject.toString(), TvShow.Show.class));
                 Log.d("COMMUNICATIONSERVICE", "SUCCESSFULL PARSING" + newShow.toString());
             } catch (Exception e) {
                 e.printStackTrace();

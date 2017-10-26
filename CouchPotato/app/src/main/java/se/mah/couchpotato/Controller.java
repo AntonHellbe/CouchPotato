@@ -11,6 +11,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -318,12 +321,16 @@ public class Controller {
     }
 
     public void modifyFavorites(String id, boolean favorite) {
-        if (favorite)
-            if (!dataFragment.getFavorites().containsKey(id))
+        if (favorite) {
+            if (!dataFragment.getFavorites().containsKey(id)) {
                 communicationService.sendGetFavorite(id, new FavoriteListenerCallback());
-        else
-            if (dataFragment.getFavorites().containsKey(id))
+            }
+        }
+        else {
+            if (dataFragment.getFavorites().containsKey(id)) {
                 dataFragment.getFavorites().remove(id);
+            }
+        }
     }
 
     public void networkChange(NetworkInfo networkInfo) {
@@ -356,9 +363,9 @@ public class Controller {
 
         @Override
         public void onFavoriteRecieved(TvShow tvShow) {
-            Log.v("RECIEVEDFAV", "ID: " + tvShow.getName() + tvShow.getId() + ", NAME: " + tvShow.getShow().getName()); //TODO appen crashar inte för att tvshow objektet är null men för att tvshow.getShow() objektet är null. Kan man kapsla in det i ett tvshow objekt kaneke?
+            Log.v("RECIEVEDFAV", "ID: " + tvShow.getName() + tvShow.getId());
             FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
-            dataFragment.getFavorites().put(tvShow.getId().toString(), tvShow);
+            dataFragment.getFavorites().put(tvShow.getShow().getId().toString(), tvShow);
             favorites.insertTvShow(tvShow);
         }
     }

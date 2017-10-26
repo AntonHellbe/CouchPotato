@@ -46,7 +46,8 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
         if(dataFragment == null){
             dataFragment = new TvShowDataFragment();
             fm.beginTransaction().add(dataFragment, "tvData").commit();
-            dataFragment.setFavorite(activity.getIntent().getBooleanExtra("isfavorite", false));
+            Log.v("ACTIVITYTVSHOW", "is favorite? " + String.valueOf(activity.getIntent().getBooleanExtra("favorite", false)));
+            dataFragment.setFavorite(activity.getIntent().getBooleanExtra("favorite", false));
             dataFragment.setHdImagePath(activity.getIntent().getStringExtra("hd"));
         }
     }

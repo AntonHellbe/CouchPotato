@@ -55,18 +55,15 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
         if (summary != null) {
             summary = summary.replace("<p>", "");
             summary = summary.replace("</p>", "");
+            summary = summary.replace("<i>", "");
+            summary = summary.replace("</i>", "");
             holder.tvPlot.setText(summary);
         } else
             holder.tvPlot.setText("Summary not available");
 
         String number = "S" + (episode.getSeason() < 10 ? "0" + String.valueOf(episode.getSeason()) : String.valueOf(episode.getSeason())) + "E" + (episode.getNumber() < 10 ? "0" + String.valueOf(episode.getNumber()) : String.valueOf(episode.getNumber()));
         holder.tvNumber.setText(number);
-        holder.tvAirDate.setText("2017-07-10");
-        try{
-//            Log.v("RWVIEWSEASON", episode.getImage().getMedium());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        holder.tvAirDate.setText(episode.getAirdate());
         if (episode.getImage() == null) {
             holder.pbLoading.setVisibility(View.INVISIBLE);
             holder.ivPoster.setVisibility(View.VISIBLE);
@@ -87,7 +84,7 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
 
     public class ViewHolder extends RecyclerView.ViewHolder implements PosterListener {
         ImageView ivPoster;
-        TextView tvTitle, tvPlot, tvScore, tvNumber, tvAirDate;
+        TextView tvTitle, tvPlot, tvNumber, tvAirDate;
         ProgressBar pbLoading;
 
         public ViewHolder(View itemView) {
@@ -95,7 +92,6 @@ public class RecyclerViewSeasonAdapter extends RecyclerView.Adapter<RecyclerView
             ivPoster = itemView.findViewById(R.id.iv_episode_poster);
             tvTitle = itemView.findViewById(R.id.tv_episode_title);
             tvPlot = itemView.findViewById(R.id.tv_episode_plot);
-            tvScore = itemView.findViewById(R.id.tv_episode_rating);
             tvNumber = itemView.findViewById(R.id.tv_episode_number);
             tvAirDate = itemView.findViewById(R.id.tv_episode_air_date);
             pbLoading = itemView.findViewById(R.id.pb_loading_episode_poster);

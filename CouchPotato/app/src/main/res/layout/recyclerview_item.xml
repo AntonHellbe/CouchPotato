@@ -37,7 +37,7 @@
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignBottom="@id/iv_poster"
-                android:src="@drawable/ic_star_yellow"
+                android:src="@drawable/ic_star_yellow_outline"
                 android:padding="5dp"
                 android:visibility="visible"/>
 

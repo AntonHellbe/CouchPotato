@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         }
         if (requestCode == REQUESTCODETVSHOW) {
             if (resultCode == RESULT_OK) {
-                Log.v("MAINACTIVITY", "IS SHOW: " + data.getStringExtra("id") + " A FAVORITE? " + data.getBooleanExtra("favorite", false));
                 controller.modifyFavorites(data.getStringExtra("id") , data.getBooleanExtra("favorite", false));
             }
         }
