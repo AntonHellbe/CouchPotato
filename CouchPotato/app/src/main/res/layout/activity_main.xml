@@ -23,7 +23,7 @@
             android:text="No network connection"
             android:textAlignment="center"
             android:translationZ="3dp"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"

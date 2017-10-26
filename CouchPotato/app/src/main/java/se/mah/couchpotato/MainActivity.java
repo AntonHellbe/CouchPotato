@@ -183,8 +183,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             @Override
             public void run() {
                 Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_in_down);
-                tvNetworkProblems.setAnimation(animation);
-                animation.start();
+                tvNetworkProblems.startAnimation(animation);
                 tvNetworkProblems.setVisibility(View.VISIBLE);
             }
         });
@@ -198,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
             public void run() {
                 Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE");
                 Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_out_up);
-                tvNetworkProblems.setAnimation(animation);
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -207,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        tvNetworkProblems.setVisibility(View.GONE);
+                        tvNetworkProblems.setVisibility(View.INVISIBLE);
                         Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE VIEW BE GONE!");
                     }
 
@@ -216,7 +214,8 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
                     }
                 });
-                animation.start();
+                tvNetworkProblems.requestLayout();
+                tvNetworkProblems.startAnimation(animation);
             }
         });
     }
@@ -247,31 +246,31 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     public class NetworkHandler extends NetworkCallback{
         @Override
         public void onUnavailable() {
+            indicateNetworkProblem();
             Log.v("TEST", "CHANGES IN NETWORK!! UNAVAILABLE");
             networkProblem = true;
-            indicateNetworkProblem();
             super.onUnavailable();
         }
 
         @Override
         public void onAvailable(Network network) {
+            removeNetworkProblem();
             Log.v("TEST", "CHANGES IN NETWORK!! AVAILABLE");
             networkInfo = connManger.getActiveNetworkInfo();
             networkProblem = false;
             if(networkInfo != null)
                 controller.networkChange(networkInfo);
-            removeNetworkProblem();
             super.onAvailable(network);
         }
 
         @Override
         public void onLost(Network network) {
+            indicateNetworkProblem();
             Log.v("TEST", "CHANGES IN NETWORK!! LOST");
             networkInfo = connManger.getActiveNetworkInfo();
             networkProblem = true;
             if(networkInfo != null)
                 controller.networkChange(networkInfo);
-            indicateNetworkProblem();
             super.onLost(network);
         }
     }
