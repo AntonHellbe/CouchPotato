@@ -326,7 +326,6 @@ public class Controller {
     }
 
     public void modifyFavorites(String id, boolean favorite) {
-        id = "1";
         if (favorite)
             if (!dataFragment.getFavorites().containsKey(id))
                 communicationService.sendGetFavorite(id, new FavoriteListenerCallback());
@@ -355,7 +354,7 @@ public class Controller {
 
         @Override
         public void onFavoriteRecieved(TvShow tvShow) {
-            Log.v("RECIEVEDFAV", tvShow.getName() + tvShow.getId());
+            Log.v("RECIEVEDFAV", "ID: " + tvShow.getName() + tvShow.getId() + ", NAME: " + tvShow.getShow().getName()); //TODO appen crashar inte för att tvshow objektet är null men för att tvshow.getShow() objektet är null. Kan man kapsla in det i ett tvshow objekt kaneke?
             FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
             dataFragment.getFavorites().put(tvShow.getId().toString(), tvShow);
             favorites.insertTvShow(tvShow);

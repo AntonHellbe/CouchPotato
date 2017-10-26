@@ -175,9 +175,7 @@ public class CommunicationService extends Service {
             TvShow newShow = null;
             try {
                 jsonObject = new JSONObject(response);
-            }catch (JSONException e){
-
-            }
+            }catch (JSONException e){ }
             try {
 //                newShow = new ObjectMapper().readValue(jsonObject.toString(), TvShow.class);
                 newShow = mapper.readValue(jsonObject.toString(), TvShow.class);

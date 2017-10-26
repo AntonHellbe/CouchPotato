@@ -54,4 +54,10 @@ public class FragmentFavorites extends Fragment implements FragmentInterface {
     public void insertTvShow(TvShow show) {
         adapter.insertTvShow(show);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.setTvShowArrayList(getController().getDataFragment().filterShows(new ArrayList<>(getController().getDataFragment().getFavorites().values())));
+    }
 }
