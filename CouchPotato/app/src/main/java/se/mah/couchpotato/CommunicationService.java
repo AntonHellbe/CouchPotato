@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,6 +80,11 @@ public class CommunicationService extends Service {
         while(networkQue.size() != 0){
             AsyncTask task = networkQue.pop();
             task.execute(new String[]{""});
+            try{
+                networkQue.pop().execute();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -132,7 +138,10 @@ public class CommunicationService extends Service {
 
     public void downloadPicture(String id, PosterListener posterListener, String url){
         imLoader = new ImageLoader(id, posterListener, url);
-        imLoader.execute();
+        if(!((MainActivity)activity).getNetworkProblem())
+            imLoader.execute();
+        else
+            networkQue.add(imLoader);
     }
 
 //    public void sendEpisodeTask(String id, String season, String episode, EpisodeListener episodeListener) {
@@ -302,8 +311,6 @@ public class CommunicationService extends Service {
         public class ScheduleTask extends AsyncTask<String, String, ArrayList<TvShow>> {
 
             protected ArrayList<TvShow> doInBackground(String... strings) {
-
-                //Log.v("CURRENT NETWORKSTATUS", "" + ((MainActivity)activity).getNetworkProblem());
                 URL url;
                 String response = "";
                 ArrayList<TvShow> resultList;
@@ -312,7 +319,7 @@ public class CommunicationService extends Service {
                 InputStream instream = null;
                 try {
                     url = new URL(UrlBuilder.TODAYS_SCHEDULE);
-                    urlConnection = (HttpURLConnection) url.openConnection();
+                    URLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     instream = new BufferedInputStream(urlConnection.getInputStream());
                     br = new BufferedReader(new InputStreamReader(instream));
                     response = br.readLine();
@@ -350,7 +357,6 @@ public class CommunicationService extends Service {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         t = (JSONObject) jsonArray.get(i);
                         arr[i] = mapper.readValue(t.toString(), TvShow.class);
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
