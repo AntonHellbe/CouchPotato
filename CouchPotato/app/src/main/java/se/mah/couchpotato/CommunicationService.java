@@ -49,7 +49,6 @@ public class CommunicationService extends Service {
     private ActivityTvShow tvActivity;
     private ObjectMapper mapper;
     private UrlBuilder urlBuilder;
-    private Boolean networkProblem;
     private ArrayDeque<AsyncTask> networkQue = new ArrayDeque<>();
 
     @Override
@@ -74,13 +73,6 @@ public class CommunicationService extends Service {
         tvActivity = activity;
     }
 
-    public Boolean getNetworkProblem() {
-        return networkProblem;
-    }
-
-    public void setNetworkProblem(Boolean networkProblem) {
-        this.networkProblem = networkProblem;
-    }
 
     public void executeCommands() {
         while(networkQue.size() != 0){
@@ -105,7 +97,7 @@ public class CommunicationService extends Service {
 
     public void getAllEpisodes(String id, AllEpisodesListener listener){
         allEpisodesTask = new AllEpisodesTask(id, listener);
-        if(!networkProblem)
+        if(!((MainActivity)activity).getNetworkProblem())
             allEpisodesTask.execute();
         else
             networkQue.add(allEpisodesTask);
@@ -114,7 +106,7 @@ public class CommunicationService extends Service {
 
     public void sendSearchTask(String searchParam) {
         searchTask = new SearchTask(searchParam);
-        if(!networkProblem)
+        if(!((MainActivity)activity).getNetworkProblem())
             searchTask.execute();
         else
             networkQue.add(searchTask);
@@ -122,7 +114,7 @@ public class CommunicationService extends Service {
 
     public void sendGetFavorite(String id, FavoriteListener callback){
         favoriteTask = new FavoriteTask(callback, id);
-        if(!networkProblem)
+        if(!((MainActivity)activity).getNetworkProblem())
             favoriteTask.execute();
         else
             networkQue.add(favoriteTask);
@@ -130,7 +122,10 @@ public class CommunicationService extends Service {
 
     public void sendSchedule(){
         scheduleTask = new ScheduleTask();
-        scheduleTask.execute();
+        if(!((MainActivity)activity).getNetworkProblem())
+            scheduleTask.execute();
+        else
+            networkQue.add(scheduleTask);
     }
 
     public void downloadPicture(String id, PosterListener posterListener, String url){
@@ -304,6 +299,8 @@ public class CommunicationService extends Service {
         public class ScheduleTask extends AsyncTask<String, String, ArrayList<TvShow>> {
 
             protected ArrayList<TvShow> doInBackground(String... strings) {
+
+                Log.v("CURRENT NETWORKSTATUS", "" + ((MainActivity)activity).getNetworkProblem());
                 URL url;
                 String response = "";
                 ArrayList<TvShow> resultList;

@@ -1,12 +1,17 @@
 package se.mah.couchpotato;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
+import android.net.ConnectivityManager.NetworkCallback;
+import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -30,10 +35,12 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private BottomNavigationView bottomNavigationView;
     private CardView cardViewFilter;
     private RecyclerView recyclerViewFilters;
-    private NetworkInfo networkInfo;
-    private ConnectivityManager connectivityManager;
     public static final int REQUESTCODESETTINGS = 8;
     public static final int REQUESTCODETVSHOW = 7;
+    private static final String CONN_CHANGED = "android.net.conn.CONNECTIVITY_CHANGE";
+    private ConnectivityManager connManger;
+    private NetworkInfo networkInfo;
+    private Boolean networkProblem = true;
 
     public void hidekeyboard() {
         View view = this.getCurrentFocus();
@@ -44,6 +51,15 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     }
 
     @Override
+    protected void onResume() {
+        connManger = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connManger.registerDefaultNetworkCallback(new NetworkHandler());
+        }
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -51,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         initializeComponents();
         initializeListeners();
         controller.fragmentHandling();
+
     }
 
     private void initializeComponents() {
@@ -122,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         super.onDestroy();
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -147,6 +165,15 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         return controller;
     }
 
+    public Boolean getNetworkProblem() {
+        return networkProblem;
+    }
+
+    public void setNetworkProblem(Boolean networkProblem) {
+        this.networkProblem = networkProblem;
+    }
+
+
     private class Listener implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
         @Override
@@ -163,13 +190,34 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         }
     }
 
-    private class NetworkStateReciever extends BroadcastReceiver {
+    public class NetworkHandler extends NetworkCallback{
+        @Override
+        public void onUnavailable() {
+            networkProblem = true;
+            super.onUnavailable();
+        }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            networkInfo = connectivityManager.getActiveNetworkInfo();
-            controller.networkChange(networkInfo);
+        public void onAvailable(Network network) {
+            Log.v("TEST", "CHANGES IN NETWORK!!");
+            networkInfo = connManger.getActiveNetworkInfo();
+            networkProblem = false;
+            if(networkInfo != null)
+                controller.networkChange(networkInfo);
+            super.onAvailable(network);
+        }
+
+        @Override
+        public void onLost(Network network) {
+            Log.v("TEST", "CHANGES IN NETWORK!!");
+            networkInfo = connManger.getActiveNetworkInfo();
+            networkProblem = true;
+            if(networkInfo != null)
+                controller.networkChange(networkInfo);
+            super.onLost(network);
         }
     }
+
+
+
 }

@@ -328,12 +328,13 @@ public class Controller {
 
     public void networkChange(NetworkInfo networkInfo) {
         if(networkInfo.getState() == NetworkInfo.State.CONNECTED || networkInfo.getState() == NetworkInfo.State.CONNECTING){
-            communicationService.executeCommands();
-            communicationService.setNetworkProblem(false);
+            if(communicationService != null) {
+                communicationService.executeCommands();
+            }
         }else if(networkInfo.getState() == NetworkInfo.State.DISCONNECTED || networkInfo.getState() == NetworkInfo.State.DISCONNECTING){
-            communicationService.setNetworkProblem(true);
         }
     }
+
 
     private class ServiceConnection implements android.content.ServiceConnection{
         @Override
