@@ -190,12 +190,10 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     }
 
     public void removeNetworkProblem() {
-        Log.v("TEST", "REMOVE NETWORK PROBLEM");
         final MainActivity activity = this;
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE");
                 Animation animation = AnimationUtils.loadAnimation(activity, R.anim.anim_slide_out_up);
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -206,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         tvNetworkProblems.setVisibility(View.INVISIBLE);
-                        Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE VIEW BE GONE!");
                     }
 
                     @Override
@@ -214,8 +211,10 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
                     }
                 });
-                tvNetworkProblems.requestLayout();
-                tvNetworkProblems.startAnimation(animation);
+                if (tvNetworkProblems.getVisibility() == View.VISIBLE) {
+                    tvNetworkProblems.requestLayout();
+                    tvNetworkProblems.startAnimation(animation);
+                }
             }
         });
     }
