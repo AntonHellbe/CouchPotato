@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     private RecyclerView recyclerViewFilters;
     public static final int REQUESTCODESETTINGS = 8;
     public static final int REQUESTCODETVSHOW = 7;
-    private static final String CONN_CHANGED = "android.net.conn.CONNECTIVITY_CHANGE";
     private ConnectivityManager connManger;
     private NetworkInfo networkInfo;
     private Boolean networkProblem = true;
