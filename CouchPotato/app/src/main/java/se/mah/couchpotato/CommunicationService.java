@@ -80,11 +80,6 @@ public class CommunicationService extends Service {
         while(networkQue.size() != 0){
             AsyncTask task = networkQue.pop();
             task.execute(new String[]{""});
-            try{
-                networkQue.pop().execute();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
         }
     }
 

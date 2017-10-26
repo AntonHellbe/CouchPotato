@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
 
     }
 
+
     private void initializeComponents() {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         fabSettings = (FloatingActionButton) findViewById(R.id.fab);
@@ -203,11 +204,13 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
                     public void onAnimationStart(Animation animation) {
 
                     }
+
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         tvNetworkProblems.setVisibility(View.GONE);
                         Log.v("TEST", "REMOVE NETWORK PROBLEM RUNNABLE VIEW BE GONE!");
                     }
+
                     @Override
                     public void onAnimationRepeat(Animation animation) {
 
@@ -216,6 +219,12 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
                 animation.start();
             }
         });
+    }
+
+    public boolean checkNetworkConnection(){
+        networkInfo = connManger.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 
