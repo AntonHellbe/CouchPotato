@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
@@ -76,7 +77,8 @@ public class CommunicationService extends Service {
 
     public void executeCommands() {
         while(networkQue.size() != 0){
-            networkQue.pop().execute();
+            AsyncTask task = networkQue.pop();
+            task.execute(new String[]{""});
         }
     }
 
@@ -151,7 +153,6 @@ public class CommunicationService extends Service {
         @Override
         protected TvShow doInBackground(String... params) {
             String response = "";
-            id = params[0];
             URL url;
             JSONObject jsonObject = null;
             BufferedReader br = null;
@@ -302,7 +303,7 @@ public class CommunicationService extends Service {
 
             protected ArrayList<TvShow> doInBackground(String... strings) {
 
-                Log.v("CURRENT NETWORKSTATUS", "" + ((MainActivity)activity).getNetworkProblem());
+                //Log.v("CURRENT NETWORKSTATUS", "" + ((MainActivity)activity).getNetworkProblem());
                 URL url;
                 String response = "";
                 ArrayList<TvShow> resultList;
