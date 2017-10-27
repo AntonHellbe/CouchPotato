@@ -41,11 +41,7 @@ public class Controller {
     private ContainerFragment containerFragment;
     private String[] filters;
 
-    private static final String NSFW = "nsfw";
-    private static final String LANG = "language";
-    private static final String COUNT = "country";
-    private static final String POSLANG = "posLang";
-    private static final String POSCOUNT = "posCount";
+
 
 
     public Controller(MainActivity mainActivity) {
@@ -219,11 +215,11 @@ public class Controller {
     private void saveSettingsToSP(){
 
         editor = sP.edit();
-        editor.putBoolean(NSFW,dataFragment.getSettings().isNsfw());
-        editor.putString(LANG, dataFragment.getSettings().getLanguage());
-        editor.putString(COUNT, dataFragment.getSettings().getCountry());
-        editor.putInt(POSLANG, dataFragment.getSettings().getPosition_lang());
-        editor.putInt(POSCOUNT, dataFragment.getSettings().getPosition_count());
+        editor.putBoolean(Settings.NSFW,dataFragment.getSettings().isNsfw());
+        editor.putString(Settings.LANG, dataFragment.getSettings().getLanguage());
+        editor.putString(Settings.COUNT, dataFragment.getSettings().getCountry());
+        editor.putInt(Settings.POSLANG, dataFragment.getSettings().getPosition_lang());
+        editor.putInt(Settings.POSCOUNT, dataFragment.getSettings().getPosition_count());
         editor.apply();
         Log.d("ControllerSettings", "in saveSettingsToSP, saved stuff");
     }
@@ -234,15 +230,12 @@ public class Controller {
             dataFragment.setSettings(settings);
             Log.d("ControllerSettings","in restoreSettings, does not contain the word settings");
         }else {
-            // TODO: 25/10/2017 extract settings from sP
-
-
             Settings settings = new Settings(
-                    sP.getBoolean(NSFW, true),
-                    sP.getString(LANG,null),
-                    sP.getString(COUNT,null),
-                    sP.getInt(POSLANG,0),
-                    sP.getInt(POSCOUNT,0));
+                    sP.getBoolean(Settings.NSFW, true),
+                    sP.getString(Settings.LANG,null),
+                    sP.getString(Settings.COUNT,null),
+                    sP.getInt(Settings.POSLANG,0),
+                    sP.getInt(Settings.POSCOUNT,0));
             dataFragment.setSettings(settings);
         }
     }

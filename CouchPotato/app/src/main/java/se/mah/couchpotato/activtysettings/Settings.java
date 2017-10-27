@@ -16,6 +16,12 @@ public class Settings implements Parcelable {
     private int position_lang;
     private int position_count;
 
+    public static final String NSFW = "nsfw";
+    public static final String LANG = "language";
+    public static final String COUNT = "country";
+    public static final String POSLANG = "posLang";
+    public static final String POSCOUNT = "posCount";
+
 
     public Settings() {
         nsfw = false;
