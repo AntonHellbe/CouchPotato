@@ -86,8 +86,8 @@ public class ActivityTvShow extends AppCompatActivity {
         return controller;
     }
 
-    public void updateData(int seasons, int startSeason, boolean seasonIsYear) {
-        adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), seasons, startSeason, seasonIsYear);
+    public void updateData(int seasons, int startSeason, boolean seasonIsYear, boolean isFucked) {
+        adapter = new SeasonViewPagerAdapter(getSupportFragmentManager(), seasons, startSeason, seasonIsYear, isFucked);
         viewPager = (ScrollableViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
         Point p = new Point();

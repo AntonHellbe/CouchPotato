@@ -310,7 +310,6 @@ public class Controller {
         FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
         feed.updateFragmentData(dataFragment.filterShows(dataFragment.getSchedule()));
         search.updateFragmentData(dataFragment.filterShows(dataFragment.getSearchResult()));
-        //TODO update the recyclerviews
     }
 
     public String[] getFilters() {

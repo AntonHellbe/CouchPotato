@@ -16,12 +16,14 @@ public class SeasonViewPagerAdapter extends FragmentStatePagerAdapter {
     private int position = -1;
     private int startSeason;
     private boolean seasonIsYear;
+    private boolean isFucked;
 
-    public SeasonViewPagerAdapter(FragmentManager fragmentManager, int seasons, int startSeason, boolean seasonIsYear) {
+    public SeasonViewPagerAdapter(FragmentManager fragmentManager, int seasons, int startSeason, boolean seasonIsYear, boolean isFucked) {
         super(fragmentManager);
         this.seasons = seasons;
         this.startSeason = startSeason;
         this.seasonIsYear = seasonIsYear;
+        this.isFucked = isFucked;
     }
 
     @Override
@@ -37,6 +39,8 @@ public class SeasonViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (seasonIsYear)
+            return String.valueOf(position + startSeason);
+        if(isFucked)
             return String.valueOf(position + startSeason);
         return "Season " + String.valueOf(position + startSeason);
     }

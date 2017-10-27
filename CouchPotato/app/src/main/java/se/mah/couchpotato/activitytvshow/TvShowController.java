@@ -37,7 +37,7 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
 
     private void populateViewPager() {
         if (dataFragment.getEpisodes() != null)
-            activity.updateData(dataFragment.getSeasons(), dataFragment.getStartSeason(), dataFragment.isSeasonIsYear());
+            activity.updateData(dataFragment.getSeasons(), dataFragment.getStartSeason(), dataFragment.isSeasonIsYear(), dataFragment.isFuckedUp());
     }
 
     private void initializeDataFragment() {
@@ -77,7 +77,14 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
         dataFragment.setSeasons(seasons);
         if (dataFragment.getStartSeason() > 1900)
             dataFragment.setSeasonIsYear(true);
-        activity.updateData(dataFragment.getSeasons(), dataFragment.getStartSeason(), dataFragment.isSeasonIsYear());
+        if(dataFragment.getSeasons() > 1000){
+            dataFragment.setFuckedUp(true);
+            dataFragment.setSeasons(1);
+            dataFragment.setStartSeason(shows.get(shows.size() - 1).getSeason());
+        }else {
+            dataFragment.setFuckedUp(false);
+        }
+        activity.updateData(dataFragment.getSeasons(), dataFragment.getStartSeason(), dataFragment.isSeasonIsYear(), dataFragment.isFuckedUp());
     }
     
     public ArrayList<EpisodeObject> getEpisodesForSeason(int season) {

@@ -26,6 +26,7 @@ public class TvShowDataFragment extends Fragment {
     private boolean favorite;
     private Bitmap hdImage;
     private String hdImagePath;
+    private boolean isFuckedUp = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,4 +113,13 @@ public class TvShowDataFragment extends Fragment {
     public void setHdImagePath(String hdImagePath) {
         this.hdImagePath = hdImagePath;
     }
+
+    public boolean isFuckedUp() {
+        return isFuckedUp;
+    }
+
+    public void setFuckedUp(boolean fuckedUp) {
+        isFuckedUp = fuckedUp;
+    }
+
 }
