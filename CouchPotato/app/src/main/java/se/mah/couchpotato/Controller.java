@@ -210,6 +210,12 @@ public class Controller {
 
         // TODO: 25/10/2017 change the current settings to the newly changed, and also save it into sP
         Settings settings = bundle.getParcelable(ActivitySettings.SETTINGS_BUNDLE_NAME);
+
+        //Checks if language have been changed or nah
+        if(!dataFragment.getSettings().getLanguage().equals(settings.getLanguage())){
+            mainActivity.recreate();
+        }
+
         //First convert settings to strings/int/other things that can be saved in sP
         //Then remove old settings from sP and replace them with the new ones
         //After that save it to datafragment

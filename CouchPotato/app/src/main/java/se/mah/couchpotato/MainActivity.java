@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUESTCODESETTINGS) {
             if (resultCode == RESULT_OK) {
-                //TODO update sharedpreferences
                 Bundle bundle = data.getExtras();
                 controller.saveSettings(bundle);
             }else {

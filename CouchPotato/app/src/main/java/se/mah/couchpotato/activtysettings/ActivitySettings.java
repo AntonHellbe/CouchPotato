@@ -21,16 +21,22 @@ import android.widget.Spinner;
 import java.util.Locale;
 import se.mah.couchpotato.R;
 
+/**
+ * @author Jonatan Fridsten
+ *
+ * This activity will be in charge for settings in the application.
+ */
 public class ActivitySettings extends AppCompatActivity {
 
+    //Public tag for bundle
     public static final String SETTINGS_BUNDLE_NAME = "data_settings";
 
+    //Private tags for information stored in the activity
     private static final String SAVE_SETTEINGS = "save_settings";
     private static final String SAVE_PREV_STATE = "save_state";
     private static final String SAVE_X_VALUE = "save_x";
     private static final String SAVE_Y_VALUE = "save_y";
     private static final String SAVE_RADIUS_VALUE = "save_radius";
-
 
     private CheckBox checkBoxNsfw;
     private Spinner spinnerCountry;
@@ -49,6 +55,7 @@ public class ActivitySettings extends AppCompatActivity {
         animateView(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         settings = new Settings();
+
         if (bundle != null) {
             try {
                 settings = bundle.getParcelable(SETTINGS_BUNDLE_NAME);
