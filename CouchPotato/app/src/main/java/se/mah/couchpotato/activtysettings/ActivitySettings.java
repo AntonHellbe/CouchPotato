@@ -8,22 +8,17 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-
 import java.util.Locale;
-
 import se.mah.couchpotato.R;
 
 public class ActivitySettings extends AppCompatActivity {
@@ -32,6 +27,9 @@ public class ActivitySettings extends AppCompatActivity {
 
     private static final String SAVE_SETTEINGS = "save_settings";
     private static final String SAVE_PREV_STATE = "save_state";
+    private static final String SAVE_X_VALUE = "save_x";
+    private static final String SAVE_Y_VALUE = "save_y";
+    private static final String SAVE_RADIUS_VALUE = "save_radius";
 
 
     private CheckBox checkBoxNsfw;
@@ -39,8 +37,7 @@ public class ActivitySettings extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioGroup.OnCheckedChangeListener checkedChangeListener;
     private ArrayAdapter<CharSequence> adapterCountry;
-    private ArrayAdapter<CharSequence> adapterLanguage;
-    private int x, y, startRadius,oldLanguage;
+    private int x, y, startRadius, oldLanguage;
     private ScrollView sv_settings;
     private Settings settings;
 
@@ -54,47 +51,47 @@ public class ActivitySettings extends AppCompatActivity {
         settings = new Settings();
         if (bundle != null) {
             try {
-                Log.v("Acitivysettings","ON create bundle != null");
                 settings = bundle.getParcelable(SETTINGS_BUNDLE_NAME);
-                Log.v("Acitivysettings","Settings language:" + settings.getLanguage());
                 if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english)))
                     oldLanguage = R.id.radio_england;
                 if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_swedish)))
                     oldLanguage = R.id.radio_sweden;
             } catch (NullPointerException e) {
             }
-        }else {
+        } else {
         }
         initComp();
-        Log.v("Acitivysettings","ON CREATE oldavalue:" + oldLanguage);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v("Acitivysettings","On resume oldvalue:" + oldLanguage);
         radioGroup.setOnCheckedChangeListener(checkedChangeListener);
+        sv_settings = (ScrollView) findViewById(R.id.sv_settings);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.v("Acitivysettings","IN ONRESTOREINSTANCESTATE");
         if (savedInstanceState != null) {
             settings = savedInstanceState.getParcelable(SAVE_SETTEINGS);
             oldLanguage = savedInstanceState.getInt(SAVE_PREV_STATE);
-            Log.v("Acitivysettings","in restore old value !!: " + oldLanguage);
+            x = savedInstanceState.getInt(SAVE_X_VALUE);
+            y = savedInstanceState.getInt(SAVE_Y_VALUE);
+            startRadius = savedInstanceState.getInt(SAVE_RADIUS_VALUE);
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.v("Acitivysettings","IN ONSAVESINSTANCESTATE");
         super.onSaveInstanceState(outState);
         if (settings != null) {
             outState.putParcelable(SAVE_SETTEINGS, settings);
         }
-        outState.putInt(SAVE_PREV_STATE,oldLanguage);
+        outState.putInt(SAVE_PREV_STATE, oldLanguage);
+        outState.putInt(SAVE_X_VALUE,x);
+        outState.putInt(SAVE_Y_VALUE,y);
+        outState.putInt(SAVE_RADIUS_VALUE,startRadius);
     }
 
     private void initComp() {
@@ -117,9 +114,9 @@ public class ActivitySettings extends AppCompatActivity {
             }
         };
 
-        if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english))){
+        if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english))) {
             radioGroup.check(R.id.radio_england);
-        }else {
+        } else {
             radioGroup.check(R.id.radio_sweden);
         }
 
@@ -127,11 +124,10 @@ public class ActivitySettings extends AppCompatActivity {
     }
 
     private void changeLanguage(int position) {
-        Log.v("Acitivysettings","In change language old:" + oldLanguage +
-                        ",position:" + position + ",Radio Sweden:" + R.id.radio_sweden);
+        if (position != oldLanguage) {
 
-        if (position != oldLanguage){
             if (position == R.id.radio_sweden) {
+
                 oldLanguage = R.id.radio_sweden;
                 Locale locale = new Locale("sv");
                 Configuration configuration = new Configuration();
@@ -139,6 +135,7 @@ public class ActivitySettings extends AppCompatActivity {
                 getApplicationContext().getResources().updateConfiguration(configuration, null);
                 recreate();
             } else if (position == R.id.radio_england) {
+
                 oldLanguage = R.id.radio_england;
                 Locale locale = new Locale("en");
                 Configuration configuration = new Configuration();
@@ -152,26 +149,29 @@ public class ActivitySettings extends AppCompatActivity {
 
     private void animateView(Bundle savedInstanceState) {
 
-        x = getIntent().getIntExtra("revealX", 0);
-        y = getIntent().getIntExtra("revealY", 0);
-        startRadius = getIntent().getIntExtra("startRadius", 0);
-        sv_settings = (ScrollView) findViewById(R.id.sv_settings);
-        sv_settings.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View view) {
-                Point p = new Point();
-                getWindowManager().getDefaultDisplay().getSize(p);
-                Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, startRadius, Math.max(p.x, p.y));
-                anim.setDuration(200);
-                anim.setInterpolator(new LinearInterpolator());
-                anim.start();
-            }
+        if (savedInstanceState == null){
 
-            @Override
-            public void onViewDetachedFromWindow(View view) {
+            x = getIntent().getIntExtra("revealX", 0);
+            y = getIntent().getIntExtra("revealY", 0);
+            startRadius = getIntent().getIntExtra("startRadius", 0);
+            sv_settings = (ScrollView) findViewById(R.id.sv_settings);
+            sv_settings.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View view) {
+                    Point p = new Point();
+                    getWindowManager().getDefaultDisplay().getSize(p);
+                    Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, startRadius, Math.max(p.x, p.y));
+                    anim.setDuration(200);
+                    anim.setInterpolator(new LinearInterpolator());
+                    anim.start();
+                }
 
-            }
-        });
+                @Override
+                public void onViewDetachedFromWindow(View view) {
+
+                }
+            });
+        }
     }
 
 
@@ -189,12 +189,10 @@ public class ActivitySettings extends AppCompatActivity {
             settings.setNsfw(checkBoxNsfw.isChecked());
             settings.setCountry(spinnerCountry.getSelectedItem().toString());
             settings.setPosition_count(spinnerCountry.getSelectedItemPosition());
-            if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden){
+            if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
                 settings.setLanguage(getResources().getString(R.string.settings_language_swedish));
-                Log.v("Acitivysettings","Settings language:" + settings.getLanguage());
-            }else {
+            } else {
                 settings.setLanguage(getResources().getString(R.string.settings_language_english));
-                Log.v("Acitivysettings","Settings language:" + settings.getLanguage());
             }
         } catch (NullPointerException e) {
             //TODO Tiast here or in main Activity ?
@@ -214,41 +212,45 @@ public class ActivitySettings extends AppCompatActivity {
 
     @Override
     public void finish() {
-        Point p = new Point();
-        getWindowManager().getDefaultDisplay().getSize(p);
-        Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, Math.max(p.x, p.y), startRadius);
-        anim.setDuration(100);
-        anim.setInterpolator(new LinearInterpolator());
-        anim.start();
-        anim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
+        try{
+            Point p = new Point();
+            getWindowManager().getDefaultDisplay().getSize(p);
+            Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, Math.max(p.x, p.y), startRadius);
+            anim.setDuration(100);
+            anim.setInterpolator(new LinearInterpolator());
+            anim.start();
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                sv_settings.setVisibility(View.INVISIBLE);
-                actualFinish();
-            }
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    sv_settings.setVisibility(View.INVISIBLE);
+                    actualFinish();
+                }
 
-            @Override
-            public void onAnimationCancel(Animator animator) {
+                @Override
+                public void onAnimationCancel(Animator animator) {
 
-            }
+                }
 
-            @Override
-            public void onAnimationRepeat(Animator animator) {
+                @Override
+                public void onAnimationRepeat(Animator animator) {
 
-            }
-        });
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void actualFinish() {
         setResult(Activity.RESULT_OK, createIntent());
         super.finish();
     }
-
 
 
 }
