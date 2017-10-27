@@ -71,10 +71,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.ivFavorite.setVisibility(View.VISIBLE);
         else
             holder.ivFavorite.setVisibility(View.GONE);
-        if (!holder.animated) {
+        /*if (!holder.animated) {
             setAnimation(holder.itemView);
             holder.animated = true;
-        }
+        }*/
         if (tvShow.getShow().getImage() == null)
             return;
         if (tvShow.getShow().getImage().getMedium() == null) {
@@ -139,6 +139,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("plot", show.getShow().getSummary());
             intent.putExtra("hd", show.getShow().getImage().getOriginal());
             intent.putExtra("favorite", ((MainActivity) activity).getController().getDataFragment().getFavorites().containsKey(show.getShow().getId().toString()));
+            intent.putExtra("airtime", show.getShow().getSchedule().getTime());
+            CharSequence[] days = show.getShow().getSchedule().getDays().toArray(new CharSequence[7]);
+            intent.putExtra("airdays", days);
             if(show.getShow().getImage().getOriginal() != null) //Apparently a show can have a medium image but not a original
                 intent.putExtra("hd", show.getShow().getImage().getOriginal());
             if(show.getShow().getRating().getAverage() != null)

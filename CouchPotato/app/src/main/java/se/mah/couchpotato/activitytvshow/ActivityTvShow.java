@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import se.mah.couchpotato.AllEpisodesListener;
 import se.mah.couchpotato.EpisodeListener;
@@ -35,6 +36,7 @@ public class ActivityTvShow extends AppCompatActivity {
     private ProgressBar pbLoading;
     private ImageView ivPoster;
     private TextView tvTitle, tvRating, tvPlot, tvAir;
+    private AirTableView airTable;
     private TvShowController controller;
     private FloatingActionButton fabFavorite;
 
@@ -55,9 +57,43 @@ public class ActivityTvShow extends AppCompatActivity {
         tvPlot = (TextView) findViewById(R.id.tv_id_plot);
         tvRating = (TextView) findViewById(R.id.tv_show_rating);
         fabFavorite = (FloatingActionButton) findViewById(R.id.fab_favorite);
+        tvAir = (TextView) findViewById(R.id.tv_show_air);
+        airTable = (AirTableView) findViewById(R.id.air_table);
         String title = getIntent().getStringExtra("title");
         String plot = getIntent().getStringExtra("plot");
         String rating = getIntent().getStringExtra("rating");
+        String airtime = getIntent().getStringExtra("airtime");
+        CharSequence[] airdays = getIntent().getCharSequenceArrayExtra("airdays");
+        boolean airingDays[] = new boolean[7];
+        Arrays.fill(airingDays, false);
+        for (int i = 0; i < airdays.length; i++) {
+            if (airdays[i] != null) {
+                switch (airdays[i].toString()) {
+                    case "Monday":
+                        airingDays[0] = true;
+                        break;
+                    case "Tuesday":
+                        airingDays[1] = true;
+                        break;
+                    case "Wednesday":
+                        airingDays[2] = true;
+                        break;
+                    case "Thursday":
+                        airingDays[3] = true;
+                        break;
+                    case "Friday":
+                        airingDays[4] = true;
+                        break;
+                    case "Saturday":
+                        airingDays[5] = true;
+                        break;
+                    case "Sunday":
+                        airingDays[6] = true;
+                        break;
+                }
+            }
+        }
+        airTable.daysToDraw(airingDays);
         plot = plot.replace("<p>", "");
         plot = plot.replace("</p>", "");
         plot = plot.replace("<b>", "");

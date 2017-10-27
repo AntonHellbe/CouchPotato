@@ -99,7 +99,6 @@ public class Controller {
         saveSettingsToSP();
         if(mainActivity.isFinishing()){
             Log.d("ControllerSettings","in onPause, is finishing");
-
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
         }
     }
