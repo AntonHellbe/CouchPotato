@@ -47,12 +47,29 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/activity_settings_textSize_main" />
 
-                <se.mah.couchpotato.activtysettings.LanguageSpinner
-                    android:id="@+id/spinner_settings_language"
-                    style="@style/spinner_style"
+                <RadioGroup
+                    android:id="@+id/radio_language"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1">
+
+                    <RadioButton
+                        android:id="@+id/radio_sweden"
+                        android:text="@string/settings_language_swedish"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/white"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_england"
+                        android:text="@string/settings_language_english"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/white"/>
+
+                </RadioGroup>
 
             </LinearLayout>
 

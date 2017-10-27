@@ -70,4 +70,6 @@
     <string name="activity_tv_show_no_rating">0/0</string>
     <string name="activity_tv_show_title">Title</string>
     <string name="nothing_here">There\'s nothing here :(</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_swedish">Swedish</string>
 </resources>

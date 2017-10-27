@@ -26,7 +26,7 @@ public class Settings implements Parcelable {
     public Settings() {
         nsfw = false;
         country = "US";
-        language = "English";
+        language = "Engelska";
         position_count = 1;
         position_lang = 1;
     }

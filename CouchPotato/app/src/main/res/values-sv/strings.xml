@@ -36,6 +36,8 @@
     <string name="activity_tv_show_title">Titel</string>
     <string name="activity_tv_show_no_plot">Ingen beskrivning tillgänglig</string>
     <string name="nothing_here">Det finns inget här :(</string>
+    <string name="settings_language_english">Engelska</string>
+    <string name="settings_language_swedish">Svenska</string>
 
 
     <!--<array name="categories">-->
