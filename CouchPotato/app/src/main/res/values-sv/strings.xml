@@ -72,4 +72,6 @@
         <!--<item>Övernaturlig</item>-->
     <!--</array>-->
 
+    <string name="notification_description">En eller flera av dina favoriter går på TV idag!</string>
+
 </resources>

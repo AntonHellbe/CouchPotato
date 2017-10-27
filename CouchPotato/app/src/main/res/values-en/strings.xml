@@ -72,4 +72,6 @@
     <string name="nothing_here">There\'s nothing here :(</string>
     <string name="settings_language_english">English</string>
     <string name="settings_language_swedish">Swedish</string>
+
+    <string name="notification_description">One or more of your favourites are airing today!</string>
 </resources>

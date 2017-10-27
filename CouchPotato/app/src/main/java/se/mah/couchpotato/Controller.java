@@ -1,13 +1,24 @@
 package se.mah.couchpotato;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.FragmentManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.icu.util.Calendar;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -33,11 +44,13 @@ public class Controller {
     private MainActivity mainActivity;
     private CommunicationService communicationService;
     private ServiceConnection serviceConnection;
+    private AlarmServiceConnection alarmServiceConnection;
+    private NotificationAlarmService notify;
     private DataFragment dataFragment;
     private SharedPreferences sP;
     private SharedPreferences.Editor editor;
 
-    private boolean bound;
+    private boolean bound,alarmBound;
     private int showId;
     private ContainerFragment containerFragment;
     private String[] filters;
@@ -55,7 +68,7 @@ public class Controller {
         if (dataFragment.getSettings() == null)
             restoreSettings();
         initializeCommunication();
-
+        initializeAlarm();
     }
 
     private void initializeDataFragment() {
@@ -89,6 +102,18 @@ public class Controller {
         filters = mainActivity.getResources().getStringArray(R.array.categories);
     }
 
+    public void initializeAlarm(){
+        Intent intent = new Intent(mainActivity, NotificationAlarmService.class);
+
+        if(!dataFragment.getAlarmExist()){
+            mainActivity.startService(intent);
+            dataFragment.setAlarmExist(true);
+        }
+        alarmServiceConnection = new AlarmServiceConnection();
+        boolean status = mainActivity.bindService(intent, alarmServiceConnection, 0);
+        Log.d("NOTIFICATIONTEST", "initializeAlarm, connected " + status);
+    }
+
     public DataFragment getDataFragment() {
         return dataFragment;
     }
@@ -111,6 +136,28 @@ public class Controller {
             mainActivity.unbindService(serviceConnection);
             bound = false;
         }
+    }
+
+    public void notification(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(mainActivity)
+                        .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                        .setContentTitle("My notification")
+                        .setContentText(mainActivity.getResources().getString(R.string.notification_description));
+        Intent resultIntent = new Intent(mainActivity, MainActivity.class);
+
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        mainActivity,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setAutoCancel(true);
+        int id = 001;
+        NotificationManager notifyManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+        notifyManager.notify(id,mBuilder.build());
     }
 
     private void restoreFavourites() {
@@ -368,6 +415,22 @@ public class Controller {
             FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
             dataFragment.getFavorites().put(tvShow.getShow().getId().toString(), tvShow);
             favorites.insertTvShow(tvShow);
+        }
+    }
+
+    private class AlarmServiceConnection implements android.content.ServiceConnection{
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            NotificationAlarmService.LocalService ls = (NotificationAlarmService.LocalService) service;
+            notify = ls.getService(mainActivity);
+            Log.d("Controller","In onServiceConnected");
+            alarmBound = true;
+            sendInitialRequests();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            alarmBound = false;
         }
     }
 }

@@ -27,7 +27,7 @@ public class DataFragment extends Fragment {
 
     private static final String OTHER = "Other";
 
-    private boolean serviceExist;
+    private boolean serviceExist, alarm;
     private String currentTag;
     private ArrayList<TvShow> schedule;
     private ArrayList<TvShow> searchResult = new ArrayList<>();
@@ -188,5 +188,13 @@ public class DataFragment extends Fragment {
 
     public void setFavoritesHandled(boolean favoritesHandled) {
         this.favoritesHandled = favoritesHandled;
+    }
+
+    public boolean getAlarmExist() {
+        return alarm;
+    }
+
+    public void setAlarmExist(boolean alarmExist) {
+        this.alarm = alarmExist;
     }
 }
