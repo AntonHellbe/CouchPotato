@@ -94,10 +94,11 @@ public class Controller {
 
     public void onPause() {
         Log.d("ControllerSettings","in onPause");
+        saveFavourites();
+        saveSettingsToSP();
         if(mainActivity.isFinishing()){
             Log.d("ControllerSettings","in onPause, is finishing");
-            saveFavourites();
-            saveSettingsToSP();
+
             mainActivity.getFragmentManager().beginTransaction().remove(dataFragment).commit();
         }
     }
@@ -113,27 +114,30 @@ public class Controller {
     }
 
     private void restoreFavourites() {
+        Log.d("ControllerFavourites","in restoreFavourites");
         if (sP.contains("favourites")) {
             ArrayList<String> favIds = new ArrayList<>(sP.getStringSet("favourites", null));
             FavoriteListenerCallback callback = new FavoriteListenerCallback();
+            Log.d("ControllerFavourites","in restoreFavourites, inside if ");
             for (int i = 0; i < favIds.size(); i++) {
                 DownloadFavoriteRequest req = new DownloadFavoriteRequest(favIds.get(i), callback);
                 dataFragment.getDownloadQueue().add(req);
+                Log.d("ControllerFavourites","in restoreFavourites, the restored number: " + favIds.get(i));
             }
         }
         dataFragment.setFavoritesHandled(true);
     }
 
     private void saveFavourites() {
-        Log.d("ControllerSettings","in saveFavorites");
+        Log.d("ControllerFavourites","in saveFavorites");
         if (dataFragment.getFavorites() != null) {
             HashMap<String, TvShow> favourites = dataFragment.getFavorites();
-            Log.d("ControllerSettings", "exiting saveFavorites");
+            Log.d("ControllerFavourites", "in saveFavorites, size: " + favourites.size());
             editor = sP.edit();
             editor.putStringSet("favourites", favourites.keySet());
             editor.apply();
         }
-        Log.d("ControllerSettings","exiting saveFavorites");
+        Log.d("ControllerFavourites","exiting saveFavorites");
     }
 
     public void scheduleRecieved(ArrayList<TvShow> shows) {
