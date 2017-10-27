@@ -197,7 +197,6 @@ public class CommunicationService extends Service {
 
             TvShow newShow = new TvShow();
             newShow.setId(Integer.parseInt(id));
-            newShow.setName("HEEEEEEEEELLLLOOO");
             try {
                 jsonObject = new JSONObject(response);
             }catch (JSONException e){ }

@@ -42,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void insertTvShow(TvShow show) {
         tvShowArrayList.add(show);
-        notifyItemInserted(0);
+        notifyItemInserted(tvShowArrayList.size() - 1);
     }
 
     public RecyclerViewAdapter(AppCompatActivity activity) {
