@@ -22,6 +22,8 @@ public class NotificationReciever extends BroadcastReceiver {
                         .setContentTitle("My notification")
                         .setContentText(context.getResources().getString(R.string.notification_description));
         Intent resultIntent = new Intent(context, MainActivity.class);
+        resultIntent.setAction(Intent.ACTION_MAIN);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(

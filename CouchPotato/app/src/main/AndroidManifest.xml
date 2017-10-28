@@ -26,10 +26,7 @@
         <receiver
             android:name=".NotificationReciever"
             android:enabled="true"
-            android:exported="true"
-            android:process=":">
-            <intent-filter>
-            </intent-filter>
+            android:exported="true">
         </receiver>
 
         <service

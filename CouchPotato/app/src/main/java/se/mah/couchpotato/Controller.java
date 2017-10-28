@@ -151,8 +151,7 @@ public class Controller {
 
         AlarmManager manager = (AlarmManager) mainActivity.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mainActivity, NotificationReciever.class);
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mainActivity,0,intent,0);
 
