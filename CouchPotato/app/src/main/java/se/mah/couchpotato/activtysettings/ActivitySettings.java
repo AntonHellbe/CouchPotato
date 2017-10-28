@@ -271,7 +271,7 @@ public class ActivitySettings extends AppCompatActivity {
             }else if(spinnerCountry.getSelectedItem().toString().equals(array[1])){
                 settings.setCountry("US");
             }else if(spinnerCountry.getSelectedItem().toString().equals(array[2])){
-                settings.setCountry("UK");
+                settings.setCountry("GB");
             }else{
                 settings.setCountry("US");
             }
