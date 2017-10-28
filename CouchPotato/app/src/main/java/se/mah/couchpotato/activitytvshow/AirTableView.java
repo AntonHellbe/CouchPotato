@@ -126,7 +126,7 @@ public class AirTableView extends View {
         for(int i = 0; i < days.length; i++) {
             if (daysToDraw[i])
                 canvas.drawCircle(((widthperday / 2) + (widthperday * i)), getMeasuredHeight() / 2, getHeight() / 2, highlightedPaint);
-            canvas.drawText(days[i], ((widthperday / 2) + (widthperday * i)) - (textPaint.measureText(days[i]) / 2), (getMeasuredHeight() / 2) + getPaddingTop() + 5, textPaint); //TODO fix hardcoded 5
+            canvas.drawText(days[i], ((widthperday / 2) + (widthperday * i)) - (textPaint.measureText(days[i]) / 2), (getMeasuredHeight() / 2) + getPaddingTop() + 5, textPaint);
         }
 //        canvas.drawCircle(mPointerX, mPointerY, mPointerSize, mTextPaint);
     }

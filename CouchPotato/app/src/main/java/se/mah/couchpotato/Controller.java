@@ -107,7 +107,10 @@ public class Controller {
 
     public void initializeAlarm(){
         Intent intent = new Intent(mainActivity, NotificationAlarmService.class);
-        mainActivity.stopService(intent);
+        if (dataFragment.getSettings().isNotification())
+            mainActivity.startService(intent);
+        else
+            mainActivity.stopService(intent);
     }
 
     public DataFragment getDataFragment() {
@@ -190,10 +193,6 @@ public class Controller {
         }
     }
 
-    public void episodesRecieved(ArrayList<TvShow> episodeList){
-        // @TODO - Do something with the recieved episodes
-    }
-
     public void search(String searchString) {
         if (communicationService != null)
             communicationService.sendSearchTask(searchString);
@@ -240,6 +239,19 @@ public class Controller {
         //Then remove old settings from sP and replace them with the new ones
         //After that save it to datafragment
         dataFragment.setSettings(settings);
+        applySettings();
+    }
+
+    private void applySettings() {
+        initializeAlarm();
+
+        FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);
+        FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
+        FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
+        feed.updateFragmentData(dataFragment.filterShows(dataFragment.getSchedule()));
+        search.updateFragmentData(dataFragment.filterShows(dataFragment.getSearchResult()));
+
+        //TODO fix where we get the shows from (US, UK, SE)
     }
 
     private void saveSettingsToSP(){
@@ -257,12 +269,11 @@ public class Controller {
     }
 
     public void restoreSettings(){
-        if (!sP.contains("language")){
+        if (!sP.contains(Settings.LANG)) {
             Settings settings = new Settings();
             dataFragment.setSettings(settings);
             Log.d("ControllerSettings","in restoreSettings, does not contain the word settings");
         }else {
-            //@TODO Denna är inte den aktuella längre
             Settings settings = new Settings(
                     sP.getBoolean(Settings.NSFW, true),
                     sP.getBoolean(Settings.NOTIFICATION, true),

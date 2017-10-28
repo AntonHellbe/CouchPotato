@@ -14,12 +14,13 @@ public class FragmentViewer {
     private int container;
     private FragmentManager fragmentManager;
     private MainActivity activity;
-    public static final int ANIMATIONTIME = 200;    //TODO remember me?
+    public int ANIMATIONTIME = 200;
 
     public FragmentViewer(MainActivity activity, FragmentManager fragmentManager, int container) {
         this.activity = activity;
         this.fragmentManager = fragmentManager;
         this.container = container;
+        this.ANIMATIONTIME = activity.getResources().getInteger(R.integer.animationTime);
     }
 
     public void add(Fragment fragment, String tag) {

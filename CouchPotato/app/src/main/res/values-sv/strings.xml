@@ -105,5 +105,6 @@
     </array>
     <string name="settings_notification_time">Notifikations tid</string>
     <string name="settings_notification_time_picker">Välj Notikations tid</string>
+    <string name="settings_not_applied">Inställningarna sparades inte</string>
 
 </resources>

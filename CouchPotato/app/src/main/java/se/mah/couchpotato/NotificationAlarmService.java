@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import se.mah.couchpotato.activitytvshow.ActivityTvShow;
+import se.mah.couchpotato.activtysettings.Settings;
 
 public class NotificationAlarmService extends Service {
     public NotificationAlarmService() {
@@ -60,10 +61,9 @@ public class NotificationAlarmService extends Service {
 
         long notificationTime = 18 * 60 * 60 * 1000;
         SharedPreferences sp;
-        if ((sp = getSharedPreferences("MainActivity", MODE_PRIVATE)).contains("language")) {
-//            notificationTime = sp.getLong("", notificationTime);
+        if ((sp = getSharedPreferences("MainActivity", MODE_PRIVATE)).contains(Settings.NOTIFICATION_TIME)) {
+            notificationTime = sp.getLong(Settings.NOTIFICATION_TIME, notificationTime);
         }
-
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());
         c.set(Calendar.HOUR_OF_DAY, 0);

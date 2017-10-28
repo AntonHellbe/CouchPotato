@@ -126,11 +126,11 @@
                         app:tabTextColor="@drawable/bnv_tab_item_foreground_text_color" />
 
                 </RelativeLayout>
-                <!--TODO Dimensions?-->
+
                 <se.mah.couchpotato.activitytvshow.ScrollableViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="600dp"
+                    android:layout_height="0dp"
                     android:layout_weight="1" />
 
             </LinearLayout>

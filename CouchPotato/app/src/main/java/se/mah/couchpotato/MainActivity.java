@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
     }
 
     public void toggleFilter() {
-
         Animator anim;
         Point p = new Point();
         getWindowManager().getDefaultDisplay().getSize(p);
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements ActivityInterface
                 Bundle bundle = data.getExtras();
                 controller.saveSettings(bundle);
             }else {
-                Toast.makeText(this, "Settings not applied", Toast.LENGTH_SHORT).show();    //TODO @strings
+                Toast.makeText(this, getResources().getString(R.string.settings_not_applied), Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == REQUESTCODETVSHOW) {
