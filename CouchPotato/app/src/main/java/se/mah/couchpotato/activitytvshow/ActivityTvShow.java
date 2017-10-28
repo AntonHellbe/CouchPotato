@@ -95,14 +95,9 @@ public class ActivityTvShow extends AppCompatActivity {
         }
         airTable.daysToDraw(airingDays);
         if(plot != null) {
-            plot = plot.replace("<p>", "");
-            plot = plot.replace("</p>", "");
-            plot = plot.replace("<b>", "");
-            plot = plot.replace("</b>", "");
-            plot = plot.replace("<i>", "");
-            plot = plot.replace("</i>", "");
+            plot = plot.replaceAll("<[^>]*>", "");
         }else{
-            plot = "-";
+            plot = "No available plot for this show";
         }
         tvTitle.setText(title);
         tvPlot.setText(plot);

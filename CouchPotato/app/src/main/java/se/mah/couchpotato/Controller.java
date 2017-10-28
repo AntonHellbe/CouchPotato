@@ -220,7 +220,7 @@ public class Controller {
     public void onSearchTextChanged(String searchString) {
         if (searchString.length() > 3) {
             search(searchString);
-        } else {
+        }else {
             FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
             search.updateFragmentData(new ArrayList<TvShow>());
         }
