@@ -23,11 +23,9 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".NotificationReciever"
+        <receiver android:name=".NotificationAlarmService$MrReciever"
             android:enabled="true"
-            android:exported="true">
-        </receiver>
+            android:exported="true"/>
 
         <service
             android:name=".CommunicationService"
@@ -36,18 +34,13 @@
 
         <activity android:name=".activitytvshow.ActivityTvShow" />
         <activity
-            android:name=".activtysettings.SettingsActivity"
+            android:name=".activtysettings.ActivitySettings"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".activtysettings.ActivitySettings" />
 
-        <service
-            android:name=".NotificationService"
-            android:enabled="true"
-            android:exported="false" />
         <service
             android:name=".NotificationAlarmService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>

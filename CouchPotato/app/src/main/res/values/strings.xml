@@ -72,5 +72,6 @@
         <item>Other</item>
     </array>
 
-    <string name="notification_description">One or more of your favourites are airing today!</string>
+    <string name="notification_description">Several of your favourites are airing today!</string>
+    <string name="notification_airing_today">is airing today!</string>
 </resources>

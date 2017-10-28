@@ -70,8 +70,7 @@ public class Controller {
         if (dataFragment.getSettings() == null)
             restoreSettings();
         initializeCommunication();
-        alarm();
-        //initializeAlarm();
+        initializeAlarm();
     }
 
     private void initializeDataFragment() {
@@ -108,14 +107,7 @@ public class Controller {
 
     public void initializeAlarm(){
         Intent intent = new Intent(mainActivity, NotificationAlarmService.class);
-
-        if(!dataFragment.getAlarmExist()){
-            mainActivity.startService(intent);
-            dataFragment.setAlarmExist(true);
-        }
-        //alarmServiceConnection = new AlarmServiceConnection();
-        //boolean status = mainActivity.bindService(intent, alarmServiceConnection, 0);
-        //Log.d("NOTIFICATIONTEST", "initializeAlarm, connected " + status);
+        mainActivity.stopService(intent);
     }
 
     public DataFragment getDataFragment() {
@@ -140,46 +132,6 @@ public class Controller {
             mainActivity.unbindService(serviceConnection);
             bound = false;
         }
-    }
-
-    public void alarm(){
-        Log.d("NOTIFICATIONTEST","in alarm");
-
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis()+1000*60);
-        //calendar.set(Calendar.HOUR_OF_DAY, 10);
-        //calendar.set(Calendar.MINUTE, 4);
-
-        AlarmManager manager = (AlarmManager) mainActivity.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(mainActivity, NotificationReciever.class);
-
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mainActivity,0,intent,0);
-
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60*1000,pendingIntent);
-
-    }
-    public void notification(){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(mainActivity)
-                        .setSmallIcon(android.R.drawable.sym_def_app_icon)
-                        .setContentTitle("My notification")
-                        .setContentText(mainActivity.getResources().getString(R.string.notification_description));
-        Intent resultIntent = new Intent(mainActivity, MainActivity.class);
-
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        mainActivity,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.setAutoCancel(true);
-        int id = 001;
-        NotificationManager notifyManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-        notifyManager.notify(id,mBuilder.build());
     }
 
     private void restoreFavourites() {

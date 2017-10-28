@@ -72,6 +72,8 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
             communicationService.getAllEpisodes(dataFragment.getTvShowId(), this);
         if (dataFragment.getHdImage() == null)
             communicationService.downloadPicture("", this, dataFragment.getHdImagePath());
+            if (dataFragment.getHdImagePath() != null)
+                communicationService.downloadPicture("", this, dataFragment.getHdImagePath());
         communicationService.getRating(dataFragment.getImdbId(), new RatingListenerCallback());
     }
 
