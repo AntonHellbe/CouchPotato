@@ -189,7 +189,7 @@ public class DataFragment extends Fragment {
     public void setFavoritesHandled(boolean favoritesHandled) {
         this.favoritesHandled = favoritesHandled;
     }
-    
+
     public boolean getAlarmExist() {
         return alarm;
     }
