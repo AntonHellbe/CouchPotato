@@ -1,6 +1,7 @@
 package se.mah.couchpotato;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.Notification;
@@ -107,10 +108,22 @@ public class Controller {
 
     public void initializeAlarm(){
         Intent intent = new Intent(mainActivity, NotificationAlarmService.class);
-        if (dataFragment.getSettings().isNotification())
-            mainActivity.startService(intent);
+        if (dataFragment.getSettings().isNotification()) {
+            if (!isNotificationServiceRunning())
+                mainActivity.startService(intent);
+        }
         else
             mainActivity.stopService(intent);
+    }
+
+    private boolean isNotificationServiceRunning() {
+        ActivityManager manager = (ActivityManager) mainActivity.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (NotificationAlarmService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public DataFragment getDataFragment() {

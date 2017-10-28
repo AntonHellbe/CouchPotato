@@ -38,6 +38,9 @@ import se.mah.couchpotato.activitytvshow.ActivityTvShow;
 import se.mah.couchpotato.activtysettings.Settings;
 
 public class NotificationAlarmService extends Service {
+
+    private boolean isRunning = false;
+
     public NotificationAlarmService() {
 
     }
