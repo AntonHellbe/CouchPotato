@@ -204,7 +204,7 @@ public class Controller {
 
     private void sendInitialRequests() {
         if (dataFragment.getSchedule() == null)
-            communicationService.sendSchedule();
+            communicationService.sendSchedule(dataFragment.getSettings().getCountry());
         while (!dataFragment.getDownloadQueue().isEmpty()) {
             DownloadRequest downloadRequest = dataFragment.getDownloadQueue().pop();
             if (downloadRequest instanceof SearchQueryObject)

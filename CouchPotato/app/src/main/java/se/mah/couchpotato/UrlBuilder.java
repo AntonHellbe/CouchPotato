@@ -11,7 +11,7 @@ public class UrlBuilder {
     public static final String BASE_URL_TV_MAZE = "http://api.tvmaze.com/";
     public static final String SHOW_SEARCH = BASE_URL_TV_MAZE + "search/shows?q=";
     public static final String SINGLE_SHOW_SEARCH = BASE_URL_TV_MAZE + "singlesearch/shows?q=";
-    public static final String TODAYS_SCHEDULE = BASE_URL_TV_MAZE + "schedule?country=US";  //TODO settings
+    public static final String TODAYS_SCHEDULE = BASE_URL_TV_MAZE + "schedule?country=";  //TODO settings
     public static final String FULL_SCHEDULE = BASE_URL_TV_MAZE + "schedule/full";  //DANGER ZONE
     public static final String SHOW_BY_ID = BASE_URL_TV_MAZE + "shows/";
     public static final String SHOW_BY_IMDB = BASE_URL_TV_MAZE + "lookup/shows?imdb=";
@@ -55,6 +55,10 @@ public class UrlBuilder {
 
     public String ratingById(String id){
         return BASE_URL_OMDB + id + API_KEY;
+    }
+
+    public String getScheduleByCountry(String country){
+        return TODAYS_SCHEDULE + country;
     }
 
 

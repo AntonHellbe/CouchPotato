@@ -127,8 +127,8 @@ public class CommunicationService extends Service {
             networkQue.add(favoriteTask);
     }
 
-    public void sendSchedule(){
-        scheduleTask = new ScheduleTask();
+    public void sendSchedule(String country){
+        scheduleTask = new ScheduleTask(country);
         if(!((MainActivity)activity).getNetworkProblem())
             scheduleTask.execute();
         else
@@ -316,15 +316,22 @@ public class CommunicationService extends Service {
 
         public class ScheduleTask extends AsyncTask<String, String, ArrayList<TvShow>> {
 
+            private String countryCode;
+
+            public ScheduleTask(String countryCode){
+                this.countryCode = countryCode;
+            }
+
             protected ArrayList<TvShow> doInBackground(String... strings) {
                 URL url;
                 String response = "";
                 ArrayList<TvShow> resultList;
+                String fullUrl = urlBuilder.getScheduleByCountry(countryCode);
                 JSONArray jsonArray = null;
                 BufferedReader br = null;
                 InputStream instream = null;
                 try {
-                    url = new URL(UrlBuilder.TODAYS_SCHEDULE);
+                    url = new URL(fullUrl);
                     URLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     instream = new BufferedInputStream(urlConnection.getInputStream());
                     br = new BufferedReader(new InputStreamReader(instream));
