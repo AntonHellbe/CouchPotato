@@ -30,14 +30,15 @@ public class NotificationAlarmService extends Service {
     public void startAlarm(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 56);
+        calendar.set(Calendar.HOUR_OF_DAY, 19);
+        calendar.set(Calendar.MINUTE, 46);
 
         Intent intent = new Intent(this,NotificationReciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE), tester = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP,  System.currentTimeMillis(),
                 AlarmManager.INTERVAL_DAY,pendingIntent);
+        Log.d("NOTIFICATIONTEST", "alarm started at: " + calendar.getTime());
     }
 
     public class LocalService extends Binder {

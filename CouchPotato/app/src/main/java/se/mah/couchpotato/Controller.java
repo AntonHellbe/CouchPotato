@@ -18,6 +18,7 @@ import android.icu.util.Calendar;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.MenuItem;
@@ -44,7 +45,7 @@ public class Controller {
     private MainActivity mainActivity;
     private CommunicationService communicationService;
     private ServiceConnection serviceConnection;
-    private AlarmServiceConnection alarmServiceConnection;
+    //private AlarmServiceConnection alarmServiceConnection;
     private NotificationAlarmService notify;
     private DataFragment dataFragment;
     private SharedPreferences sP;
@@ -68,7 +69,8 @@ public class Controller {
         if (dataFragment.getSettings() == null)
             restoreSettings();
         initializeCommunication();
-        initializeAlarm();
+        alarm();
+        //initializeAlarm();
     }
 
     private void initializeDataFragment() {
@@ -109,9 +111,9 @@ public class Controller {
             mainActivity.startService(intent);
             dataFragment.setAlarmExist(true);
         }
-        alarmServiceConnection = new AlarmServiceConnection();
-        boolean status = mainActivity.bindService(intent, alarmServiceConnection, 0);
-        Log.d("NOTIFICATIONTEST", "initializeAlarm, connected " + status);
+        //alarmServiceConnection = new AlarmServiceConnection();
+        //boolean status = mainActivity.bindService(intent, alarmServiceConnection, 0);
+        //Log.d("NOTIFICATIONTEST", "initializeAlarm, connected " + status);
     }
 
     public DataFragment getDataFragment() {
@@ -138,6 +140,25 @@ public class Controller {
         }
     }
 
+    public void alarm(){
+        Log.d("NOTIFICATIONTEST","in alarm");
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis()+1000*60);
+        //calendar.set(Calendar.HOUR_OF_DAY, 10);
+        //calendar.set(Calendar.MINUTE, 4);
+
+        AlarmManager manager = (AlarmManager) mainActivity.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(mainActivity, NotificationReciever.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mainActivity,0,intent,0);
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60*1000,pendingIntent);
+
+    }
     public void notification(){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mainActivity)
@@ -418,19 +439,19 @@ public class Controller {
         }
     }
 
-    private class AlarmServiceConnection implements android.content.ServiceConnection{
+    /*private class AlarmServiceConnection implements android.content.ServiceConnection{
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             NotificationAlarmService.LocalService ls = (NotificationAlarmService.LocalService) service;
             notify = ls.getService(mainActivity);
             Log.d("Controller","In onServiceConnected");
             alarmBound = true;
-            sendInitialRequests();
+            notify.startAlarm();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             alarmBound = false;
         }
-    }
+    }*/
 }

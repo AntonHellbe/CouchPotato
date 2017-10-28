@@ -26,9 +26,9 @@
         <receiver
             android:name=".NotificationReciever"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:process=":">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
