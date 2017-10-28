@@ -116,6 +116,11 @@ public class Controller {
             mainActivity.stopService(intent);
     }
 
+    private void removeAlarm() {
+        Intent intent = new Intent(mainActivity, NotificationAlarmService.class);
+        mainActivity.stopService(intent);
+    }
+
     private boolean isNotificationServiceRunning() {
         ActivityManager manager = (ActivityManager) mainActivity.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -252,10 +257,12 @@ public class Controller {
         //Then remove old settings from sP and replace them with the new ones
         //After that save it to datafragment
         dataFragment.setSettings(settings);
+        saveSettingsToSP();
         applySettings();
     }
 
     private void applySettings() {
+        removeAlarm();
         initializeAlarm();
 
         FragmentInterface feed = getFragmentByTag(ContainerFragment.TAG_FEED);

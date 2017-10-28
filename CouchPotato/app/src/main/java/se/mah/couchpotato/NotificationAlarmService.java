@@ -59,9 +59,6 @@ public class NotificationAlarmService extends Service {
 
 
     public void startAlarm(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
         long notificationTime = 18 * 60 * 60 * 1000;
         SharedPreferences sp;
         if ((sp = getSharedPreferences("MainActivity", MODE_PRIVATE)).contains(Settings.NOTIFICATION_TIME)) {
@@ -77,7 +74,7 @@ public class NotificationAlarmService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         manager.setRepeating(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
-        Log.d("NOTIFICATIONTEST", "alarm started at: " + calendar.getTime());
+        Log.d("NOTIFICATIONTEST", "alarm set to go off: " + c.getTime());
     }
 
     public static class MrReciever extends BroadcastReceiver {
@@ -111,6 +108,7 @@ public class NotificationAlarmService extends Service {
             private ObjectMapper mapper = new ObjectMapper();
             private ArrayList<String> favoriteIds = new ArrayList<>();
             private Context context;
+            private String countryCode = "US";
 
             public NotificationScheduleTask(Context context) {
                 this.context = context;
@@ -119,8 +117,10 @@ public class NotificationAlarmService extends Service {
             @Override
             protected void onPreExecute() {
                 SharedPreferences sp = context.getSharedPreferences("MainActivity", MODE_PRIVATE);
-                if (sp.contains("favourites"))
+                if (sp.contains("favourites")) {
                     favoriteIds = new ArrayList<>(sp.getStringSet("favourites", null));
+                    countryCode = sp.getString(Settings.COUNT, "US");
+                }
                 super.onPreExecute();
             }
 
@@ -133,7 +133,7 @@ public class NotificationAlarmService extends Service {
                 BufferedReader br = null;
                 InputStream instream = null;
                 try {
-                    url = new URL(UrlBuilder.TODAYS_SCHEDULE);
+                    url = new URL(UrlBuilder.TODAYS_SCHEDULE + countryCode);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     instream = new BufferedInputStream(urlConnection.getInputStream());
                     br = new BufferedReader(new InputStreamReader(instream));
