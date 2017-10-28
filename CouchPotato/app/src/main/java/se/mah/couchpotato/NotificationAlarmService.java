@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import se.mah.couchpotato.activitytvshow.ActivityTvShow;
 
@@ -57,11 +58,22 @@ public class NotificationAlarmService extends Service {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
+        long notificationTime = 18 * 60 * 60 * 1000;
+        SharedPreferences sp;
+        if ((sp = getSharedPreferences("MainActivity", MODE_PRIVATE)).contains("language")) {
+//            notificationTime = sp.getLong("", notificationTime);
+        }
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.setTimeInMillis(c.getTimeInMillis() + notificationTime);
+
         Intent intent = new Intent(this, MrReciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        manager.setRepeating(AlarmManager.RTC_WAKEUP,  System.currentTimeMillis(),
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES / 30 , pendingIntent);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP,  c.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
         Log.d("NOTIFICATIONTEST", "alarm started at: " + calendar.getTime());
     }
 
@@ -71,6 +83,7 @@ public class NotificationAlarmService extends Service {
         }
 
         public void sendNotification(Context context, String message) {
+            SharedPreferences sp = context.getSharedPreferences("MainActivity", MODE_PRIVATE);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(android.R.drawable.sym_def_app_icon).setContentTitle(context.getResources().getString(R.string.app_name)).setContentText(message);
             Intent resultIntent = new Intent(context, MainActivity.class);
 
