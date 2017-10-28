@@ -81,6 +81,7 @@
                     app:highlightedcolor="@color/colorPrimary"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
+                    android:layout_marginTop="10dp"
                     app:textSize="20sp" />
 
                 <TextView
