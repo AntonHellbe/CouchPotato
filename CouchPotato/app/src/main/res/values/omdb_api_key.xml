@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="omdb_api_key" templateMergeStrategy="preserve" translatable="false">2d6159f2</string>
+</resources>

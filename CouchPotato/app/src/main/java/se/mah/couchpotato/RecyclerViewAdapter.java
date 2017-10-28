@@ -2,6 +2,7 @@ package se.mah.couchpotato;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -75,12 +76,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             setAnimation(holder.itemView);
             holder.animated = true;
         }*/
-        if (tvShow.getShow().getImage() == null)
+        if (tvShow.getShow().getImage() == null) {
+            holder.ivPoster.setImageBitmap(BitmapFactory.decodeResource(activity.getResources(), android.R.drawable.sym_def_app_icon));
             return;
+        }
         if (tvShow.getShow().getImage().getMedium() == null) {
             holder.pbLoading.setVisibility(View.INVISIBLE);
             holder.ivPoster.setVisibility(View.VISIBLE);
-            holder.ivPoster.setImageResource(android.R.drawable.sym_def_app_icon);
+            holder.ivPoster.setImageBitmap(BitmapFactory.decodeResource(activity.getResources(), android.R.drawable.sym_def_app_icon));
         } else {
             Bitmap poster = ((MainActivity) activity).getController().getDataFragment().getPicture(tvShow.getShow().getId().toString());
             if (poster != null) {

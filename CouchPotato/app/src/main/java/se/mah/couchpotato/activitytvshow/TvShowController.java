@@ -70,10 +70,13 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
     public void sendInitialRequests() {
         if (dataFragment.getEpisodes() == null)
             communicationService.getAllEpisodes(dataFragment.getTvShowId(), this);
-        if (dataFragment.getHdImage() == null)
-            communicationService.downloadPicture("", this, dataFragment.getHdImagePath());
-            if (dataFragment.getHdImagePath() != null)
+        if (dataFragment.getHdImage() == null) {
+            if (dataFragment.getHdImagePath() != null) {
                 communicationService.downloadPicture("", this, dataFragment.getHdImagePath());
+            }
+        }
+        else
+            activity.setIvPosterBitmap(dataFragment.getHdImage());
         communicationService.getRating(dataFragment.getImdbId(), new RatingListenerCallback());
     }
 
