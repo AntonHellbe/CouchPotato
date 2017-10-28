@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import se.mah.couchpotato.activtysettings.Settings;
@@ -26,6 +27,7 @@ import se.mah.couchpotato.activtysettings.Settings;
 public class DataFragment extends Fragment {
 
     private static final String OTHER = "Other";
+    private static final String ADULT = "Adult";
 
     private boolean serviceExist, alarm;
     private String currentTag;
@@ -135,11 +137,24 @@ public class DataFragment extends Fragment {
                 }
                 filterMap.get(OTHER).add(t);
             }else{
+                boolean nudes = false;
                 for (int i = 0; i < t.getShow().getGenres().size(); i++) {
-                    if (filterMap.get(t.getShow().getGenres().get(i)) == null)
-                        filterMap.put((String)t.getShow().getGenres().get(i), new ArrayList<TvShow>());
-//                    Log.v("DATAFRAG", "ADDING SHOW" + t.getShow().getName() + " TO FOLLOWING GENRE " + t.getShow().getGenres().get(i));
-                    filterMap.get((String) t.getShow().getGenres().get(i)).add(t);
+                    if(t.getShow().getGenres().get(i).equals(ADULT)){
+                        nudes = true;
+                    }
+                }
+                if(!nudes) {
+                    for (int i = 0; i < t.getShow().getGenres().size(); i++) {
+                        if (filterMap.get(t.getShow().getGenres().get(i)) == null)
+                            filterMap.put((String) t.getShow().getGenres().get(i), new ArrayList<TvShow>());
+
+                        filterMap.get((String) t.getShow().getGenres().get(i)).add(t);
+                    }
+                }else{
+                    if(filterMap.get(ADULT) == null)
+                        filterMap.put(ADULT, new ArrayList<TvShow>());
+
+                    filterMap.get(ADULT).add(t);
                 }
             }
 
