@@ -62,7 +62,7 @@ public class NotificationAlarmService extends Service {
         long notificationTime = 18 * 60 * 60 * 1000;
         SharedPreferences sp;
         if ((sp = getSharedPreferences("MainActivity", MODE_PRIVATE)).contains(Settings.NOTIFICATION_TIME)) {
-            notificationTime = sp.getLong(Settings.NOTIFICATION_TIME, notificationTime);
+            notificationTime = sp.getLong(Settings.NOTIFICATION_TIME, 0);
         }
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());
@@ -83,6 +83,7 @@ public class NotificationAlarmService extends Service {
         }
 
         public void sendNotification(Context context, String message) {
+            Log.v("NOTIFICATIONTEST","HELLO????");
             SharedPreferences sp = context.getSharedPreferences("MainActivity", MODE_PRIVATE);
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(android.R.drawable.sym_def_app_icon).setContentTitle(context.getResources().getString(R.string.app_name)).setContentText(message);
             Intent resultIntent = new Intent(context, MainActivity.class);
@@ -187,6 +188,7 @@ public class NotificationAlarmService extends Service {
             protected void onPostExecute(ArrayList<TvShow> shows) {
                 super.onPostExecute(shows);
                 ArrayList<TvShow> favoritesAiring = new ArrayList<>();
+                Log.v("NOTIFICATIONTEST","gonna create notification");
                 if (favoriteIds != null) {
                     for (int i = 0; i < shows.size(); i++) {
                         for (int j = 0; j < favoriteIds.size(); j++) {
@@ -197,6 +199,7 @@ public class NotificationAlarmService extends Service {
                         }
                     }
                     if (!favoritesAiring.isEmpty()) {
+                        Log.v("NOTIFICATIONTEST","LETS DO IT");
                         if (favoritesAiring.size() > 2) {
                             String message = context.getResources().getString(R.string.notification_description);
                             sendNotification(context, message);
