@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import se.mah.couchpotato.activitytvshow.ActivityTvShow;
+import se.mah.couchpotato.activitytvshow.RatingListener;
 
 /**
  * @author Robin Johnsson & Jonatan Fridsten <---- Look at these 2 gays
@@ -46,6 +47,8 @@ public class CommunicationService extends Service {
     private ScheduleTask scheduleTask;
     private AllEpisodesTask allEpisodesTask;
     private ImageLoader imLoader;
+    private RatingTask ratingTask;
+    private String Omdb_api_key;
     private HttpURLConnection urlConnection;
     private MainActivity activity;
     private ActivityTvShow tvActivity;
@@ -85,7 +88,8 @@ public class CommunicationService extends Service {
 
 
     public class LocalService extends Binder {
-        public CommunicationService getService(MainActivity activity) {
+        public CommunicationService getService(MainActivity activity, String api_key) {
+            Omdb_api_key = api_key;
             setActivity(activity);
             Log.d("CommunicationService", "In getService");
             return CommunicationService.this;
@@ -129,6 +133,14 @@ public class CommunicationService extends Service {
             scheduleTask.execute();
         else
             networkQue.add(scheduleTask);
+    }
+
+    public void getRating(String id, RatingListener ratingListener){
+        ratingTask = new RatingTask(id, ratingListener);
+        if(!((MainActivity)activity).getNetworkProblem())
+            ratingTask.execute();
+        else
+            networkQue.add(ratingTask);
     }
 
     public void downloadPicture(String id, PosterListener posterListener, String url){
@@ -618,6 +630,93 @@ public class CommunicationService extends Service {
                 super.onProgressUpdate(values);
             }
         }
+
+    public class RatingTask extends AsyncTask<String, String, OmdbObject>{
+
+        private String id;
+        private RatingListener ratingListener;
+
+        public RatingTask(String id, RatingListener ratingListener){
+            this.id = id;
+            this.ratingListener = ratingListener;
+        }
+
+        @Override
+        protected OmdbObject doInBackground(String... strings) {
+            URL url;
+            String response = "";
+            String fullUrl = urlBuilder.ratingById(id);
+            fullUrl += Omdb_api_key;
+            OmdbObject obj = null;
+            HttpURLConnection httpUrlConnection = null;
+            JSONObject temp;
+            BufferedReader br = null;
+            InputStream instream = null;
+            try {
+                url = new URL(fullUrl);
+                httpUrlConnection = (HttpURLConnection) url.openConnection();
+                instream = new BufferedInputStream(httpUrlConnection.getInputStream());
+                br = new BufferedReader(new InputStreamReader(instream));
+                response = br.readLine();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (br != null) {
+                    try {
+                        br.close();
+
+                    } catch (IOException e) {
+
+                    }
+                }
+                if (instream != null) {
+                    try {
+                        instream.close();
+                    } catch (IOException e) {
+
+                    }
+                }
+                if (httpUrlConnection != null) {
+                    try {
+                        httpUrlConnection.disconnect();
+                    } catch (NullPointerException e) {
+
+                    }
+                }
+            }
+
+            Log.v("RatingTASK", "GOT FOLLOWING " + response);
+
+            try {
+                temp = new JSONObject(response);
+                obj = mapper.readValue(temp.toString(), OmdbObject.class);
+
+            }catch (Exception e) {
+                e.printStackTrace();
+                Log.v("COMMSERVICE", "SOMETHING WENT WRONG IN READING JSON");
+            }
+
+            return obj;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(OmdbObject omdbObject) {
+            ratingListener.onRaitingRecieved(omdbObject);
+            super.onPostExecute(omdbObject);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+
 
 
 }

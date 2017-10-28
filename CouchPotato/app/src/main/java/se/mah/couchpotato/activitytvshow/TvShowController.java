@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import se.mah.couchpotato.AllEpisodesListener;
 import se.mah.couchpotato.CommunicationService;
 import se.mah.couchpotato.EpisodeObject;
+import se.mah.couchpotato.OmdbObject;
 import se.mah.couchpotato.PosterListener;
 import se.mah.couchpotato.R;
 
@@ -25,14 +26,22 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
     private CommunicationService communicationService;
     private TvShowDataFragment dataFragment;
     private ServiceConnection serviceConnection;
+    private String imdbId;
 
-    public TvShowController(ActivityTvShow activity, String tvShowId) {
+    public TvShowController(ActivityTvShow activity, String tvShowId, String imdbId) {
         this.activity = activity;
         initializeDataFragment();
         dataFragment.setTvShowId(tvShowId);
+        dataFragment.setImdbId(imdbId);
         initializeCommunication();
         populateViewPager();
         activity.setFabImage(dataFragment.isFavorite());
+    }
+
+    public void getRaiting(String id){
+        if(communicationService != null)
+            communicationService.getRating(id, new RatingListenerCallback());
+
     }
 
     private void populateViewPager() {
@@ -63,6 +72,7 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
             communicationService.getAllEpisodes(dataFragment.getTvShowId(), this);
         if (dataFragment.getHdImage() == null)
             communicationService.downloadPicture("", this, dataFragment.getHdImagePath());
+        communicationService.getRating(dataFragment.getImdbId(), new RatingListenerCallback());
     }
 
     @Override
@@ -144,6 +154,17 @@ public class TvShowController implements AllEpisodesListener, PosterListener {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             dataFragment.setBound(false);
+        }
+    }
+
+    private class RatingListenerCallback implements RatingListener{
+
+        @Override
+        public void onRaitingRecieved(OmdbObject omdbObject) {
+            if(omdbObject.getImdbRating() != null)
+                activity.setTvRating(omdbObject.getImdbRating());
+            else
+                activity.setTvRating("-");
         }
     }
 

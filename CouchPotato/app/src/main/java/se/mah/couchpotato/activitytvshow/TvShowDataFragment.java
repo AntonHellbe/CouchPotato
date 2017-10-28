@@ -27,6 +27,7 @@ public class TvShowDataFragment extends Fragment {
     private Bitmap hdImage;
     private String hdImagePath;
     private boolean isFuckedUp = false;
+    private String imdbId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,4 +123,11 @@ public class TvShowDataFragment extends Fragment {
         isFuckedUp = fuckedUp;
     }
 
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
 }

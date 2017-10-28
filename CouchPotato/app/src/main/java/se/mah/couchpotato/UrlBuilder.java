@@ -1,22 +1,26 @@
 package se.mah.couchpotato;
 
+import android.util.Log;
+
 /**
  * Created by Anton on 2017-10-19.
  */
 
 public class UrlBuilder {
 
-    public static final String BASE_URL = "http://api.tvmaze.com/";
-    public static final String SHOW_SEARCH = BASE_URL + "search/shows?q=";
-    public static final String SINGLE_SHOW_SEARCH = BASE_URL + "singlesearch/shows?q=";
-    public static final String TODAYS_SCHEDULE = BASE_URL + "schedule?country=US";  //TODO settings
-    public static final String FULL_SCHEDULE = BASE_URL + "schedule/full";  //DANGER ZONE
-    public static final String SHOW_BY_ID = BASE_URL + "shows/";
-    public static final String SHOW_BY_IMDB = BASE_URL + "lookup/shows?imdb=";
+    public static final String BASE_URL_TV_MAZE = "http://api.tvmaze.com/";
+    public static final String SHOW_SEARCH = BASE_URL_TV_MAZE + "search/shows?q=";
+    public static final String SINGLE_SHOW_SEARCH = BASE_URL_TV_MAZE + "singlesearch/shows?q=";
+    public static final String TODAYS_SCHEDULE = BASE_URL_TV_MAZE + "schedule?country=US";  //TODO settings
+    public static final String FULL_SCHEDULE = BASE_URL_TV_MAZE + "schedule/full";  //DANGER ZONE
+    public static final String SHOW_BY_ID = BASE_URL_TV_MAZE + "shows/";
+    public static final String SHOW_BY_IMDB = BASE_URL_TV_MAZE + "lookup/shows?imdb=";
     public static final String SEASONS = "/seasons";
     public static final String EPISODES = "/episodes";
     public static final String EPISODE_BY_SEASON = "/episodebynumber?season=";
     public static final String EPISODE_BY_NUMBER = "&number=";
+    public static final String BASE_URL_OMDB = "http://www.omdbapi.com/?i=";
+    public static final String API_KEY = "&apikey=";
 
 
     public UrlBuilder(){}
@@ -47,6 +51,10 @@ public class UrlBuilder {
 
     public String getSeasons(int id){
         return SHOW_BY_ID + id + SEASONS;
+    }
+
+    public String ratingById(String id){
+        return BASE_URL_OMDB + id + API_KEY;
     }
 
 

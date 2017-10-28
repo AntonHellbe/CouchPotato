@@ -137,15 +137,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("id", show.getShow().getId().toString());
             intent.putExtra("title", show.getShow().getName());
             intent.putExtra("plot", show.getShow().getSummary());
-            intent.putExtra("hd", show.getShow().getImage().getOriginal());
             intent.putExtra("favorite", ((MainActivity) activity).getController().getDataFragment().getFavorites().containsKey(show.getShow().getId().toString()));
             intent.putExtra("airtime", show.getShow().getSchedule().getTime());
             CharSequence[] days = show.getShow().getSchedule().getDays().toArray(new CharSequence[7]);
             intent.putExtra("airdays", days);
-            if(show.getShow().getImage().getOriginal() != null) //Apparently a show can have a medium image but not a original
+            if(show.getShow().getImage() != null && show.getShow().getImage().getOriginal() != null) //Apparently a show can have a medium image but not a original
                 intent.putExtra("hd", show.getShow().getImage().getOriginal());
-            if(show.getShow().getRating().getAverage() != null)
-                intent.putExtra("rating", show.getShow().getRating().getAverage().toString());
+            if(show.getShow().getExternals().getImdb() != null)
+                intent.putExtra("imdbid", show.getShow().getExternals().getImdb());
             Bundle bundle = options.toBundle();
             ActivityCompat.startActivityForResult(activity, intent, MainActivity.REQUESTCODETVSHOW, bundle);
         }

@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import se.mah.couchpotato.AllEpisodesListener;
 import se.mah.couchpotato.EpisodeListener;
+import se.mah.couchpotato.OmdbObject;
 import se.mah.couchpotato.R;
 import se.mah.couchpotato.TvShow;
 
@@ -47,7 +48,7 @@ public class ActivityTvShow extends AppCompatActivity {
         initializeComponents();
         initializeListeners();
         handlePosterAnimation();
-        controller = new TvShowController(this, getIntent().getStringExtra("id"));
+        controller = new TvShowController(this, getIntent().getStringExtra("id"), getIntent().getStringExtra("imdbid"));
     }
 
     private void initializeComponents() {
@@ -61,7 +62,6 @@ public class ActivityTvShow extends AppCompatActivity {
         airTable = (AirTableView) findViewById(R.id.air_table);
         String title = getIntent().getStringExtra("title");
         String plot = getIntent().getStringExtra("plot");
-        String rating = getIntent().getStringExtra("rating");
         String airtime = getIntent().getStringExtra("airtime");
         CharSequence[] airdays = getIntent().getCharSequenceArrayExtra("airdays");
         boolean airingDays[] = new boolean[7];
@@ -94,18 +94,18 @@ public class ActivityTvShow extends AppCompatActivity {
             }
         }
         airTable.daysToDraw(airingDays);
-        plot = plot.replace("<p>", "");
-        plot = plot.replace("</p>", "");
-        plot = plot.replace("<b>", "");
-        plot = plot.replace("</b>", "");
-        plot = plot.replace("<i>", "");
-        plot = plot.replace("</i>", "");
+        if(plot != null) {
+            plot = plot.replace("<p>", "");
+            plot = plot.replace("</p>", "");
+            plot = plot.replace("<b>", "");
+            plot = plot.replace("</b>", "");
+            plot = plot.replace("<i>", "");
+            plot = plot.replace("</i>", "");
+        }else{
+            plot = "-";
+        }
         tvTitle.setText(title);
         tvPlot.setText(plot);
-        if(rating == null)
-            tvRating.setText("-/10");
-        else
-            tvRating.setText(rating + "/10");
     }
 
     private void initializeListeners() {
@@ -147,6 +147,10 @@ public class ActivityTvShow extends AppCompatActivity {
         controller.onDestroy();
     }
 
+    public void setTvRating(String text){
+        tvRating.setText(text);
+    }
+
     public void setIvPosterBitmap(Bitmap bitmap) {
         ivPoster.setImageBitmap(bitmap);
     }
@@ -174,4 +178,5 @@ public class ActivityTvShow extends AppCompatActivity {
         setResult(RESULT_OK, i);
         super.finish();
     }
+
 }

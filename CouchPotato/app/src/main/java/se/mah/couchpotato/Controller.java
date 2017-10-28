@@ -55,6 +55,7 @@ public class Controller {
     private int showId;
     private ContainerFragment containerFragment;
     private String[] filters;
+    private String Omdb_api_key;
 
 
 
@@ -102,6 +103,7 @@ public class Controller {
 
     private void initializeResources() {
         filters = mainActivity.getResources().getStringArray(R.array.categories);
+        Omdb_api_key = (mainActivity.getResources().getString(R.string.omdb_api_key));
     }
 
     public void initializeAlarm(){
@@ -264,7 +266,6 @@ public class Controller {
     }
 
     public void onSearchTextChanged(String searchString) {
-//        dataFragment.setSearchResult(new ArrayList<TvShow>());
         if (searchString.length() > 3) {
             search(searchString);
         } else {
@@ -403,19 +404,18 @@ public class Controller {
     }
 
     public void networkChange(NetworkInfo networkInfo) {
-        if(networkInfo.getState() == NetworkInfo.State.CONNECTED){
-            if(communicationService != null) {
+        if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
+            if (communicationService != null) {
                 communicationService.executeCommands();
             }
         }
     }
 
-
     private class ServiceConnection implements android.content.ServiceConnection{
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             CommunicationService.LocalService ls = (CommunicationService.LocalService) service;
-            communicationService = ls.getService(mainActivity);
+            communicationService = ls.getService(mainActivity, Omdb_api_key);
             Log.d("Controller","In onServiceConnected");
             bound = true;
             sendInitialRequests();
