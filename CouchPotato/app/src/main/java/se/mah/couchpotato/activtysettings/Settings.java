@@ -5,72 +5,59 @@ import android.os.Parcelable;
 
 /**
  * @author Jonatan Fridsten
+ *         <p>
+ *         Class that stores the information that the user could choose
  */
 
 public class Settings implements Parcelable {
 
     private boolean nsfw;
+    private boolean notification;
     private String language;
     private String country;
-    private int timeZone;
-    private int position_lang;
+    private long timeZone;
+    private long notificationTime;
     private int position_count;
 
     public static final String NSFW = "nsfw";
     public static final String LANG = "language";
     public static final String COUNT = "country";
-    public static final String POSLANG = "posLang";
     public static final String POSCOUNT = "posCount";
+    public static final String NOTIFICATION = "notification";
+    public static final String NOTIFICATION_TIME = "notification_time";
+    public static final String TIME_ZONE = "timezone";
 
 
     public Settings() {
-        nsfw = false;
+        nsfw = true;
         country = "US";
         language = "Engelska";
         position_count = 1;
-        position_lang = 1;
+        notification = true;
+        notificationTime = 1800; //18 * 60 * 1000 + 0 * 1000
+        timeZone = 0;
     }
 
-    public Settings(boolean nsfw, String language, String country) {
+    public Settings(boolean nsfw, boolean notification, String language, String country, int position_count, long notificationTime, long timeZone) {
         this.nsfw = nsfw;
+        this.notification = notification;
         this.language = language;
         this.country = country;
-    }
-
-    public Settings(boolean nsfw, String language, String country, int timeZone) {
-        this.nsfw = nsfw;
-        this.language = language;
-        this.country = country;
+        this.position_count = position_count;
+        this.notificationTime = notificationTime;
         this.timeZone = timeZone;
     }
-
-    public Settings(boolean nsfw, String language, String country, int position_lang, int position_count) {
-        this.nsfw = nsfw;
-        this.language = language;
-        this.country = country;
-        this.position_lang = position_lang;
-        this.position_count = position_count;
-    }
-
-    public Settings(boolean nsfw, String language, String country, int timeZone, int position_lang, int position_count) {
-        this.nsfw = nsfw;
-        this.language = language;
-        this.country = country;
-        this.timeZone = timeZone;
-        this.position_lang = position_lang;
-        this.position_count = position_count;
-    }
-
 
 
     public static final Creator<Settings> CREATOR = new Creator<Settings>() {
         @Override
         public Settings createFromParcel(Parcel parcel) {
-            boolean tempTheme, tempNsfw;
+            boolean tempNotification, tempNsfw;
             tempNsfw = (parcel.readInt() == 0) ? false : true;
-            return new Settings(tempNsfw, parcel.readString(),
+            tempNotification = (parcel.readInt() == 0) ? false : true;
+            return new Settings(tempNsfw, tempNotification, parcel.readString(),
                     parcel.readString(), parcel.readInt(),
-                    parcel.readInt(),parcel.readInt());
+                    parcel.readLong(), parcel.readLong());
         }
 
         @Override
@@ -87,11 +74,12 @@ public class Settings implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(nsfw ? 1 : 0);
+        parcel.writeInt(notification ? 1 : 0);
         parcel.writeString(language);
         parcel.writeString(country);
-        parcel.writeInt(timeZone);
-        parcel.writeInt(position_lang);
         parcel.writeInt(position_count);
+        parcel.writeLong(notificationTime);
+        parcel.writeLong(timeZone);
     }
 
 
@@ -119,27 +107,35 @@ public class Settings implements Parcelable {
         this.country = country;
     }
 
-    public int getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(int timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public int getPosition_lang() {
-        return position_lang;
-    }
-
-    public void setPosition_lang(int position_lang) {
-        this.position_lang = position_lang;
-    }
-
     public int getPosition_count() {
         return position_count;
     }
 
     public void setPosition_count(int position_count) {
         this.position_count = position_count;
+    }
+
+    public boolean isNotification() {
+        return notification;
+    }
+
+    public void setNotification(boolean notification) {
+        this.notification = notification;
+    }
+
+    public long getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(long timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public long getNotificationTime() {
+        return notificationTime;
+    }
+
+    public void setNotificationTime(long notificationTime) {
+        this.notificationTime = notificationTime;
     }
 }

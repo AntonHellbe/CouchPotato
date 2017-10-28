@@ -2,6 +2,7 @@ package se.mah.couchpotato.activtysettings;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -10,21 +11,28 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 import java.util.Locale;
+
 import se.mah.couchpotato.R;
 
 /**
  * @author Jonatan Fridsten
- *
- * This activity will be in charge for settings in the application.
+ *  This activity will be in charge for settings in the application.
  */
 public class ActivitySettings extends AppCompatActivity {
 
@@ -39,6 +47,7 @@ public class ActivitySettings extends AppCompatActivity {
     private static final String SAVE_RADIUS_VALUE = "save_radius";
 
     private CheckBox checkBoxNsfw;
+    private CheckBox checkBoxNotification;
     private Spinner spinnerCountry;
     private RadioGroup radioGroup;
     private RadioGroup.OnCheckedChangeListener checkedChangeListener;
@@ -46,6 +55,8 @@ public class ActivitySettings extends AppCompatActivity {
     private int x, y, startRadius, oldLanguage;
     private ScrollView sv_settings;
     private Settings settings;
+    private TextView tvNotfiTime;
+    private Button btnTimerPicker;
 
 
     @Override
@@ -96,18 +107,68 @@ public class ActivitySettings extends AppCompatActivity {
             outState.putParcelable(SAVE_SETTEINGS, settings);
         }
         outState.putInt(SAVE_PREV_STATE, oldLanguage);
-        outState.putInt(SAVE_X_VALUE,x);
-        outState.putInt(SAVE_Y_VALUE,y);
-        outState.putInt(SAVE_RADIUS_VALUE,startRadius);
+        outState.putInt(SAVE_X_VALUE, x);
+        outState.putInt(SAVE_Y_VALUE, y);
+        outState.putInt(SAVE_RADIUS_VALUE, startRadius);
     }
 
     private void initComp() {
         checkBoxNsfw = (CheckBox) findViewById(R.id.checkBox_settings_nsfw);
         spinnerCountry = (Spinner) findViewById(R.id.spinner_settings_countries);
         radioGroup = (RadioGroup) findViewById(R.id.radio_language);
+        checkBoxNotification = (CheckBox) findViewById(R.id.checkBox_settings_notification);
+        btnTimerPicker = (Button) findViewById(R.id.edtv_settings_timerpicker);
+        tvNotfiTime = (TextView) findViewById(R.id.edtv_settings_timerpicker);
 
 
-        checkBoxNsfw.setChecked(settings.isNsfw());
+        btnTimerPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int min = calendar.get(Calendar.MINUTE);
+                TimePickerDialog timePicker;
+                timePicker = new TimePickerDialog(ActivitySettings.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int h, int m) {
+                        String res;
+                        if (h < 10){
+                            res = "0" + h;
+                        }else {
+                            res = "" + h;
+                        }
+
+                        settings.setNotificationTime((h * 3600 * 1000) + (m * 60 *1000));
+                        btnTimerPicker.setText(res + ":" + m);
+                    }
+                },hour,min,true);
+                timePicker.show();
+            }
+        });
+
+        checkBoxNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    btnTimerPicker.setEnabled(true);
+                    btnTimerPicker.setTextColor(Color.WHITE);
+                    tvNotfiTime.setTextColor(Color.WHITE);
+
+                }else {
+                    btnTimerPicker.setTextColor(Color.LTGRAY);
+                    tvNotfiTime.setTextColor(Color.LTGRAY);
+                    btnTimerPicker.setEnabled(false);
+                }
+            }
+        });
+
+        try {
+            checkBoxNsfw.setChecked(settings.isNsfw());
+            checkBoxNotification.setChecked(settings.isNotification());
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         adapterCountry = ArrayAdapter.createFromResource(this, R.array.settings_array_country, R.layout.spinner_settings);
         spinnerCountry.setAdapter(adapterCountry);
@@ -141,6 +202,7 @@ public class ActivitySettings extends AppCompatActivity {
                 configuration.locale = locale;
                 getApplicationContext().getResources().updateConfiguration(configuration, null);
                 recreate();
+
             } else if (position == R.id.radio_england) {
 
                 oldLanguage = R.id.radio_england;
@@ -149,6 +211,7 @@ public class ActivitySettings extends AppCompatActivity {
                 configuration.locale = locale;
                 getApplicationContext().getResources().updateConfiguration(configuration, null);
                 recreate();
+
             }
         }
     }
@@ -156,7 +219,7 @@ public class ActivitySettings extends AppCompatActivity {
 
     private void animateView(Bundle savedInstanceState) {
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
 
             x = getIntent().getIntExtra("revealX", 0);
             y = getIntent().getIntExtra("revealY", 0);
@@ -196,13 +259,14 @@ public class ActivitySettings extends AppCompatActivity {
             settings.setNsfw(checkBoxNsfw.isChecked());
             settings.setCountry(spinnerCountry.getSelectedItem().toString());
             settings.setPosition_count(spinnerCountry.getSelectedItemPosition());
+            settings.setNotification(checkBoxNotification.isChecked());
             if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
                 settings.setLanguage(getResources().getString(R.string.settings_language_swedish));
             } else {
                 settings.setLanguage(getResources().getString(R.string.settings_language_english));
             }
         } catch (NullPointerException e) {
-            //TODO Tiast here or in main Activity ?
+            //TODO Toast here or in main Activity ?
         }
 
         //Bundle to store the settings data
@@ -219,7 +283,7 @@ public class ActivitySettings extends AppCompatActivity {
 
     @Override
     public void finish() {
-        try{
+        try {
             Point p = new Point();
             getWindowManager().getDefaultDisplay().getSize(p);
             Animator anim = ViewAnimationUtils.createCircularReveal(sv_settings, x, y, Math.max(p.x, p.y), startRadius);
@@ -248,7 +312,7 @@ public class ActivitySettings extends AppCompatActivity {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -258,6 +322,5 @@ public class ActivitySettings extends AppCompatActivity {
         setResult(Activity.RESULT_OK, createIntent());
         super.finish();
     }
-
 
 }

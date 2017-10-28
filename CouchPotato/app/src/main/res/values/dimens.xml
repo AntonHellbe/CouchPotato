@@ -6,6 +6,7 @@
 
     <dimen name="activity_settings_textSize_main">24sp</dimen>
     <dimen name="activity_settings_textSize_category">12sp</dimen>
+    <dimen name="activity_settings_textSize_20sp">20sp</dimen>
     <dimen name="activity_settings_divider">1dp</dimen>
     <dimen name="activity_settings_marginTop5dp">5dp</dimen>
     <dimen name="activity_settings_marginTop2dp">2dp</dimen>

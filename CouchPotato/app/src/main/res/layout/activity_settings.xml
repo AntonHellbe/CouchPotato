@@ -139,12 +139,78 @@
                 <CheckBox
                     android:id="@+id/checkBox_settings_nsfw"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layoutDirection="rtl"
                     android:buttonTint="@color/white" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_notification"
+                android:layout_below="@id/linear_settings_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_settings_Notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_notification"
+                    android:textSize="@dimen/activity_settings_textSize_main"
+                    android:textColor="@color/white"
+                    />
+
+                <CheckBox
+                    android:id="@+id/checkBox_settings_notification"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:buttonTint="@color/white"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/divider_settings_notification"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_settings_divider"
+                android:layout_below="@+id/layout_notification"
+                android:layout_marginTop="@dimen/activity_settings_marginTop2dp"
+                android:layout_marginBottom="@dimen/activity_settings_marginTop2dp"
+                android:background="@color/colorPrimary" />
+
+
+            <LinearLayout
+                android:id="@+id/layout_notify_timerpicker"
+                android:layout_below="@+id/divider_settings_notification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_notification_timepicker"
+                    android:text="@string/settings_notification_time"
+                    android:textSize="@dimen/activity_settings_textSize_20sp"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/edtv_settings_timerpicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:text="@string/settings_notification_time_picker"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 

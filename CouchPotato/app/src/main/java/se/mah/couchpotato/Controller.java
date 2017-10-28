@@ -248,8 +248,10 @@ public class Controller {
         editor.putBoolean(Settings.NSFW,dataFragment.getSettings().isNsfw());
         editor.putString(Settings.LANG, dataFragment.getSettings().getLanguage());
         editor.putString(Settings.COUNT, dataFragment.getSettings().getCountry());
-        editor.putInt(Settings.POSLANG, dataFragment.getSettings().getPosition_lang());
         editor.putInt(Settings.POSCOUNT, dataFragment.getSettings().getPosition_count());
+        editor.putBoolean(Settings.NOTIFICATION, dataFragment.getSettings().isNotification());
+        editor.putLong(Settings.NOTIFICATION_TIME,dataFragment.getSettings().getNotificationTime());
+        editor.putLong(Settings.TIME_ZONE,dataFragment.getSettings().getTimeZone());
         editor.apply();
         Log.d("ControllerSettings", "in saveSettingsToSP, saved stuff");
     }
@@ -260,12 +262,16 @@ public class Controller {
             dataFragment.setSettings(settings);
             Log.d("ControllerSettings","in restoreSettings, does not contain the word settings");
         }else {
+            //@TODO Denna är inte den aktuella längre
             Settings settings = new Settings(
                     sP.getBoolean(Settings.NSFW, true),
+                    sP.getBoolean(Settings.NOTIFICATION, true),
                     sP.getString(Settings.LANG,null),
                     sP.getString(Settings.COUNT,null),
-                    sP.getInt(Settings.POSLANG,0),
-                    sP.getInt(Settings.POSCOUNT,0));
+                    sP.getInt(Settings.POSCOUNT,0),
+                    sP.getLong(Settings.NOTIFICATION_TIME, 0),
+                    sP.getLong(Settings.TIME_ZONE, 0)
+            );
             dataFragment.setSettings(settings);
         }
     }
