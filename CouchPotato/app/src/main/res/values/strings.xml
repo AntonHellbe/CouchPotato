@@ -75,33 +75,7 @@
     <string name="notification_airing_today">is airing today!</string>
     <string name="settings_notification">Notification</string>
     
-    <array name="testing_array">
-        <item>00</item>
-        <item>01</item>
-        <item>02</item>
-        <item>03</item>
-        <item>04</item>
-        <item>05</item>
-        <item>06</item>
-        <item>07</item>
-        <item>08</item>
-        <item>09</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-    </array>
+
     <string name="settings_notification_time">Notification Time</string>
     <string name="settings_notification_time_picker">Pick Notification time</string>
     <string name="settings_not_applied">Settings not applied</string>

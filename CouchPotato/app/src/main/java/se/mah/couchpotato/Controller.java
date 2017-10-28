@@ -269,8 +269,8 @@ public class Controller {
     }
 
     public void restoreSettings(){
-        if (!sP.contains(Settings.LANG)) {
-            Settings settings = new Settings();
+        if (!sP.contains(Settings.LANG)){
+            Settings settings = new Settings(mainActivity.getApplicationContext());
             dataFragment.setSettings(settings);
             Log.d("ControllerSettings","in restoreSettings, does not contain the word settings");
         }else {

@@ -1,7 +1,12 @@
 package se.mah.couchpotato.activtysettings;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import se.mah.couchpotato.R;
 
 /**
  * @author Jonatan Fridsten
@@ -28,10 +33,18 @@ public class Settings implements Parcelable {
     public static final String TIME_ZONE = "timezone";
 
 
-    public Settings() {
+    public Settings(Context context) {
         nsfw = true;
         country = "US";
-        language = "Engelska";
+        String res = Resources.getSystem().getConfiguration().locale.getLanguage();
+        if (res.equals("sv")){
+            language = context.getResources().getString(R.string.settings_language_swedish);
+        }else if(res.equals("en")){
+            language = context.getResources().getString(R.string.settings_language_english);
+        }else {
+            language = context.getResources().getString(R.string.settings_language_english);
+        }
+        Log.v("Settings","Android device language:" + res);
         position_count = 1;
         notification = true;
         notificationTime = 1800; //18 * 60 * 1000 + 0 * 1000

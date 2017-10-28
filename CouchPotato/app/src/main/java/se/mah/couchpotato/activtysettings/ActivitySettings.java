@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -32,9 +33,11 @@ import se.mah.couchpotato.R;
 
 /**
  * @author Jonatan Fridsten
- *  This activity will be in charge for settings in the application.
+ *         This activity will be in charge for settings in the application.
  */
 public class ActivitySettings extends AppCompatActivity {
+
+    //@TODO Fixa så att om det finns en tid så sätt ut den på knappen
 
     //Public tag for bundle
     public static final String SETTINGS_BUNDLE_NAME = "data_settings";
@@ -65,7 +68,7 @@ public class ActivitySettings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         animateView(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        settings = new Settings();
+        settings = new Settings(getApplicationContext());
 
         if (bundle != null) {
             try {
@@ -77,6 +80,7 @@ public class ActivitySettings extends AppCompatActivity {
             } catch (NullPointerException e) {
             }
         } else {
+
         }
         initComp();
     }
@@ -132,39 +136,31 @@ public class ActivitySettings extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int h, int m) {
                         String res;
-                        if (h < 10){
+                        if (h < 10) {
                             res = "0" + h;
-                        }else {
+                        } else {
                             res = "" + h;
                         }
 
-                        settings.setNotificationTime((h * 3600 * 1000) + (m * 60 *1000));
+                        settings.setNotificationTime((h * 3600 * 1000) + (m * 60 * 1000));
                         btnTimerPicker.setText(res + ":" + m);
                     }
-                },hour,min,true);
+                }, hour, min, true);
                 timePicker.show();
             }
         });
 
         checkBoxNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    btnTimerPicker.setEnabled(true);
-                    btnTimerPicker.setTextColor(Color.WHITE);
-                    tvNotfiTime.setTextColor(Color.WHITE);
-
-                }else {
-                    btnTimerPicker.setTextColor(Color.LTGRAY);
-                    tvNotfiTime.setTextColor(Color.LTGRAY);
-                    btnTimerPicker.setEnabled(false);
-                }
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                changeButtonState(isChecked);
             }
         });
 
         try {
             checkBoxNsfw.setChecked(settings.isNsfw());
             checkBoxNotification.setChecked(settings.isNotification());
+            changeButtonState(settings.isNotification());
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -191,6 +187,18 @@ public class ActivitySettings extends AppCompatActivity {
 
     }
 
+    private void changeButtonState(Boolean isChecked){
+        if (isChecked) {
+            btnTimerPicker.setEnabled(true);
+            btnTimerPicker.setTextColor(Color.WHITE);
+            tvNotfiTime.setTextColor(Color.WHITE);
+
+        } else {
+            btnTimerPicker.setTextColor(Color.LTGRAY);
+            tvNotfiTime.setTextColor(Color.LTGRAY);
+            btnTimerPicker.setEnabled(false);
+        }
+    }
     private void changeLanguage(int position) {
         if (position != oldLanguage) {
 
@@ -254,10 +262,19 @@ public class ActivitySettings extends AppCompatActivity {
     private Intent createIntent() {
 
         //creates a new settings object
-        Settings settings = new Settings();
+        Settings settings = new Settings(getApplicationContext());
         try {
             settings.setNsfw(checkBoxNsfw.isChecked());
-            settings.setCountry(spinnerCountry.getSelectedItem().toString());
+            String[] array = getResources().getStringArray(R.array.settings_array_country);
+            if (spinnerCountry.getSelectedItem().toString().equals(array[0])){
+                settings.setCountry("SE");
+            }else if(spinnerCountry.getSelectedItem().toString().equals(array[1])){
+                settings.setCountry("US");
+            }else if(spinnerCountry.getSelectedItem().toString().equals(array[2])){
+                settings.setCountry("UK");
+            }else{
+                settings.setCountry("US");
+            }
             settings.setPosition_count(spinnerCountry.getSelectedItemPosition());
             settings.setNotification(checkBoxNotification.isChecked());
             if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
@@ -266,7 +283,6 @@ public class ActivitySettings extends AppCompatActivity {
                 settings.setLanguage(getResources().getString(R.string.settings_language_english));
             }
         } catch (NullPointerException e) {
-            //TODO Toast here or in main Activity ?
         }
 
         //Bundle to store the settings data
