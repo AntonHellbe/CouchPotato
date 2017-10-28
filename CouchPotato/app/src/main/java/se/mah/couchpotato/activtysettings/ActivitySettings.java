@@ -130,20 +130,25 @@ public class ActivitySettings extends AppCompatActivity {
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                int min = calendar.get(Calendar.MINUTE);
+                final int min = calendar.get(Calendar.MINUTE);
                 TimePickerDialog timePicker;
                 timePicker = new TimePickerDialog(ActivitySettings.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
-                    public void onTimeSet(TimePicker timePicker, int h, int m) {
-                        String res;
-                        if (h < 10) {
-                            res = "0" + h;
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        String[] input = new String[2];
+                        if (hour < 10) {
+                            input[0] = "0" + hour;
                         } else {
-                            res = "" + h;
+                            input[0] = "" + hour;
                         }
-
-                        settings.setNotificationTime((h * 3600 * 1000) + (m * 60 * 1000));
-                        btnTimerPicker.setText(res + ":" + m);
+                        if (minute < 10){
+                            input[1] = "0" + minute;
+                        }else {
+                            input[1] = "" + minute;
+                        }
+                        settings.setNotificationTime((hour * 3600 * 1000) + (minute * 60 * 1000));
+                        Log.v("TIME","Settings notTime" + settings.getNotificationTime());
+                        btnTimerPicker.setText(input[0] + ":" + input[1]);
                     }
                 }, hour, min, true);
                 timePicker.show();
@@ -160,6 +165,20 @@ public class ActivitySettings extends AppCompatActivity {
         try {
             checkBoxNsfw.setChecked(settings.isNsfw());
             checkBoxNotification.setChecked(settings.isNotification());
+            String[] res = new String[2];
+            long hour = settings.getNotificationTime() / (3600 * 1000);
+            long minute = (settings.getNotificationTime() - (hour * 3600 * 1000)) / (60 * 1000);
+            if (hour < 10){
+                res[0] = "0" + hour;
+            }else {
+                res[0] = "" + hour;
+            }
+            if (minute < 10){
+                res[1] = "0" + minute;
+            }else {
+                res[1] = "" + minute;
+            }
+            btnTimerPicker.setText("" + res[0] + ":" + res[1]);
             changeButtonState(settings.isNotification());
 
         } catch (NullPointerException e) {
@@ -262,7 +281,6 @@ public class ActivitySettings extends AppCompatActivity {
     private Intent createIntent() {
 
         //creates a new settings object
-        Settings settings = new Settings(getApplicationContext());
         try {
             settings.setNsfw(checkBoxNsfw.isChecked());
             String[] array = getResources().getStringArray(R.array.settings_array_country);
@@ -282,6 +300,7 @@ public class ActivitySettings extends AppCompatActivity {
             } else {
                 settings.setLanguage(getResources().getString(R.string.settings_language_english));
             }
+            Log.v("TIME","Settings notTime" + settings.getNotificationTime());
         } catch (NullPointerException e) {
         }
 

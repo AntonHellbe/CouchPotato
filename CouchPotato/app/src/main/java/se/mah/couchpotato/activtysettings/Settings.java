@@ -47,7 +47,7 @@ public class Settings implements Parcelable {
         Log.v("Settings","Android device language:" + res);
         position_count = 1;
         notification = true;
-        notificationTime = 1800; //18 * 60 * 1000 + 0 * 1000
+        notificationTime = 64800000; //18 * 60 * 1000 + 0 * 1000
         timeZone = 0;
     }
 
