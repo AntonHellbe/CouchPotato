@@ -171,6 +171,9 @@ public class DataFragment extends Fragment {
                     } else {
                         for (int i = 0; i < t.getShow().getGenres().size(); i++) {
                             if (filterIncludeMap.get(t.getShow().getGenres().get(i))) {
+                                if(!settings.isNsfw() && t.getShow().getGenres().get(i).equals(ADULT)){
+                                    continue;
+                                }
                                 filteredResult.add(t);
                                 break;
                             }

@@ -151,4 +151,5 @@ public class Settings implements Parcelable {
     public void setNotificationTime(long notificationTime) {
         this.notificationTime = notificationTime;
     }
+
 }
