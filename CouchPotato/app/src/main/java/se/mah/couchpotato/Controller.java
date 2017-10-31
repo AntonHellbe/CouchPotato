@@ -87,6 +87,7 @@ public class Controller {
     private void fillFilter() {
         for (String category: filters)
             dataFragment.getFilterIncludeMap().put(category, true);
+        dataFragment.getFilterIncludeMap().put(DataFragment.ADULT, true);
     }
 
     private void initializeCommunication() {

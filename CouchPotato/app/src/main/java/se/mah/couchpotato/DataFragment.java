@@ -27,7 +27,7 @@ import se.mah.couchpotato.activtysettings.Settings;
 public class DataFragment extends Fragment {
 
     private static final String OTHER = "Other";
-    private static final String ADULT = "Adult";
+    public static final String ADULT = "Adult";
 
     private boolean serviceExist, alarm;
     private String currentTag;
