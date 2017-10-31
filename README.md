@@ -7,3 +7,6 @@ Couch potato is an android app lets you get todays schedule of TV-shows based on
 1. [TV Maze API](https://www.tvmaze.com/api)
 
 2.  [OMDB API](http://www.omdbapi.com/)
+
+
+Get the latest APK file from here [Download from Google drive](https://drive.google.com/drive/folders/0B5cfK0rJUspdMnUzMWYtR25qQVU)
