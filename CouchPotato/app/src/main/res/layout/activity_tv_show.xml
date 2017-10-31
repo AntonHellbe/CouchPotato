@@ -149,6 +149,7 @@
         android:src="@drawable/ic_star"
         app:fabSize="normal"
         app:layout_anchor="@+id/customScrollView"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior=""/>
 
 </android.support.design.widget.CoordinatorLayout>
