@@ -73,11 +73,11 @@ public class ActivitySettings extends AppCompatActivity {
                 Log.v("LANGUAGETESTING", "oncreate:" + settings.getLanguage());
                 if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english))) {
                     Log.v("LANGUAGETESTING", "english if:" + settings.getLanguage());
-                    oldLanguage = R.id.radio_england;
+//                    oldLanguage = R.id.radio_england;
                 }
                 if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_swedish))) {
                     Log.v("LANGUAGETESTING", "swedish if:" + settings.getLanguage());
-                    oldLanguage = R.id.radio_sweden;
+//                    oldLanguage = R.id.radio_sweden;
                 }
             } catch (NullPointerException e) {
             }
@@ -89,7 +89,7 @@ public class ActivitySettings extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        radioGroup.setOnCheckedChangeListener(checkedChangeListener);
+//        radioGroup.setOnCheckedChangeListener(checkedChangeListener);
         sv_settings = (ScrollView) findViewById(R.id.sv_settings);
     }
 
@@ -122,7 +122,7 @@ public class ActivitySettings extends AppCompatActivity {
     private void initComp() {
         checkBoxNsfw = (CheckBox) findViewById(R.id.checkBox_settings_nsfw);
         spinnerCountry = (Spinner) findViewById(R.id.spinner_settings_countries);
-        radioGroup = (RadioGroup) findViewById(R.id.radio_language);
+//        radioGroup = (RadioGroup) findViewById(R.id.radio_language);
         checkBoxNotification = (CheckBox) findViewById(R.id.checkBox_settings_notification);
         btnTimerPicker = (Button) findViewById(R.id.edtv_settings_timerpicker);
         tvNotfiTime = (TextView) findViewById(R.id.edtv_settings_timerpicker);
@@ -171,17 +171,17 @@ public class ActivitySettings extends AppCompatActivity {
         spinnerCountry.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
         spinnerCountry.setSelection(settings.getPosition_count());
 
-        checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                changeLanguage(radioGroup.getCheckedRadioButtonId());
-            }
-        };
+//        checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+//                changeLanguage(radioGroup.getCheckedRadioButtonId());
+//            }
+//        };
 
         if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english))) {
-            radioGroup.check(R.id.radio_england);
+//            radioGroup.check(R.id.radio_england);
         } else {
-            radioGroup.check(R.id.radio_sweden);
+//            radioGroup.check(R.id.radio_sweden);
         }
 
 
@@ -204,28 +204,28 @@ public class ActivitySettings extends AppCompatActivity {
     private void changeLanguage(int position) {
         if (position != oldLanguage) {
             Log.v("LANGUAGETESTING", "Postition != oldLanguage! settings:" + settings.getLanguage());
-            if (position == R.id.radio_sweden) {
-                oldLanguage = R.id.radio_sweden;
-                Locale locale = new Locale("sv");
-                Configuration configuration = new Configuration();
-                configuration.locale = locale;
-                getApplicationContext().getResources().updateConfiguration(configuration, null);
-                setSettingsLanguage();
-                recreate();
-
-            } else if (position == R.id.radio_england) {
-
-                oldLanguage = R.id.radio_england;
-                Locale locale = new Locale("en");
-                Configuration configuration = new Configuration();
-                configuration.locale = locale;
-                getApplicationContext().getResources().updateConfiguration(configuration, null);
-                setSettingsLanguage();
-                recreate();
+//            if (position == R.id.radio_sweden) {
+//                oldLanguage = R.id.radio_sweden;
+//                Locale locale = new Locale("sv");
+//                Configuration configuration = new Configuration();
+//                configuration.locale = locale;
+//                getApplicationContext().getResources().updateConfiguration(configuration, null);
+//                setSettingsLanguage();
+//                recreate();
+//
+//            } else if (position == R.id.radio_england) {
+//
+//                oldLanguage = R.id.radio_england;
+//                Locale locale = new Locale("en");
+//                Configuration configuration = new Configuration();
+//                configuration.locale = locale;
+//                getApplicationContext().getResources().updateConfiguration(configuration, null);
+//                setSettingsLanguage();
+//                recreate();
             }
 
 
-        }
+//        }
     }
 
 
@@ -323,11 +323,11 @@ public class ActivitySettings extends AppCompatActivity {
     }
 
     private void setSettingsLanguage() {
-        if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
-            settings.setLanguage(getResources().getString(R.string.settings_language_swedish));
-        } else {
-            settings.setLanguage(getResources().getString(R.string.settings_language_english));
-        }
+//        if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
+//            settings.setLanguage(getResources().getString(R.string.settings_language_swedish));
+//        } else {
+//            settings.setLanguage(getResources().getString(R.string.settings_language_english));
+//        }
     }
 
     @Override
