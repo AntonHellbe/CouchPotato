@@ -436,6 +436,13 @@ public class Controller {
             Log.v("RECIEVEDFAV", "ID: " + tvShow.getName() + tvShow.getId());
             FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
             dataFragment.getFavorites().put(tvShow.getShow().getId().toString(), tvShow);
+            if(!dataFragment.getSettings().isNsfw()){
+                for (int i = 0; i < tvShow.getShow().getGenres().size(); i++) {
+                    if(tvShow.getShow().getGenres().get(i).equals(DataFragment.ADULT)){
+                        return;
+                    }
+                }
+            }
             favorites.insertTvShow(tvShow);
         }
     }
