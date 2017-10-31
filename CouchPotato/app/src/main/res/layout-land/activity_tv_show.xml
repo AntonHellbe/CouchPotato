@@ -84,15 +84,6 @@
                     android:layout_marginTop="10dp"
                     app:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_id_plot"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/activity_tv_show_no_plot"
-                    android:paddingLeft="@dimen/activity_vertical_margin"
-                    android:paddingRight="@dimen/activity_vertical_margin"
-                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/tv_show_air"
@@ -102,7 +93,18 @@
                     android:layout_height="wrap_content"
                     android:text="@string/activity_tv_show_no_airtime"
                     android:textColor="@color/white"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    android:textAlignment="textEnd"/>
+
+                <TextView
+                    android:id="@+id/tv_id_plot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/activity_tv_show_no_plot"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin"
+                    android:textColor="@color/white" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

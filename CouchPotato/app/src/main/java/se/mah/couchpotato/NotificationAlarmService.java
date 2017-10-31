@@ -68,6 +68,8 @@ public class NotificationAlarmService extends Service {
         c.setTimeInMillis(System.currentTimeMillis());
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         c.setTimeInMillis(c.getTimeInMillis() + notificationTime);
 
         Intent intent = new Intent(this, MrReciever.class);
@@ -99,7 +101,6 @@ public class NotificationAlarmService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.v("NOTIFICATIONTEST", "HELLO I IS RECIEVE");
-            Toast.makeText(context, "HELLO", Toast.LENGTH_SHORT).show();
             new NotificationScheduleTask(context).execute();
         }
 

@@ -94,6 +94,7 @@ public class ActivityTvShow extends AppCompatActivity {
             }
         }
         airTable.daysToDraw(airingDays);
+        tvAir.setText(airtime);
         if(plot != null) {
             plot = plot.replaceAll("<[^>]*>", "");
         }else{
