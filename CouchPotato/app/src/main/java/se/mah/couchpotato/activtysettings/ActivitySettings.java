@@ -37,8 +37,6 @@ import se.mah.couchpotato.R;
  */
 public class ActivitySettings extends AppCompatActivity {
 
-    //@TODO Fixa så att om det finns en tid så sätt ut den på knappen
-
     //Public tag for bundle
     public static final String SETTINGS_BUNDLE_NAME = "data_settings";
 
@@ -68,19 +66,22 @@ public class ActivitySettings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         animateView(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        settings = new Settings(getApplicationContext());
 
         if (bundle != null) {
             try {
                 settings = bundle.getParcelable(SETTINGS_BUNDLE_NAME);
-                if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english)))
+                Log.v("LANGUAGETESTING", "oncreate:" + settings.getLanguage());
+                if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_english))) {
+                    Log.v("LANGUAGETESTING", "english if:" + settings.getLanguage());
                     oldLanguage = R.id.radio_england;
-                if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_swedish)))
+                }
+                if (settings.getLanguage().equals(getResources().getString(R.string.settings_language_swedish))) {
+                    Log.v("LANGUAGETESTING", "swedish if:" + settings.getLanguage());
                     oldLanguage = R.id.radio_sweden;
+                }
             } catch (NullPointerException e) {
             }
         } else {
-
         }
         initComp();
     }
@@ -109,6 +110,8 @@ public class ActivitySettings extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         if (settings != null) {
             outState.putParcelable(SAVE_SETTEINGS, settings);
+        } else {
+            settings = new Settings(getApplicationContext());
         }
         outState.putInt(SAVE_PREV_STATE, oldLanguage);
         outState.putInt(SAVE_X_VALUE, x);
@@ -124,34 +127,10 @@ public class ActivitySettings extends AppCompatActivity {
         btnTimerPicker = (Button) findViewById(R.id.edtv_settings_timerpicker);
         tvNotfiTime = (TextView) findViewById(R.id.edtv_settings_timerpicker);
 
-
         btnTimerPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                final int min = calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePicker;
-                timePicker = new TimePickerDialog(ActivitySettings.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        String[] input = new String[2];
-                        if (hour < 10) {
-                            input[0] = "0" + hour;
-                        } else {
-                            input[0] = "" + hour;
-                        }
-                        if (minute < 10){
-                            input[1] = "0" + minute;
-                        }else {
-                            input[1] = "" + minute;
-                        }
-                        settings.setNotificationTime((hour * 3600 * 1000) + (minute * 60 * 1000));
-                        Log.v("TIME","Settings notTime" + settings.getNotificationTime());
-                        btnTimerPicker.setText(input[0] + ":" + input[1]);
-                    }
-                }, hour, min, true);
-                timePicker.show();
+                showTimerPickerDialog();
             }
         });
 
@@ -162,20 +141,22 @@ public class ActivitySettings extends AppCompatActivity {
             }
         });
 
+
+        //TODO Place in method ?
         try {
             checkBoxNsfw.setChecked(settings.isNsfw());
             checkBoxNotification.setChecked(settings.isNotification());
             String[] res = new String[2];
             long hour = settings.getNotificationTime() / (3600 * 1000);
             long minute = (settings.getNotificationTime() - (hour * 3600 * 1000)) / (60 * 1000);
-            if (hour < 10){
+            if (hour < 10) {
                 res[0] = "0" + hour;
-            }else {
+            } else {
                 res[0] = "" + hour;
             }
-            if (minute < 10){
+            if (minute < 10) {
                 res[1] = "0" + minute;
-            }else {
+            } else {
                 res[1] = "" + minute;
             }
             btnTimerPicker.setText("" + res[0] + ":" + res[1]);
@@ -206,7 +187,7 @@ public class ActivitySettings extends AppCompatActivity {
 
     }
 
-    private void changeButtonState(Boolean isChecked){
+    private void changeButtonState(Boolean isChecked) {
         if (isChecked) {
             btnTimerPicker.setEnabled(true);
             btnTimerPicker.setTextColor(Color.WHITE);
@@ -218,16 +199,18 @@ public class ActivitySettings extends AppCompatActivity {
             btnTimerPicker.setEnabled(false);
         }
     }
+
+
     private void changeLanguage(int position) {
         if (position != oldLanguage) {
-
+            Log.v("LANGUAGETESTING", "Postition != oldLanguage! settings:" + settings.getLanguage());
             if (position == R.id.radio_sweden) {
-
                 oldLanguage = R.id.radio_sweden;
                 Locale locale = new Locale("sv");
                 Configuration configuration = new Configuration();
                 configuration.locale = locale;
                 getApplicationContext().getResources().updateConfiguration(configuration, null);
+                setSettingsLanguage();
                 recreate();
 
             } else if (position == R.id.radio_england) {
@@ -237,9 +220,11 @@ public class ActivitySettings extends AppCompatActivity {
                 Configuration configuration = new Configuration();
                 configuration.locale = locale;
                 getApplicationContext().getResources().updateConfiguration(configuration, null);
+                setSettingsLanguage();
                 recreate();
-
             }
+
+
         }
     }
 
@@ -271,6 +256,31 @@ public class ActivitySettings extends AppCompatActivity {
         }
     }
 
+    private void showTimerPickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int min = calendar.get(Calendar.MINUTE);
+        TimePickerDialog timePicker;
+        timePicker = new TimePickerDialog(ActivitySettings.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                String[] input = new String[2];
+                if (hour < 10) {
+                    input[0] = "0" + hour;
+                } else {
+                    input[0] = "" + hour;
+                }
+                if (minute < 10) {
+                    input[1] = "0" + minute;
+                } else {
+                    input[1] = "" + minute;
+                }
+                settings.setNotificationTime((hour * 3600 * 1000) + (minute * 60 * 1000));
+                btnTimerPicker.setText(input[0] + ":" + input[1]);
+            }
+        }, hour, min, true);
+        timePicker.show();
+    }
 
     /**
      * '
@@ -284,23 +294,20 @@ public class ActivitySettings extends AppCompatActivity {
         try {
             settings.setNsfw(checkBoxNsfw.isChecked());
             String[] array = getResources().getStringArray(R.array.settings_array_country);
-            if (spinnerCountry.getSelectedItem().toString().equals(array[0])){
+            if (spinnerCountry.getSelectedItem().toString().equals(array[0])) {
                 settings.setCountry("SE");
-            }else if(spinnerCountry.getSelectedItem().toString().equals(array[1])){
+            } else if (spinnerCountry.getSelectedItem().toString().equals(array[1])) {
                 settings.setCountry("US");
-            }else if(spinnerCountry.getSelectedItem().toString().equals(array[2])){
+            } else if (spinnerCountry.getSelectedItem().toString().equals(array[2])) {
                 settings.setCountry("GB");
-            }else{
+            } else {
                 settings.setCountry("US");
             }
+            setSettingsLanguage();
             settings.setPosition_count(spinnerCountry.getSelectedItemPosition());
             settings.setNotification(checkBoxNotification.isChecked());
-            if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
-                settings.setLanguage(getResources().getString(R.string.settings_language_swedish));
-            } else {
-                settings.setLanguage(getResources().getString(R.string.settings_language_english));
-            }
-            Log.v("TIME","Settings notTime" + settings.getNotificationTime());
+
+            Log.v("TIME", "Settings notTime" + settings.getNotificationTime());
         } catch (NullPointerException e) {
         }
 
@@ -315,6 +322,13 @@ public class ActivitySettings extends AppCompatActivity {
         return intent;
     }
 
+    private void setSettingsLanguage() {
+        if (radioGroup.getCheckedRadioButtonId() == R.id.radio_sweden) {
+            settings.setLanguage(getResources().getString(R.string.settings_language_swedish));
+        } else {
+            settings.setLanguage(getResources().getString(R.string.settings_language_english));
+        }
+    }
 
     @Override
     public void finish() {

@@ -231,6 +231,8 @@ public class Controller {
                 communicationService.downloadPicture(((DownloadImageRequest) downloadRequest).getId(), ((DownloadImageRequest) downloadRequest).getPosterListener(), ((DownloadImageRequest) downloadRequest).getQuery());
             else if (downloadRequest instanceof DownloadFavoriteRequest)
                 communicationService.sendGetFavorite(downloadRequest.getQuery(), ((DownloadFavoriteRequest) downloadRequest).getCallback());
+            else if (downloadRequest instanceof  DownloadScheduleRequest)
+                communicationService.sendSchedule(downloadRequest.getQuery());
         }
     }
 
@@ -248,8 +250,10 @@ public class Controller {
         // TODO: 25/10/2017 change the current settings to the newly changed, and also save it into sP
         Settings settings = bundle.getParcelable(ActivitySettings.SETTINGS_BUNDLE_NAME);
 
+        Log.v("ControllerSettings","SAVE SETTINGS!!!!");
         //Checks if language have been changed or nah
         if(!dataFragment.getSettings().getLanguage().equals(settings.getLanguage())){
+            Log.v("ControllerSettings","SAVE SETTINGS RECREATE!!!!");
             mainActivity.recreate();
         }
 
@@ -269,7 +273,12 @@ public class Controller {
         FragmentInterface favorites = getFragmentByTag(ContainerFragment.TAG_FAVORITES);
         FragmentInterface search = getFragmentByTag(ContainerFragment.TAG_SEARCH);
 
-        communicationService.sendSchedule(dataFragment.getSettings().getCountry());
+        if (communicationService != null)
+            communicationService.sendSchedule(dataFragment.getSettings().getCountry());
+        else
+            dataFragment.getDownloadQueue().add(new DownloadScheduleRequest(dataFragment.getSettings().getCountry()));
+
+
 
         feed.updateFragmentData(dataFragment.filterShows(dataFragment.getSchedule()));
         search.updateFragmentData(dataFragment.filterShows(dataFragment.getSearchResult()));
